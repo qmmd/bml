@@ -1,4 +1,6 @@
-include_directories(${CMAKE_SOURCE_DIR}/src/C-interface)
+include_directories(
+  ${CMAKE_SOURCE_DIR}/src/C-interface
+  ${CMAKE_BINARY_DIR}/src/Fortran-interface)
 
 set(SOURCES_TYPED
   add_matrix_typed.c
@@ -76,6 +78,27 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 
+add_executable(bml-test-fortran
+  test_m.F90
+  allocate_matrix.F90
+  bml_test.F90)
+target_link_libraries(bml-test-fortran bml ${LINK_LIBRARIES})
+set_target_properties(bml-test-fortran
+  PROPERTIES
+  LINK_FLAGS "--coverage")
+if(OPENMP_FOUND)
+  set_target_properties(bml-test-fortran
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_Fortran_FLAGS}
+    LINK_FLAGS ${OpenMP_Fortran_FLAGS})
+endif()
+if(MPI_Fortran_FOUND AND MPI_Fortran_COMPILE_FLAGS)
+  set_target_properties(bml-test-fortran
+    PROPERTIES
+    COMPILE_FLAGS ${MPI_Fortran_COMPILE_FLAGS}
+    LINK_FLAGS ${MPI_Fortran_LINK_FLAGS})
+endif()
+
 foreach(N add adjacency adjungate_triangle allocate convert copy diagonalize
     get_element get_sparsity inverse multiply norm  normalize scale
     get_set_diagonal set_row submatrix threshold trace transpose)
@@ -85,6 +108,7 @@ foreach(N add adjacency adjungate_triangle allocate convert copy diagonalize
         #add_test(${N}-${T}-${P} mpirun -np 1 bml-test -n ${N} -t ${T} -p ${P})
       #else()
         add_test(${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
+        add_test(${N}-${T}-${P}-Fortran bml-test-fortran ${N} ${T} ${P})
       #endif()
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
         add_test(${N}-${T}-${P}-valgrind ${VALGRIND} --error-exitcode=1

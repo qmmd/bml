@@ -1,4 +1,5 @@
 module test_m
+
   ! All tests need the Fortran kinds corresponding to the C floating types.
   use, intrinsic :: iso_c_binding, only : C_FLOAT, C_DOUBLE, C_FLOAT_COMPLEX, &
       & C_DOUBLE_COMPLEX
