@@ -78,55 +78,57 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) \
+#pragma omp parallel \
+    default(none) \
     shared(N, M, A_nnz, A_index, A_value) \
     shared(A_localRowMin, A_localRowMax, myRank) \
     shared(rad, dval) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    shared(emin, emax) \
+    private(absham, radius, dvalue)
     {
-        radius = 0.0;
-        dvalue = 0.0;
+        double _emin = emin;
+        double _emax = emax;
 
-        for (int j = 0; j < A_nnz[i]; j++)
+#pragma omp for nowait
+        for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
         {
-            if (i == A_index[ROWMAJOR(i, j, N, M)])
-                dvalue = A_value[ROWMAJOR(i, j, N, M)];
-            else
+            radius = 0.0;
+            dvalue = 0.0;
+
+            for (int j = 0; j < A_nnz[i]; j++)
             {
-                absham = ABS(A_value[ROWMAJOR(i, j, N, M)]);
-                radius += (double) absham;
+                if (i == A_index[ROWMAJOR(i, j, N, M)])
+                    dvalue = A_value[ROWMAJOR(i, j, N, M)];
+                else
+                {
+                    absham = ABS(A_value[ROWMAJOR(i, j, N, M)]);
+                    radius += (double) absham;
+                }
+
             }
 
+            dval[i] = dvalue;
+            rad[i] = radius;
+
+            if (REAL_PART(dval[i] + rad[i]) > _emax)
+                _emax = REAL_PART(dval[i] + rad[i]);
+            if (REAL_PART(dval[i] - rad[i]) < _emin)
+                _emin = REAL_PART(dval[i] - rad[i]);
         }
 
-        dval[i] = dvalue;
-        rad[i] = radius;
+#pragma omp critical
+        {
+            if (_emax > emax)
+            {
+                emax = _emax;
+            }
 
-/*
-        emax =
-            (emax >
-             REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius));
-        emin =
-            (emin <
-             REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
-
-*/
+            if (_emin < emin)
+            {
+                emin = _emin;
+            }
+        }
     }
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
-    {
-        if (REAL_PART(dval[i] + rad[i]) > emax)
-            emax = REAL_PART(dval[i] + rad[i]);
-        if (REAL_PART(dval[i] - rad[i]) < emin)
-            emin = REAL_PART(dval[i] - rad[i]);
-
-    }
-
-    //printf("%d: emin = %e emax = %e\n", myRank, emin, emax);
 
 #ifdef DO_MPI
     if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
@@ -173,41 +175,55 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) \
+#pragma omp parallel \
+    default(none) \
     shared(N, M, A_nnz, A_index, A_value) \
     shared(rad, dval) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
-    for (int i = 0; i < nrows; i++)
+    shared(emin, emax) \
+    private(absham, radius, dvalue)
     {
-        radius = 0.0;
-        dvalue = 0.0;
+        double _emin = emin;
+        double _emax = emax;
 
-        for (int j = 0; j < A_nnz[i]; j++)
+#pragma omp for nowait
+        for (int i = 0; i < nrows; i++)
         {
-            if (i == A_index[ROWMAJOR(i, j, N, M)])
-                dvalue = A_value[ROWMAJOR(i, j, N, M)];
-            else
+            radius = 0.0;
+            dvalue = 0.0;
+
+            for (int j = 0; j < A_nnz[i]; j++)
             {
-                absham = ABS(A_value[ROWMAJOR(i, j, N, M)]);
-                radius += (double) absham;
+                if (i == A_index[ROWMAJOR(i, j, N, M)])
+                    dvalue = A_value[ROWMAJOR(i, j, N, M)];
+                else
+                {
+                    absham = ABS(A_value[ROWMAJOR(i, j, N, M)]);
+                    radius += (double) absham;
+                }
+
             }
 
+            dval[i] = dvalue;
+            rad[i] = radius;
+
+            if (REAL_PART(dval[i] + rad[i]) > _emax)
+                _emax = REAL_PART(dval[i] + rad[i]);
+            if (REAL_PART(dval[i] - rad[i]) < _emin)
+                _emin = REAL_PART(dval[i] - rad[i]);
         }
 
-        dval[i] = dvalue;
-        rad[i] = radius;
+#pragma omp critical
+        {
+            if (_emax > emax)
+            {
+                emax = _emax;
+            }
 
-    }
-
-    for (int i = 0; i < nrows; i++)
-    {
-        if (REAL_PART(dval[i] + rad[i]) > emax)
-            emax = REAL_PART(dval[i] + rad[i]);
-        if (REAL_PART(dval[i] - rad[i]) < emin)
-            emin = REAL_PART(dval[i] - rad[i]);
-
+            if (_emin < emin)
+            {
+                emin = _emin;
+            }
+        }
     }
 
     eval[0] = emin;
