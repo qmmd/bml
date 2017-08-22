@@ -3,6 +3,15 @@
 | [![Build Status](https://travis-ci.org/lanl/bml.svg?branch=master)](https://travis-ci.org/lanl/bml) |
 | [![codecov.io](https://codecov.io/github/lanl/bml/coverage.svg?branch=master)](https://codecov.io/github/lanl/bml?branch=master) |
 
+This website is intended to provide some guidance on how to get and install
+the BML library. LA-UR number LA-UR-**17-27373**.
+
+The basic matrix library (bml) is a collection of various matrix data formats
+(in dense and sparse) and their associated algorithms for basic matrix
+operations. Application programming interfaces (API) are available for both C
+and FORTRAN code. The current status of this library allows us to use two
+different formats for representing matrix data: dense and ELLPACK.
+
 # Binary Packages
 
 We offer binary packages of the bml library in [RPM
@@ -193,11 +202,24 @@ The developers intend to distribute this software package under the OSI
 Certified **BSD 3-Clause License**
 (http://www.opensource.org/licenses/BSD-3-Clause)
 
-This code was developed using funding from the LANL Laboratory-Directed
-Research Development (LDRD) Program. Larry Kwei, LAFO Program Manager, has
-granted his concurrence to asserting copyright and then distributing the
-**Basic Matrix Library (bml), Version 0.x** code using an open source software
-license. See attached memo.
+This code was developed using funding from:
+
+- Basic Energy Sciences (LANL2014E8AN) and the Laboratory Directed Research
+  and Development Program of Los Alamos National Laboratory. To tests these
+  developments we used resources provided by the Los Alamos National
+  Laboratory Institutional Computing Program, which is supported by the U.S.
+  Department of Energy National Nuclear Security Administration
+
+- Exascale Computing Project (17-SC-20-SC), a collaborative effort of two U.S.
+  Department of Energy organizations (Office of Science and the National
+  Nuclear Security Administration) responsible for the planning and
+  preparation of a capable exascale ecosystem, including software,
+  applications, hardware, advanced system engineering, and early testbed
+  platforms, in support of the nation’s exascale computing imperative.
+
+Larry Kwei, LAFO Program Manager, has granted his concurrence to asserting
+copyright and then distributing the **Basic Matrix Library (bml), Version
+0.x** code using an open source software license. See attached memo.
 
 LANS acknowledges that it will comply with the DOE OSS policy as follows:
 

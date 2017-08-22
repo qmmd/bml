@@ -2,65 +2,19 @@
 title: BML
 ---
 
+| master |
+| ------ |
+| [![Build Status](https://travis-ci.org/lanl/bml.svg?branch=master)](https://travis-ci.org/lanl/bml) |
+| [![codecov.io](https://codecov.io/github/lanl/bml/coverage.svg?branch=master)](https://codecov.io/github/lanl/bml?branch=master) |
+
 This website is intended to provide some guidance on how to get and install
-the BML library. LA-UR number 'LA-UR-17-27373'
+the BML library. LA-UR number LA-UR-**17-27373**.
 
-
-## ABSTRACT
-
-The basic matrix library (bml) is a collection of various matrix data
-formats (in dense and sparse) and their associated algorithms for basic
-matrix operations. Application
-programming interfaces (API) are available for both C and FORTRAN code.
-The current status of this library allows us to use two different formats for
-representing matrix data: dense and ELLPACK.
-
-
-This code is unclassified and has been assigned LA-CC-**15-093**. Los Alamos
-National Laboratory’s Export Control Team made an in-house determination that
-this software is controlled under Department of Commerce regulations and the
-Export Control Classification Number (ECCN) **EAR99**. The export control
-review is attached.
-
-The developers intend to distribute this software package under the OSI
-Certified **BSD 3-Clause License**
-(http://www.opensource.org/licenses/BSD-3-Clause)
-
-This code was developed using funding from:
-
-Basic Energy Sciences (LANL2014E8AN) and the Laboratory Directed Research and Development
-Program of Los Alamos National Laboratory. To tests these developments we
-used resources provided by the Los Alamos National Laboratory Institutional
-Computing Program, which is supported by the U.S. Department of Energy National
-Nuclear Security Administration
-
-Exascale Computing Project (17-SC-20-SC), a
-collaborative effort of two U.S. Department of Energy organizations (Office of Science and
-the National Nuclear Security Administration) responsible for the planning and preparation
-of a capable exascale ecosystem, including software, applications, hardware, advanced system
-engineering, and early testbed platforms, in support of the nation’s exascale computing imperative.
-
-
-Larry Kwei, LAFO Program Manager, has
-granted his concurrence to asserting copyright and then distributing the
-**Basic Matrix Library (bml), Version 0.x** code using an open source software
-license. See attached memo.
-
-LANS acknowledges that it will comply with the DOE OSS policy as follows:
-
-1. submit form DOE F 241.4 to the Energy Science and Technology Software
-   Center (ESTSC),
-2. provide the unique URL on the form for ESTSC to distribute, and
-3. maintain an OSS Record available for inspection by DOE.
-
-Following is a table briefly summarizes information for this software package:
-
-| CODE NAME                                   | Basic Matrix Library (bml), Version 0.x (C16006) |
-| ------------------------------------------- | ------------------------------------------------ |
-| Classification Review Number                | **LA-CC-15-093**                                 |
-| Export Control Classification Number (ECCN) | **EAR99**                                        |
-| B&R Code                                    | **YN0100000**                                    |
-
+The basic matrix library (bml) is a collection of various matrix data formats
+(in dense and sparse) and their associated algorithms for basic matrix
+operations. Application programming interfaces (API) are available for both C
+and FORTRAN code. The current status of this library allows us to use two
+different formats for representing matrix data: dense and ELLPACK.
 
 # Binary Packages
 
@@ -119,7 +73,7 @@ In order to build the library, the following tools need to be installed:
 ## If the build fails
 
 In case the build fails for some reason, please contact the developers by
-opening an issue on GitHub (https://github.com/qmmd/bml/issues) and attach the
+opening an issue on GitHub (https://github.com/lanl/bml/issues) and attach the
 files
 
     build/CMakeFiles/CMakeOutput.log
@@ -127,10 +81,28 @@ files
 
 # Developer Suggested Workflow
 
-We do our main development on the `master` branch.  If you would like to
-contribute your work to the bml project, please fork the project on github,
-hack away at the forked `master` branch and send us a pull request once you
-think we should have a look and integrate your work.
+Our main development happens on the `master` branch and is continuously
+verified for correctness. If you would like to contribute your work to the bml
+project, please follow the instructions at the GitHub help page ["About pull
+requests"](https://help.github.com/articles/about-pull-requests/). To
+summarize:
+
+- Fork the project on github
+- Clone that forked repository
+- Create a branch in it
+- Commit any changes to the branch
+- Push the branch to your forked repository
+- Go to https://github.com/lanl/bml and click on 'Create Pull Request'
+
+During the review process you might want to change your pull request. Simply
+commit the changes on your local branch and push them GitHub. Please don't
+`amend` your commits. This makes it more difficult for the reviewers to follow
+your work.
+
+Please make sure your pull request contains only one logical change (see
+["Structural split of
+change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
+for further details.
 
 ## Coding Style
 
@@ -155,6 +127,20 @@ with the following `bibtex` snipped:
         and Mohd-Yusof, Jamaludin and Negre, Christian},
       year = 2017
     }
+
+# Authors
+
+The core developers of the bml in alphabetical order:
+
+* Christian Negre <cnegre@lanl.gov>
+* Jamaludin Mohd-Yusof <jamal@lanl.gov>
+* Nicolas Bock <nbock@lanl.gov>
+* Susan M. Mniszewski <smm@lanl.gov>
+
+# Contributors
+
+* Bálint Aradi <aradi@uni-bremen.de>
+* Mike Wall <mewall@lanl.gov>
 
 # License
 
@@ -203,3 +189,53 @@ NOTICE OF OSS COPYRIGHT ASSERTION:
 
 LANS has asserted copyright on the software package entitled *Basic
 Matrix Library (bml), Version 0.x (C16006)*.
+
+## ABSTRACT
+
+The basic matrix library (bml) is a collection of various matrix data
+formats (in dense and sparse) and their associated algorithms for basic
+matrix operations.
+
+This code is unclassified and has been assigned LA-CC-**15-093**. Los Alamos
+National Laboratory’s Export Control Team made an in-house determination that
+this software is controlled under Department of Commerce regulations and the
+Export Control Classification Number (ECCN) **EAR99**. The export control
+review is attached.
+
+The developers intend to distribute this software package under the OSI
+Certified **BSD 3-Clause License**
+(http://www.opensource.org/licenses/BSD-3-Clause)
+
+This code was developed using funding from:
+
+- Basic Energy Sciences (LANL2014E8AN) and the Laboratory Directed Research
+  and Development Program of Los Alamos National Laboratory. To tests these
+  developments we used resources provided by the Los Alamos National
+  Laboratory Institutional Computing Program, which is supported by the U.S.
+  Department of Energy National Nuclear Security Administration
+
+- Exascale Computing Project (17-SC-20-SC), a collaborative effort of two U.S.
+  Department of Energy organizations (Office of Science and the National
+  Nuclear Security Administration) responsible for the planning and
+  preparation of a capable exascale ecosystem, including software,
+  applications, hardware, advanced system engineering, and early testbed
+  platforms, in support of the nation’s exascale computing imperative.
+
+Larry Kwei, LAFO Program Manager, has granted his concurrence to asserting
+copyright and then distributing the **Basic Matrix Library (bml), Version
+0.x** code using an open source software license. See attached memo.
+
+LANS acknowledges that it will comply with the DOE OSS policy as follows:
+
+1. submit form DOE F 241.4 to the Energy Science and Technology Software
+   Center (ESTSC),
+2. provide the unique URL on the form for ESTSC to distribute, and
+3. maintain an OSS Record available for inspection by DOE.
+
+Following is a table briefly summarizes information for this software package:
+
+| CODE NAME                                   | Basic Matrix Library (bml), Version 0.x (C16006) |
+| ------------------------------------------- | ------------------------------------------------ |
+| Classification Review Number                | **LA-CC-15-093**                                 |
+| Export Control Classification Number (ECCN) | **EAR99**                                        |
+| B&R Code                                    | **YN0100000**                                    |
