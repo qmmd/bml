@@ -432,6 +432,8 @@ if(OPENMP_FOUND)
   message(STATUS "Additional C compiler link flags: '${OpenMP_C_FLAGS}'")
 endif()
 
+add_subdirectory(temp)
+
 configure_file(src/bml.pc.in bml.pc)
 install(FILES ${CMAKE_BINARY_DIR}/bml.pc
   DESTINATION ${CMAKE_INSTALL_PKG_CONFIG_DIR})

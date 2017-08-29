@@ -3,6 +3,7 @@
 #include "../bml_introspection.h"
 #include "bml_types_dense.h"
 #include "../typed.h"
+#include "../bml_logger.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -27,6 +28,8 @@ void *TYPED_FUNC(
     int N = bml_get_N(A);
     REAL_T *A_matrix = A->matrix;
     REAL_T *row = calloc(N, sizeof(REAL_T));
+
+    LOG_DEBUG("here\n");
 
     for (int j = 0; j < N; j++)
     {

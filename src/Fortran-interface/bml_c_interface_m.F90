@@ -212,12 +212,12 @@ module bml_c_interface_m
       integer(C_INT) :: bml_get_distribution_mode_C
     end function bml_get_distribution_mode_C
 
-    subroutine bml_get_row_C(a, i, row) bind(C, name="bml_get_row")
-      import :: C_PTR, C_INT
+    function bml_get_row_C(a, i) bind(C, name="bml_get_row")
+      import :: C_PTR, C_INT, C_double
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i
-      type(C_PTR), value, intent(in) :: row
-    end subroutine bml_get_row_C
+      type(C_PTR) :: bml_get_row_C
+    end function bml_get_row_C
 
     subroutine bml_get_diagonal_C(a, diagonal) bind(C, name="bml_get_diagonal")
       import :: C_PTR, C_INT

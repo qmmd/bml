@@ -82,11 +82,15 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_single_real(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    real(C_FLOAT), target, intent(out) :: row(*)
+    real(C_FLOAT), target, intent(out) :: row(:)
+    real(C_FLOAT), pointer :: row_ptr(:)
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    call c_f_pointer(bml_get_row_C(a%ptr, i-1), row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_single_real
 
@@ -96,11 +100,15 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_double_real(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    real(C_DOUBLE), target, intent(out) :: row(*)
+    real(C_DOUBLE), target, intent(inout) :: row(:)
+    real(C_DOUBLE), pointer :: row_ptr(:)
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    call c_f_pointer(bml_get_row_C(a%ptr, i-1), row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_double_real
 
@@ -110,11 +118,15 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_single_complex(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    complex(C_FLOAT_COMPLEX), target, intent(out) :: row(*)
+    complex(C_FLOAT_COMPLEX), target, intent(out) :: row(:)
+    complex(C_FLOAT_COMPLEX), pointer :: row_ptr(:)
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    call c_f_pointer(bml_get_row_C(a%ptr, i-1), row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_single_complex
 
@@ -124,11 +136,15 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_double_complex(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    complex(C_DOUBLE_COMPLEX), target, intent(out) :: row(*)
+    complex(C_DOUBLE_COMPLEX), target, intent(out) :: row(:)
+    complex(C_DOUBLE_COMPLEX), pointer :: row_ptr(:)
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    call c_f_pointer(bml_get_row_C(a%ptr, i-1), row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_double_complex
 

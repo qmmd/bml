@@ -45,7 +45,7 @@ contains
     integer(C_INT), intent(in) :: j_u
 
     write(*, "(A)") tag
-    call bml_print_bml_matrix_C(a%ptr, i_l, i_u, j_l, j_u)
+    call bml_print_bml_matrix_C(a%ptr, i_l - 1, i_u, j_l - 1, j_u)
 
   end subroutine bml_print_bml_matrix
 
