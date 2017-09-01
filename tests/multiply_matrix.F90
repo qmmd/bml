@@ -68,10 +68,10 @@ contains
 
     test_result = .true.
 
-    call bml_convert_to_dense(a, a_dense)
-    call bml_convert_to_dense(b, b_dense)
-    call bml_convert_to_dense(c, c_dense)
-    call bml_convert_to_dense(d, d_dense)
+    call bml_export_to_dense(a, a_dense)
+    call bml_export_to_dense(b, b_dense)
+    call bml_export_to_dense(c, c_dense)
+    call bml_export_to_dense(d, d_dense)
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     call bml_print_matrix("B", b_dense, 1, n, 1, n)
     call bml_print_matrix("C", c_dense, 1, n, 1, n)
@@ -86,8 +86,8 @@ contains
        print *, "max abs diff = ", maxval(abs(e_dense - d_dense))
     endif
 
-    call bml_convert_to_dense(f, f_dense)
-    call bml_convert_to_dense(g, g_dense)
+    call bml_export_to_dense(f, f_dense)
+    call bml_export_to_dense(g, g_dense)
     call bml_print_matrix("F", f_dense, 1, n, 1, n)
     call bml_print_matrix("G", g_dense, 1, n, 1, n)
     if(maxval(abs(f_dense - g_dense)) > abs_tol) then

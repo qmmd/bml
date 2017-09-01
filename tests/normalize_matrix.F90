@@ -49,14 +49,14 @@ contains
         & m, a)
     call bml_scale(scale_factor, a)
     call bml_gershgorin(a, a_gbnd)
-    call bml_convert_to_dense(a, a_dense)
+    call bml_export_to_dense(a, a_dense)
     a_dense(1,1) = scale_factor * scale_factor
-    call bml_convert_from_dense(matrix_type, a_dense, b, threshold, m)
+    call bml_import_from_dense(matrix_type, a_dense, b, threshold, m)
     call bml_gershgorin(b, b_gbnd);
     write(*,*) 'B maxeval = ', b_gbnd(1), ' maxminusmin = ', b_gbnd(2)
 
-    call bml_convert_to_dense(a, a_dense);
-    call bml_convert_to_dense(b, b_dense);
+    call bml_export_to_dense(a, a_dense);
+    call bml_export_to_dense(b, b_dense);
 
     call bml_print_matrix("A", a_dense, lbound(a_dense, 1), ubound(a_dense, 1), &
          lbound(a_dense, 2), ubound(a_dense, 2))
@@ -65,7 +65,7 @@ contains
 
     call bml_normalize(b, b_gbnd(1), b_gbnd(2))
 
-    call bml_convert_to_dense(b, b_dense);
+    call bml_export_to_dense(b, b_dense);
 
     call bml_print_matrix("B", b_dense, lbound(b_dense, 1), ubound(b_dense, 1), &
          lbound(b_dense, 2), ubound(b_dense, 2))

@@ -31,7 +31,7 @@ contains
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
         & a)
-    call bml_convert_to_dense(a, a_dense)
+    call bml_export_to_dense(a, a_dense)
     if(lbound(a_dense, 1) /= 1 .or. lbound(a_dense, 2) /= 1) then
        print *, "incorrect lbound"
        print *, "lbound(a_dense, 1) = ", lbound(a_dense, 1)
@@ -51,7 +51,7 @@ contains
     call bml_deallocate(a)
     call bml_identity_matrix(matrix_type, element_type, element_precision, &
         & n, m, a)
-    call bml_convert_to_dense(a, a_dense)
+    call bml_export_to_dense(a, a_dense)
     call bml_print_matrix("A", a_dense, lbound(a_dense, 1), ubound(a_dense, 1), &
          lbound(a_dense, 2), ubound(a_dense, 2))
     do i = 1, n

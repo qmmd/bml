@@ -36,7 +36,7 @@ contains
        end do
     end do
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
-    call bml_convert_from_dense(matrix_type, a_dense, a, 0d0, n)
+    call bml_import_from_dense(matrix_type, a_dense, a, 0d0, n)
     call bml_print_matrix("A", a, 1, n, 1, n)
 
     do i = 1, n

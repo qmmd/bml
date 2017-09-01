@@ -39,8 +39,8 @@ contains
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, b)
     call bml_read_matrix(b, fname)
 
-    call bml_convert_to_dense(a, a_dense)
-    call bml_convert_to_dense(b, b_dense)
+    call bml_export_to_dense(a, a_dense)
+    call bml_export_to_dense(b, b_dense)
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     call bml_print_matrix("B", b_dense, 1, n, 1, n)
     if(maxval(abs(a_dense - b_dense)) > 1e-12) then

@@ -41,8 +41,8 @@ contains
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, c)
     call bml_scale(alpha, a, c)
 
-    call bml_convert_to_dense(a, a_dense)
-    call bml_convert_to_dense(c, c_dense)
+    call bml_export_to_dense(a, a_dense)
+    call bml_export_to_dense(c, c_dense)
 
     if(maxval(abs(alpha * a_dense - c_dense)) > abs_tol) then
        test_result = .false.

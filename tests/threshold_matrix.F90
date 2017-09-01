@@ -31,7 +31,7 @@ contains
     call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_threshold(a, 0.5d0)
     call bml_print_matrix("A", a, 1, n, 1, n)
-    call bml_convert_to_dense(a, a_dense)
+    call bml_export_to_dense(a, a_dense)
 
     test_result = .true.
     do i = 1, n

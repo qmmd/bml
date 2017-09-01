@@ -35,9 +35,9 @@ contains
     call bml_copy(a, b)
     call bml_copy(b, c)
 
-    call bml_convert_to_dense(a, a_dense)
-    call bml_convert_to_dense(b, b_dense)
-    call bml_convert_to_dense(c, c_dense)
+    call bml_export_to_dense(a, a_dense)
+    call bml_export_to_dense(b, b_dense)
+    call bml_export_to_dense(c, c_dense)
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     call bml_print_matrix("B", b_dense, 1, n, 1, n)
     call bml_print_matrix("C", c_dense, 1, n, 1, n)

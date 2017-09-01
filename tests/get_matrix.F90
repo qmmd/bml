@@ -34,7 +34,7 @@ contains
 
     test_result = .true.
 
-    call bml_convert_to_dense(a, a_dense)
+    call bml_export_to_dense(a, a_dense)
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     do i = 1, n
        do j = 1, n

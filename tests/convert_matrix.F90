@@ -42,8 +42,8 @@ contains
           a_dense(i, j) = a_random(i, j)
        end do
     end do
-    call bml_convert_from_dense(matrix_type, a_dense, a, 0.0d0, m)
-    call bml_convert_to_dense(a, b_dense)
+    call bml_import_from_dense(matrix_type, a_dense, a, 0.0d0, m)
+    call bml_export_to_dense(a, b_dense)
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     call bml_print_matrix("B", b_dense, 1, n, 1, n)
     if (maxval(abs(a_dense - b_dense)) > 1e-12) then
