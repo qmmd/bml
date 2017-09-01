@@ -24,14 +24,15 @@ void TYPED_FUNC(
     bml_allGatherVParallel_dense) (
     bml_matrix_dense_t * A)
 {
+#ifdef DO_MPI
     int myRank = bml_getMyRank();
 
     int N = A->N;
 
     REAL_T *A_matrix = A->matrix;
+
     bml_domain_t *A_domain = A->domain;
 
-#ifdef DO_MPI
     MPI_Allgatherv(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
                    A_matrix, A_domain->localElements,
                    A_domain->localDispl, REAL_MPI_TYPE, ccomm);

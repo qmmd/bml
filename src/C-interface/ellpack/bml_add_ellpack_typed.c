@@ -79,7 +79,6 @@ void TYPED_FUNC(
                 {
                     x[k] = 0.0;
                     ix[k] = i + 1;
-                    //A_index[ROWMAJOR(i, l, N, A_M)] = k;
                     jx[l] = k;
                     l++;
                 }
@@ -94,7 +93,6 @@ void TYPED_FUNC(
                 {
                     x[k] = 0.0;
                     ix[k] = i + 1;
-                    //A_index[ROWMAJOR(i, l, N, A_M)] = k;
                     jx[l] = k;
                     l++;
                 }
@@ -106,7 +104,6 @@ void TYPED_FUNC(
         for (int jp = 0; jp < l; jp++)
         {
             int jind = jx[jp];
-            //REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, N, A_M)]];
             REAL_T xTmp = x[jind];
             if (is_above_threshold(xTmp, threshold))
             {
@@ -207,7 +204,6 @@ double TYPED_FUNC(
                 x[k] = 0.0;
                 ix[k] = i + 1;
                 y[k] = 0.0;
-                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
                 jx[l] = k;
                 l++;
             }

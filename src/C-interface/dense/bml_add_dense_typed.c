@@ -42,16 +42,13 @@ void TYPED_FUNC(
     REAL_T beta_ = beta;
     int myRank = bml_getMyRank();
 
-    //int nElems = B->N * B->N;
     int nElems = B->domain->localRowExtent[myRank] * B->N;
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
     C_BLAS(SCAL) (&nElems, &alpha_, A->matrix + startIndex, &inc);
-    //C_BLAS(SCAL) (&nElems, &alpha_, A->matrix, &inc);
     C_BLAS(AXPY) (&nElems, &beta_, B->matrix + startIndex, &inc,
                   A->matrix + startIndex, &inc);
-    //C_BLAS(AXPY) (&nElems, &beta_, B->matrix, &inc, A->matrix, &inc);
 }
 
 /** Matrix addition and calculate TrNorm.

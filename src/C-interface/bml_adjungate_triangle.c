@@ -19,7 +19,6 @@ bml_adjungate_triangle(
     bml_matrix_t * A,
     char *triangle)
 {
-    int status;
     switch (bml_get_type(A))
     {
         case dense:

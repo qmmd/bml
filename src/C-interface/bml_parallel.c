@@ -20,9 +20,8 @@ static int nRanks = 1;
 #ifdef DO_MPI
 static MPI_Request *requestList;
 MPI_Comm ccomm;
-#endif
 static int *rUsed;
-static int reqCount = 0;
+#endif
 
 /** Initialize.
  *
@@ -36,7 +35,7 @@ static int reqCount = 0;
  */
 int
 bml_getNRanks(
-    )
+    void)
 {
     return nRanks;
 }
@@ -45,7 +44,7 @@ bml_getNRanks(
  */
 int
 bml_getMyRank(
-    )
+    void)
 {
     return myRank;
 }
@@ -58,7 +57,7 @@ bml_getMyRank(
  */
 int
 bml_printRank(
-    )
+    void)
 {
     if (myRank == 0)
         return 1;
@@ -108,7 +107,7 @@ bml_initParallelF(
 
 void
 bml_shutdownParallelF(
-    )
+    void)
 {
 #ifdef DO_MPI
     free(requestList);
@@ -118,7 +117,7 @@ bml_shutdownParallelF(
 
 void
 bml_shutdownParallel(
-    )
+    void)
 {
 #ifdef DO_MPI
     free(requestList);
@@ -130,7 +129,7 @@ bml_shutdownParallel(
 
 void
 bml_barrierParallel(
-    )
+    void)
 {
 #ifdef DO_MPI
     MPI_Barrier(ccomm);
@@ -141,45 +140,39 @@ void
 bml_sumRealReduce(
     double *value)
 {
+#ifdef DO_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
-
-#ifdef DO_MPI
     MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_SUM, ccomm);
-#endif
-
     *value = sGlobal[0];
+#endif
 }
 
 void
 bml_minRealReduce(
     double *value)
 {
+#ifdef DO_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
-
-#ifdef DO_MPI
     MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_MIN, ccomm);
-#endif
-
     *value = sGlobal[0];
+#endif
 }
 
 void
 bml_maxRealReduce(
     double *value)
 {
+#ifdef DO_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
-
-#ifdef DO_MPI
     MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_MAX, ccomm);
-#endif
-
     *value = sGlobal[0];
+#endif
 }
 
 /** Exchange pieces of matrix across MPI ranks.

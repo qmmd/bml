@@ -5,8 +5,6 @@
 
 #include "bml_types.h"
 
-#include <complex.h>
-
 void *bml_get(
     const bml_matrix_t * A,
     const int i,

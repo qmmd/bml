@@ -80,7 +80,6 @@ double TYPED_FUNC(
 
     REAL_T *A_matrix = A->matrix;
     int nnzs = 0;
-    int row_bandwidth = 0;
     int N = A->N;
     double sparsity;
 

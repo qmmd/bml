@@ -244,11 +244,6 @@ bml_update_domain_dense(
         for (int j = localPartMin[i]; j <= localPartMax[i]; j++)
         {
             rtotal += nnodesInPart[j - 1];
-/*
-         if (bml_printRank() == 1)
-           printf("rank %d localPart %d %d part %d nnodesPerPart %d rtotal %d\n",
-             i, localPartMin[i], localPartMax[i], j, nnodesInPart[j-1], rtotal);
-*/
         }
 
         if (i == 0)
@@ -278,19 +273,4 @@ bml_update_domain_dense(
         if (A_domain->localRowExtent[i] > A_domain->maxLocalExtent)
             A_domain->maxLocalExtent = A_domain->localRowExtent[i];
     }
-
-/*
-    if (bml_printRank() == 1)
-    {
-      printf("Updated Domain\n");
-      for (int i = 0; i < nprocs; i++)
-      {
-        printf("rank %d localRow %d %d %d localElem %d localDispl %d\n",
-          i, A_domain->localRowMin[i], A_domain->localRowMax[i],
-          A_domain->localRowExtent[i], A_domain->localElements[i],
-          A_domain->localDispl[i]);
-      }
-    }
-*/
-
 }
