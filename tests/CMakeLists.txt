@@ -5,6 +5,7 @@ set(SOURCES_TYPED
   adjacency_matrix_typed.c
   adjungate_triangle_matrix_typed.c
   allocate_matrix_typed.c
+  convert_matrix_typed.c
   copy_matrix_typed.c
   diagonalize_matrix_typed.c
   get_element_typed.c
@@ -44,6 +45,7 @@ add_executable(bml-test
   adjungate_triangle_matrix.c
   allocate_matrix.c
   bml_test.c
+  convert_matrix.c
   copy_matrix.c
   diagonalize_matrix.c
   get_element.c
@@ -85,6 +87,7 @@ foreach(N
     adjungate_triangle
     allocate
     bml_gemm
+    convert
     copy
     diagonalize
     get_element

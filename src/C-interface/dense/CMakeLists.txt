@@ -4,6 +4,7 @@ set(HEADERS-DENSE
   bml_add_dense.h
   bml_adjungate_triangle_dense.h
   bml_allocate_dense.h
+  bml_convert_dense.h
   bml_copy_dense.h
   bml_diagonalize_dense.h
   bml_export_dense.h
@@ -28,6 +29,7 @@ set(SOURCES-DENSE
   bml_add_dense.c
   bml_adjungate_triangle_dense.c
   bml_allocate_dense.c
+  bml_convert_dense.c
   bml_copy_dense.c
   bml_diagonalize_dense.c
   bml_export_dense.c
@@ -61,6 +63,7 @@ set(SOURCES-DENSE-TYPED
   bml_add_dense_typed.c
   bml_adjungate_triangle_dense_typed.c
   bml_allocate_dense_typed.c
+  bml_convert_dense_typed.c
   bml_copy_dense_typed.c
   bml_export_dense_typed.c
   bml_getters_dense_typed.c

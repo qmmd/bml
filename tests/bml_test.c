@@ -8,7 +8,7 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 21;
+const int NUM_TESTS = 22;
 
 typedef struct
 {
@@ -24,6 +24,7 @@ const char *test_name[] = {
     "allocate",
     "bml_gemm",
     "import_export",
+    "convert",
     "copy",
     "diagonalize",
     "get_element",
@@ -48,6 +49,7 @@ const char *test_description[] = {
     "Allocate bml matrices",
     "Internal GEMM implmentation",
     "Convert by import/export of bml matrices",
+    "Convert bml matrix",
     "Copy bml matrices",
     "Diagonalize a bml matrix",
     "Get an element from a bml matrix",
@@ -72,6 +74,7 @@ const test_function_t testers[] = {
     test_allocate,
     test_bml_gemm,
     test_import_export,
+    test_convert,
     test_copy,
     test_diagonalize,
     test_get_element,

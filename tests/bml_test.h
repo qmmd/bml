@@ -14,6 +14,7 @@ typedef int (
 #include "adjacency_matrix.h"
 #include "adjungate_triangle_matrix.h"
 #include "allocate_matrix.h"
+#include "convert_matrix.h"
 #include "copy_matrix.h"
 #include "diagonalize_matrix.h"
 #include "get_element.h"

@@ -10,6 +10,7 @@ set(HEADERS-C
   bml_add.h
   bml_adjungate_triangle.h
   bml_allocate.h
+  bml_convert.h
   bml_copy.h
   bml_diagonalize.h
   bml_export.h
@@ -44,6 +45,7 @@ set(SOURCES-C
   bml_add.c
   bml_adjungate_triangle.c
   bml_allocate.c
+  bml_convert.c
   bml_copy.c
   bml_diagonalize.c
   bml_export.c
