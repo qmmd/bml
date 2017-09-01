@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 int
-test_convert(
+test_import_export(
     const int N,
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
@@ -13,19 +13,19 @@ test_convert(
     switch (matrix_precision)
     {
         case single_real:
-            return test_convert_single_real(N, matrix_type, matrix_precision,
+            return test_import_export_single_real(N, matrix_type, matrix_precision,
                                             M);
             break;
         case double_real:
-            return test_convert_double_real(N, matrix_type, matrix_precision,
+            return test_import_export_double_real(N, matrix_type, matrix_precision,
                                             M);
             break;
         case single_complex:
-            return test_convert_single_complex(N, matrix_type,
+            return test_import_export_single_complex(N, matrix_type,
                                                matrix_precision, M);
             break;
         case double_complex:
-            return test_convert_double_complex(N, matrix_type,
+            return test_import_export_double_complex(N, matrix_type,
                                                matrix_precision, M);
             break;
         default:
