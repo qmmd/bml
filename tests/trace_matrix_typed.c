@@ -53,12 +53,23 @@ int TYPED_FUNC(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
                            N, 0, N);
 
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
     printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
            traceA - (double) N);
     printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
            traceB - scalar * N);
     printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
            scalar * scalar * N, traceC - scalar * scalar * N);
+#else
+    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+           traceA - (double) N);
+    printf("traceB = %e (%e + %e i), diff. traceB = %e\n", traceB,
+           REAL_PART(scalar * N), IMAGINARY_PART(scalar * N),
+           traceB - REAL_PART(scalar * N));
+    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+           REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N),
+           traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
+#endif
 
     if ((rel_diff = ABS(traceA - (double) N) / (double) N) > REL_TOL)
     {
@@ -124,12 +135,23 @@ int TYPED_FUNC(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
                            N, 0, N);
 
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
     printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
            traceA - (double) N);
     printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
            traceB - scalar * N);
     printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
            scalar * scalar * N, traceC - scalar * scalar * N);
+#else
+    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+           traceA - (double) N);
+    printf("traceB = %e (%e + %e i), diff. traceB = %e\n", traceB,
+           REAL_PART(scalar * N), IMAGINARY_PART(scalar * N),
+           traceB - REAL_PART(scalar * N));
+    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+           REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N),
+           traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
+#endif
 
     if ((rel_diff = ABS(traceA - (double) N) / (double) N) > REL_TOL)
     {

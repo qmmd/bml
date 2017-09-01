@@ -7,6 +7,8 @@
 #define MATRIX_PRECISION single_real
 #define BLAS_PREFIX S
 #define REAL_PART(x) (x)
+#define IMAGINARY_PART(x) (0)
+#define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabsf(x))
 #define is_above_threshold(x, t) (fabsf(x) > (float) (t))
 #elif defined(DOUBLE_REAL)
@@ -15,6 +17,8 @@
 #define MATRIX_PRECISION double_real
 #define BLAS_PREFIX D
 #define REAL_PART(x) (x)
+#define IMAGINARY_PART(x) (0)
+#define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabs(x))
 #define is_above_threshold(x, t) (fabs(x) > (t))
 #elif defined(SINGLE_COMPLEX)
@@ -22,7 +26,9 @@
 #define FUNC_SUFFIX single_complex
 #define MATRIX_PRECISION single_complex
 #define BLAS_PREFIX C
-#define REAL_PART(x) crealf(x)
+#define REAL_PART(x) (crealf(x))
+#define IMAGINARY_PART(x) (cimagf(x))
+#define COMPLEX_CONJUGATE(x) (conjf(x))
 #define ABS(x) (cabsf(x))
 #define is_above_threshold(x, t) (cabsf(x) > cabsf((float) (t)))
 #elif defined(DOUBLE_COMPLEX)
@@ -30,7 +36,9 @@
 #define FUNC_SUFFIX double_complex
 #define MATRIX_PRECISION double_complex
 #define BLAS_PREFIX Z
-#define REAL_PART(x) creal(x)
+#define REAL_PART(x) (creal(x))
+#define IMAGINARY_PART(x) (cimag(x))
+#define COMPLEX_CONJUGATE(x) (conj(x))
 #define ABS(x) (cabs(x))
 #define is_above_threshold(x, t) (cabs(x) > cabs(t))
 #else
