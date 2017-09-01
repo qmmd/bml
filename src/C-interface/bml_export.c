@@ -14,7 +14,7 @@
  * following should be used:
  *
  * \code{.c}
- * float *A_dense = bml_convert_to_dense(A_bml);
+ * float *A_dense = bml_export_to_dense(A_bml);
  * \endcode
  *
  * The matrix size can be queried with
