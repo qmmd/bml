@@ -42,5 +42,7 @@ int TYPED_FUNC(
     bml_free_memory(A_dense);
     bml_free_memory(B_dense);
     bml_deallocate(&A);
+    bml_deallocate(&B);
+
     return 0;
 }
