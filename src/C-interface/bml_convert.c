@@ -2,6 +2,7 @@
 #include "bml_logger.h"
 #include "dense/bml_convert_dense.h"
 #include "ellpack/bml_convert_ellpack.h"
+#include "ellsort/bml_convert_ellsort.h"
 
 #include <stdlib.h>
 
@@ -27,6 +28,9 @@ bml_convert(
             break;
         case ellpack:
             return bml_convert_ellpack(A, matrix_precision, M, distrib_mode);
+            break;
+        case ellsort:
+            return bml_convert_ellsort(A, matrix_precision, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

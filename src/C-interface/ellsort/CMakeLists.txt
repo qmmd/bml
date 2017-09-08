@@ -4,6 +4,7 @@ set(HEADERS-ELLSORT
   bml_add_ellsort.h
   bml_adjungate_triangle_ellsort.h
   bml_allocate_ellsort.h
+  bml_convert_ellsort.h
   bml_copy_ellsort.h
   bml_export_ellsort.h
   bml_getters_ellsort.h
@@ -26,6 +27,7 @@ set(SOURCES-ELLSORT
   bml_add_ellsort.c
   bml_adjungate_triangle_ellsort.c
   bml_allocate_ellsort.c
+  bml_convert_ellsort.c
   bml_copy_ellsort.c
   bml_export_ellsort.c
   bml_getters_ellsort.c
@@ -57,6 +59,7 @@ set(SOURCES-ELLSORT-TYPED
   bml_add_ellsort_typed.c
   bml_adjungate_triangle_ellsort_typed.c
   bml_allocate_ellsort_typed.c
+  bml_convert_ellsort_typed.c
   bml_copy_ellsort_typed.c
   bml_export_ellsort_typed.c
   bml_getters_ellsort_typed.c
