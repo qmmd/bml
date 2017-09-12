@@ -82,7 +82,6 @@ double TYPED_FUNC(
     shared(B_matrix, A_localRowMin, A_localRowMax) \
     shared(N, myRank) \
     reduction(+:trnorm)
-    //for (int i = 0; i < N * N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
     {

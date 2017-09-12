@@ -10,7 +10,6 @@ typedef int (
     const bml_matrix_precision_t matrix_precision,
     const int M);
 
-#include "add_matrix.h"
 #include "adjacency_matrix.h"
 #include "adjungate_triangle_matrix.h"
 #include "allocate_matrix.h"
@@ -28,6 +27,7 @@ typedef int (
 #include "scale_matrix.h"
 #include "set_row.h"
 #include "submatrix_matrix.h"
+#include "test_bml_add.h"
 #include "test_bml_gemm.h"
 #include "threshold_matrix.h"
 #include "trace_matrix.h"

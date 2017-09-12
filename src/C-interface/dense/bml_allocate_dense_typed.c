@@ -112,12 +112,9 @@ bml_matrix_dense_t *TYPED_FUNC(
         TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
 #pragma omp parallel for default(none) shared(A_dense)
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < N * N; i++)
     {
-        for (int j = 0; j < N; j++)
-        {
-            A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
-        }
+        A_dense[i] = rand() / (double) RAND_MAX;
     }
     return A;
 }

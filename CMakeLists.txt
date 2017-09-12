@@ -160,7 +160,7 @@ if(BML_INTERNAL_GEMM)
 endif()
 
 set(BLAS_VENDOR ""
-  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,MKL,ACML,GNU}")
+  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {,Intel,MKL,ACML,GNU}")
 
 if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")

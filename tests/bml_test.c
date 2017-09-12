@@ -68,7 +68,7 @@ const char *test_description[] = {
 };
 
 const test_function_t testers[] = {
-    test_add,
+    test_bml_add,
     test_adjacency,
     test_adjungate_triangle,
     test_allocate,

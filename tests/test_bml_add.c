@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 int
-test_add(
+test_bml_add(
     const int N,
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
@@ -13,18 +13,20 @@ test_add(
     switch (matrix_precision)
     {
         case single_real:
-            return test_add_single_real(N, matrix_type, matrix_precision, M);
+            return test_bml_add_single_real(N, matrix_type, matrix_precision,
+                                            M);
             break;
         case double_real:
-            return test_add_double_real(N, matrix_type, matrix_precision, M);
+            return test_bml_add_double_real(N, matrix_type, matrix_precision,
+                                            M);
             break;
         case single_complex:
-            return test_add_single_complex(N, matrix_type, matrix_precision,
-                                           M);
+            return test_bml_add_single_complex(N, matrix_type,
+                                               matrix_precision, M);
             break;
         case double_complex:
-            return test_add_double_complex(N, matrix_type, matrix_precision,
-                                           M);
+            return test_bml_add_double_complex(N, matrix_type,
+                                               matrix_precision, M);
             break;
         default:
             fprintf(stderr, "unknown matrix precision\n");

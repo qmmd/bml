@@ -1,7 +1,7 @@
 include_directories(${CMAKE_SOURCE_DIR}/src/C-interface)
 
 set(SOURCES_TYPED
-  add_matrix_typed.c
+  test_bml_add_typed.c
   adjacency_matrix_typed.c
   adjungate_triangle_matrix_typed.c
   allocate_matrix_typed.c
@@ -40,7 +40,7 @@ set_target_properties(bmltests
   POSITION_INDEPENDENT_CODE yes)
 
 add_executable(bml-test
-  add_matrix.c
+  test_bml_add.c
   adjacency_matrix.c
   adjungate_triangle_matrix.c
   allocate_matrix.c
