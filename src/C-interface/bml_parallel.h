@@ -14,6 +14,7 @@
 #endif
 
 #ifdef DO_MPI
+#include "mpi.h"
 extern MPI_Comm ccomm;
 #endif
 
