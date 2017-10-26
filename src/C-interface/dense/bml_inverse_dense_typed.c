@@ -13,6 +13,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -58,8 +59,13 @@ void TYPED_FUNC(
     int *ipiv = bml_allocate_memory(N * sizeof(int));
     REAL_T *work = bml_allocate_memory(lwork * sizeof(REAL_T));
 
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_BLAS(GETRF) (&M, &N, A->matrix, &lda, ipiv, &info);
     C_BLAS(GETRI) (&N, A->matrix, &N, ipiv, work, &lwork, &info);
+#endif
 
     bml_free_memory(ipiv);
     bml_free_memory(work);

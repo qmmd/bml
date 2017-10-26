@@ -12,6 +12,7 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -36,7 +37,12 @@ bml_matrix_dense_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_matrix[startIndex]), &inc);
+#endif
 
     return B;
 }
@@ -63,7 +69,13 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_matrix[startIndex]), &inc);
+#endif
+
 }
 
 void TYPED_FUNC(
@@ -77,6 +89,12 @@ void TYPED_FUNC(
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_matrix[startIndex]),
                   &inc);
+#endif
+
 }

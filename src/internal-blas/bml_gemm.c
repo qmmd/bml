@@ -273,7 +273,13 @@ void TYPED_FUNC(
     TYPED_FUNC(bml_gemm_internal)(transa, transb, m, n, k, alpha, a,
                   lda, b, ldb, beta, c, ldc);
 #else
+
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_BLAS(GEMM) (transa, transb, m, n, k, alpha, a,
                   lda, b, ldb, beta, c, ldc);
+#endif
 #endif
 }

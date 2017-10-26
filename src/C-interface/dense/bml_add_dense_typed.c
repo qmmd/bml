@@ -15,6 +15,7 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -46,9 +47,15 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_BLAS(SCAL) (&nElems, &alpha_, A->matrix + startIndex, &inc);
     C_BLAS(AXPY) (&nElems, &beta_, B->matrix + startIndex, &inc,
                   A->matrix + startIndex, &inc);
+#endif
+
 }
 
 /** Matrix addition and calculate TrNorm.

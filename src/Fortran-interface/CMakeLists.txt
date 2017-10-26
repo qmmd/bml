@@ -65,7 +65,7 @@ set_target_properties(bml-fortran
 if(OPENMP_FOUND)
   set_target_properties(bml-fortran
     PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    COMPILE_FLAGS ${OpenMP_Fortran_FLAGS})
 endif()
 
 foreach(S ${FORTRAN-SOURCES-PUBLIC})

@@ -36,8 +36,12 @@ bml_diagonalize_dense_single_real(
 //    void mkl_thread_free_buffers(void);
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
-
+#endif
     // mkl_free_buffers();
 
     A_matrix = (float *) eigenvectors->matrix;
@@ -73,8 +77,12 @@ bml_diagonalize_dense_double_real(
     double *typed_eigenvalues = (double *) eigenvalues;
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_DSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
-
+#endif
     A_matrix = (double *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
@@ -116,10 +124,14 @@ bml_diagonalize_dense_single_complex(
     float complex *typed_eigenvalues = (float complex *) eigenvalues;
 
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(float complex));
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_CHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
              &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork, rwork,
              &lrwork, iwork, &liwork, &info);
-
+#endif
     A_matrix = (float complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
@@ -163,10 +175,14 @@ bml_diagonalize_dense_double_complex(
     double complex *typed_eigenvalues = (double complex *) eigenvalues;
 
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(double complex));
+#ifdef NOBLAS
+     printf("No BLAS library");
+     exit(0);
+#else
     C_ZHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
              &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork, rwork,
              &lrwork, iwork, &liwork, &info);
-
+#endif
     A_matrix = (double complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
