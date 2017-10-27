@@ -1,4 +1,5 @@
 language: python
+rvm: 2.0
 
 addons:
     coverity_scan:
@@ -60,16 +61,17 @@ before_install:
     - if [ "${TRAVIS_BRANCH}" = "coverty_scan" ]; then echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-; fi
     - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then pip install cpp-coveralls; fi
     - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then pip install codecov; fi
+    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then pip install proselint; fi
 
 before_script:
     - bundle install
-    - bundle exec danger
 
 script:
     - export OMP_NUM_THREADS=4
     - export CMAKE_BUILD_TYPE=Debug
     - export VERBOSE_MAKEFILE=yes
     - export PARALLEL_TEST_JOBS=2
+    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then bundle exec danger; fi
     - if [ "${COVERITY_SCAN_BRANCH}" != "${COVERTY_JOB_NUMBER}" ]; then ./build.sh ${COMMAND}; fi
 
 after_success:
