@@ -173,6 +173,11 @@ module bml_c_interface_m
       type(C_PTR) :: a
     end subroutine bml_clear_C
 
+    subroutine bml_free_C(cptr) bind(C, name="bml_free_ptr")
+      import :: C_PTR
+      type(C_PTR) :: cptr
+    end subroutine bml_free_C
+
     function bml_get_C(a, i, j) bind(C, name="bml_get")
       import :: C_PTR, C_INT, C_FLOAT
       type(C_PTR), value, intent(in) :: a

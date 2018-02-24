@@ -16,6 +16,9 @@ void *bml_noinit_allocate_memory(
 void bml_free_memory(
     void *ptr);
 
+void bml_free_ptr(
+    double **ptr);
+
 void bml_deallocate(
     bml_matrix_t ** A);
 

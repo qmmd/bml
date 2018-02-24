@@ -108,6 +108,19 @@ bml_free_memory(
     free(ptr);
 }
 
+/** Deallocate a chunk of memory.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param ptr A pointer to the previously allocated chunk.
+ */
+void
+bml_free_ptr(
+    double **ptr)
+{
+    free(*ptr);
+}
+
 /** Deallocate a domain.
  *
  * \ingroup allocate_group_C
@@ -576,4 +589,12 @@ bml_update_domain(
             LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
             break;
     }
+}
+
+void
+c_deallocateptr(
+    int *dim,
+    double **W_ptr)
+{
+    free(*W_ptr);
 }
