@@ -58,12 +58,10 @@ contains
     real(C_DOUBLE), pointer :: a_gbnd_ptr(:)
 
     ag_ptr = bml_gershgorin_C(a%ptr)
-    ! allocate(a_gbnd_ptr(2))
     call c_f_pointer(ag_ptr, a_gbnd_ptr, [2])
     a_gbnd = a_gbnd_ptr
     a_gbnd_ptr => NULL()
     call bml_free(ag_ptr)
-    ! if(allocated(a_gbnd_ptr))deallocate(a_gbnd_ptr)
 
   end subroutine bml_gershgorin
 
@@ -78,6 +76,7 @@ contains
 
     use bml_c_interface_m
     use bml_types_m
+    use bml_allocate_m
 
     type(bml_matrix_t), intent(in) :: a
     integer, intent(in) :: nrows
@@ -90,8 +89,8 @@ contains
     ag_ptr = bml_gershgorin_partial_C(a%ptr, nrows)
     call c_f_pointer(ag_ptr, a_gbnd_ptr, [2])
     a_gbnd = a_gbnd_ptr
-
-    deallocate(a_gbnd_ptr)
+    a_gbnd_ptr => NULL()
+    call bml_free(ag_ptr)
 
   end subroutine bml_gershgorin_partial
 

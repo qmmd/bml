@@ -70,6 +70,7 @@ contains
   subroutine bml_multiply_x2(a, b, threshold, trace)
 
     use bml_types_m
+    use bml_allocate_m
 
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: b
@@ -90,8 +91,8 @@ contains
     trace_ptr =  bml_multiply_x2_c(a%ptr, b%ptr, threshold_)
     call c_f_pointer(trace_ptr, a_trace_ptr, [2])
     trace = a_trace_ptr
-
-    deallocate(a_trace_ptr)
+    a_trace_ptr => NULL()
+    call bml_free(trace_ptr)
 
   end subroutine bml_multiply_x2
 

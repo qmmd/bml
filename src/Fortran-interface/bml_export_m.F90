@@ -27,6 +27,8 @@ contains
   !! \param a_dense The dense matrix
   subroutine bml_export_to_dense_single(a, a_dense)
 
+    use bml_allocate_m
+
     type(bml_matrix_t), intent(in) :: a
     real(C_FLOAT), allocatable, intent(inout) :: a_dense(:, :)
 
@@ -36,7 +38,8 @@ contains
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
-    deallocate(a_dense_ptr)
+    a_dense_ptr => NULL()
+    call bml_free(a_ptr)
 
   end subroutine bml_export_to_dense_single
 
@@ -48,6 +51,8 @@ contains
   !! \param a_dense The dense matrix
   subroutine bml_export_to_dense_double(a, a_dense)
 
+    use bml_allocate_m
+
     type(bml_matrix_t), intent(in) :: a
     real(C_DOUBLE), allocatable, intent(inout) :: a_dense(:, :)
 
@@ -57,7 +62,8 @@ contains
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
-    deallocate(a_dense_ptr)
+    a_dense_ptr => NULL()
+    call bml_free(a_ptr)
 
   end subroutine bml_export_to_dense_double
 
@@ -69,6 +75,8 @@ contains
   !! \param a_dense The dense matrix
   subroutine bml_export_to_dense_single_complex(a, a_dense)
 
+    use bml_allocate_m
+
     type(bml_matrix_t), intent(in) :: a
     complex(C_FLOAT_COMPLEX), allocatable, intent(out) :: a_dense(:, :)
 
@@ -78,7 +86,8 @@ contains
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
-    deallocate(a_dense_ptr)
+    a_dense_ptr => NULL()
+    call bml_free(a_ptr)
 
   end subroutine bml_export_to_dense_single_complex
 
@@ -90,6 +99,8 @@ contains
   !! \param a_dense The dense matrix
   subroutine bml_export_to_dense_double_complex(a, a_dense)
 
+    use bml_allocate_m
+
     type(bml_matrix_t), intent(in) :: a
     complex(C_DOUBLE_COMPLEX), allocatable, intent(out) :: a_dense(:, :)
 
@@ -99,7 +110,8 @@ contains
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
-    deallocate(a_dense_ptr)
+    a_dense_ptr => NULL()
+    call bml_free(a_ptr)
 
   end subroutine bml_export_to_dense_double_complex
 
