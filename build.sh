@@ -49,7 +49,7 @@ EOF
     echo "BML_MPI              {yes,no}                    (default is ${BML_MPI})"
     echo "BML_TESTING          {yes,no}                    (default is ${BML_TESTING})"
     echo "BUILD_DIR            Path to build dir           (default is ${BUILD_DIR})"
-    echo "BLAS_VENDOR          {,Intel,MKL,ACML,GNU}       (default is '${BLAS_VENDOR}')"
+    echo "BLAS_VENDOR          {,Intel,MKL,ACML,GNU,Auto}  (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS    {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
     echo "PARALLEL_TEST_JOBS   The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
     echo "INSTALL_DIR          Path to install dir         (default is ${INSTALL_DIR})"
