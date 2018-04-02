@@ -1,6 +1,6 @@
 #include "../blas.h"
 #include "../lapack.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "../bml_logger.h"
 #include "bml_copy.h"
 #include "bml_inverse.h"

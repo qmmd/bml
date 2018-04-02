@@ -3,7 +3,7 @@
 #include "../bml_logger.h"
 #include "bml_types_ellpack.h"
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 
 #include <complex.h>
 #include <stdlib.h>

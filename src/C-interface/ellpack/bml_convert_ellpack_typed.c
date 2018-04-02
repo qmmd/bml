@@ -1,5 +1,5 @@
-#include "../macros.h"
-#include "../typed.h"
+#include "../../macros.h"
+#include "../../typed.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_getters.h"
 #include "bml_setters.h"

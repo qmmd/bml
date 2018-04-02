@@ -1,6 +1,6 @@
-#include "../macros.h"
+#include "../../macros.h"
+#include "../../typed.h"
 #include "../blas.h"
-#include "../typed.h"
 #include "bml_add_dense.h"
 #include "bml_add.h"
 #include "bml_allocate_dense.h"

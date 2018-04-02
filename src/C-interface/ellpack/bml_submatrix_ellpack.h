@@ -2,7 +2,7 @@
 #define __BML_SUBMATRIX_ELLPACK_H
 
 #include "bml_types_ellpack.h"
-#include "dense/bml_types_dense.h"
+#include "../dense/bml_types_dense.h"
 
 #include <complex.h>
 

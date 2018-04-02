@@ -1,6 +1,6 @@
 #include "../../internal-blas/bml_gemm.h"
 #include "../bml_logger.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "bml_multiply.h"
 #include "bml_trace.h"
 #include "bml_parallel.h"

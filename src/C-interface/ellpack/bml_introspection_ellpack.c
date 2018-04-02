@@ -1,7 +1,7 @@
 #include "bml_introspection_ellpack.h"
 #include "bml_types_ellpack.h"
 #include "bml_logger.h"
-#include "../macros.h"
+#include "../../macros.h"
 #include "../bml_types.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"

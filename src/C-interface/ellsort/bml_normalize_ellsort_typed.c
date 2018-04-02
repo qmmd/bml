@@ -1,5 +1,5 @@
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "bml_allocate.h"
 #include "bml_normalize.h"
 #include "bml_parallel.h"

@@ -1,5 +1,5 @@
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "../bml_introspection.h"
 #include "bml_setters_ellsort.h"
 #include "bml_types_ellsort.h"

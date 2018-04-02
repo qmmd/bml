@@ -1,9 +1,9 @@
 #include "../bml_logger.h"
 #include "../bml_types.h"
+#include "../bml_utilities.h"
+#include "../dense/bml_types_dense.h"
 #include "bml_diagonalize_ellpack.h"
 #include "bml_types_ellpack.h"
-#include "dense/bml_types_dense.h"
-#include "../bml_utilities.h"
 
 #include <string.h>
 

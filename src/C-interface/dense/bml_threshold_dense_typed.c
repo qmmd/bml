@@ -1,4 +1,4 @@
-#include "../typed.h"
+#include "../../typed.h"
 #include "bml_allocate.h"
 #include "bml_threshold.h"
 #include "bml_parallel.h"

@@ -1,5 +1,5 @@
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "bml_introspection_dense.h"
 
 #include <assert.h>

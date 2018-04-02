@@ -13,7 +13,7 @@
 #include "../dense/bml_types_dense.h"
 #include "../ellpack/bml_import_ellpack.h"
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 
 #include <complex.h>
 #include <math.h>

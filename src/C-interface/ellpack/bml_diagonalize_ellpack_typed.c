@@ -13,7 +13,7 @@
 #include "../dense/bml_diagonalize_dense.h"
 #include "../dense/bml_types_dense.h"
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 
 #include <complex.h>
 #include <math.h>

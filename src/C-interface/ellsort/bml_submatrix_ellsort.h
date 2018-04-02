@@ -2,7 +2,7 @@
 #define __BML_SUBMATRIX_ELLSORT_H
 
 #include "bml_types_ellsort.h"
-#include "dense/bml_types_dense.h"
+#include "../dense/bml_types_dense.h"
 
 #include <complex.h>
 

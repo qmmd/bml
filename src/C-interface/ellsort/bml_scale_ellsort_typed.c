@@ -1,4 +1,4 @@
-#include "../typed.h"
+#include "../../typed.h"
 #include "../blas.h"
 #include "bml_allocate.h"
 #include "bml_allocate_ellsort.h"

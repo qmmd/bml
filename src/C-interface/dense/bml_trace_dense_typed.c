@@ -1,6 +1,6 @@
 #include "../../macros.h"
 #include "../blas.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "bml_trace.h"
 #include "bml_trace_dense.h"
 #include "bml_types.h"

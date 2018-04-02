@@ -1,10 +1,10 @@
 #include "../../macros.h"
+#include "../dense/bml_types_dense.h"
 #include "bml_logger.h"
 #include "bml_submatrix.h"
 #include "bml_submatrix_ellpack.h"
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
-#include "dense/bml_types_dense.h"
 
 #include <stdio.h>
 #include <stdlib.h>

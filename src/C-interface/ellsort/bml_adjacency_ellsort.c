@@ -1,9 +1,9 @@
-
 #include "../bml_logger.h"
 #include "../bml_types.h"
 #include "bml_types_ellsort.h"
+
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
 void
 bml_adjacency_ellsort(
@@ -11,17 +11,5 @@ bml_adjacency_ellsort(
     int *xadj,
     int *adjncy)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
+    LOG_ERROR("[FIXME]\n");
 }

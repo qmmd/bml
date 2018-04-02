@@ -1,9 +1,9 @@
+#include "../ellsort/bml_adjungate_triangle_ellsort.h"
 #include "bml_adjungate_triangle.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
-#include "bml_types_ellsort.h"
 #include "bml_types.h"
-#include "ellsort/bml_adjungate_triangle_ellsort.h"
+#include "bml_types_ellsort.h"
 
 #include <stdlib.h>
 #include <string.h>

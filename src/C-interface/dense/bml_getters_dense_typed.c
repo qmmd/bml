@@ -2,7 +2,7 @@
 #include "bml_getters_dense.h"
 #include "../bml_introspection.h"
 #include "bml_types_dense.h"
-#include "../typed.h"
+#include "../../typed.h"
 
 #include <complex.h>
 #include <stdlib.h>
