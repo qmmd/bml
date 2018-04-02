@@ -16,6 +16,12 @@ void TYPED_FUNC(
     const void *value)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     A_matrix[ROWMAJOR(i, j, N, N)] = *((REAL_T *) value);
 }
@@ -27,6 +33,12 @@ void TYPED_FUNC(
     const REAL_T * row)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {
@@ -40,6 +52,12 @@ void TYPED_FUNC(
     const REAL_T * diagonal)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {

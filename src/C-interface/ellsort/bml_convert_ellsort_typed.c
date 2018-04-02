@@ -16,6 +16,12 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     const bml_distribution_mode_t distrib_mode)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     bml_matrix_ellsort_t *B =
         bml_zero_matrix_ellsort(matrix_precision, N, M, distrib_mode);
 

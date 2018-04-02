@@ -14,6 +14,12 @@ REAL_T *TYPED_FUNC(
     const int j)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not initialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
 
     return &A_matrix[ROWMAJOR(i, j, N, N)];
@@ -25,6 +31,12 @@ void *TYPED_FUNC(
     const int i)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not initialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     REAL_T *row = calloc(N, sizeof(REAL_T));
 
@@ -41,6 +53,12 @@ void *TYPED_FUNC(
     bml_matrix_dense_t * A)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not initialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     REAL_T *diagonal = calloc(N, sizeof(REAL_T));
 

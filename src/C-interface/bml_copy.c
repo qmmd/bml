@@ -59,6 +59,10 @@ bml_copy(
     {
         LOG_ERROR("type mismatch\n");
     }
+    if (bml_get_N(A) < 0)
+    {
+        LOG_ERROR("matrix is not initialized\n");
+    }
     if (bml_get_N(A) != bml_get_N(B))
     {
         LOG_ERROR("matrix size mismatch\n");

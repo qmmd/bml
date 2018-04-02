@@ -163,6 +163,10 @@ bml_print_dense_matrix(
     const int j_l,
     const int j_u)
 {
+    if (N < 0)
+    {
+        LOG_ERROR("illegal value for N\n");
+    }
     switch (matrix_precision)
     {
         case single_real:
