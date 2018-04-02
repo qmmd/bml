@@ -1,5 +1,3 @@
-include_directories(..)
-
 set(HEADERS-ELLPACK
   bml_add_ellpack.h
   bml_adjungate_triangle_ellpack.h

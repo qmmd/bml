@@ -1,5 +1,3 @@
-include_directories(..)
-
 set(HEADERS-DENSE
   bml_add_dense.h
   bml_adjungate_triangle_dense.h

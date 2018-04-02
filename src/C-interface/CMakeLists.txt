@@ -1,5 +1,3 @@
-include_directories(.)
-
 if(MPI_C_INCLUDE_PATH)
   include_directories(${MPI_C_INCLUDE_PATH})
 endif()
