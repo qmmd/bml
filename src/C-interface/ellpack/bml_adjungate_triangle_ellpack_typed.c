@@ -1,9 +1,10 @@
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "../bml_introspection.h"
+#include "../bml_logger.h"
 #include "bml_adjungate_triangle_ellpack.h"
-#include "bml_types_ellpack.h"
 #include "bml_types.h"
+#include "bml_types_ellpack.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,8 +44,8 @@ void TYPED_FUNC(
     switch (*triangle)
     {
         case 'u':
-            for (int i = 0; i < A_M; i++)
 #ifdef _OPENMP
+            for (int i = 0; i < A_M; i++)
                 omp_init_lock(&(lock[i]));
 #endif
 
@@ -77,16 +78,16 @@ void TYPED_FUNC(
                     }
                 }
             }
-            for (int i = 0; i < A_M; i++)
 #ifdef _OPENMP
+            for (int i = 0; i < A_M; i++)
                 omp_destroy_lock(&(lock[i]));
 #endif
 
             break;
 
         case 'l':
-            for (int i = 0; i < A_M; i++)
 #ifdef _OPENMP
+            for (int i = 0; i < A_M; i++)
                 omp_init_lock(&(lock[i]));
 #endif
 
@@ -118,11 +119,14 @@ void TYPED_FUNC(
                     }
                 }
             }
-            for (int i = 0; i < A_M; i++)
 #ifdef _OPENMP
+            for (int i = 0; i < A_M; i++)
                 omp_destroy_lock(&(lock[i]));
 #endif
 
+            break;
+        default:
+            LOG_ERROR("unknown triangle %c\n", triangle);
             break;
     }
 }
