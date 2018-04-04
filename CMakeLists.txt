@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 2.8.7)
 
+set(CUDA_TOOLKIT_ROOT_DIR ${CUDA_TOOLKIT_ROOT_DIR})
+set(GPU_ARCH ${GPU_ARCH})
+
 set(LANGUAGES C CXX)
 set(BML_BUILD_FORTRAN_INTERFACE TRUE CACHE BOOL
   "Build the Fortran API (requires a Fortran compiler)")
@@ -13,8 +16,8 @@ project(bml ${LANGUAGES})
 # The library version is versioned off the major version. If the API
 # changes, the library version should be bumped.
 set(PROJECT_VERSION_MAJOR "1")
-set(PROJECT_VERSION_MINOR "3")
-set(PROJECT_VERSION_PATCH "0")
+set(PROJECT_VERSION_MINOR "2")
+set(PROJECT_VERSION_PATCH "3")
 
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(PROJECT_DESCRIPTION
@@ -151,10 +154,55 @@ if(BML_MPI)
   add_definitions(-DDO_MPI)
 endif()
 
-set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
-if(BML_CUDA)
+set(BML_GPU FALSE CACHE BOOL "Compile with OpenMP GPU Offload support")
+if(BML_GPU)
+  message(STATUS "Will build with OpenMP GPU Offload support")
+  add_definitions(-DDO_GPU)
+
+  find_package(OpenMP 4.5 REQUIRED)
+  set(OpenMP_CXX_VERSION ${OpenMP_CXX_VERSION} CACHE STRING "OpenMP CXX Version")
+
+  #message("My OMP version is ${OpenMP_CXX_VERSION} xxx ${OpenMP_CXX_FLAGS}")
+  if(OpenMP_CXX_VERSION VERSION_GREATER 4)
+    message("OpenMP version greater than 4")
+  endif()
+
+  include(CheckCXXCompilerFlag)
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(OpenMP_CXX_OFFLOAD_FLAG "-foffload='-lm'")
+  elseif(MAKE_CXX_COMPILER_ID STREQUAL "Intel")
+    set(OpenMP_CXX_OFFLOAD_FLAG "-foffload='-lm'")
+  elseif(MAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(OpenMP_CXX_OFFLOAD_FLAG "-fopenmp-targets=nvptx64-nvidia-cuda --cuda-path=${CUDA_TOOLKIT_ROOT_DIR}")
+  endif()
+  check_cxx_compiler_flag("${OpenMP_CXX_OFFLOAD_FLAG}" OFFLOAD_CXX_FOUND)
+  if(OFFLOAD_CXX_FOUND)
+    message("Found offload")
+  endif()
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS} ${OpenMP_CXX_OFFLOAD_FLAG}")
+  #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS} ${OpenMP_CXX_OFFLOAD_FLAG}")
+  #set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${OpenMP_Fortran_FLAGS} ${OpenMP_CXX_OFFLOAD_FLAG}")
+  set(OpenMP_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${OpenMP_CXX_OFFLOAD_FLAG}")
+  set(OpenMP_C_FLAGS "${OpenMP_C_FLAGS} ${OpenMP_CXX_OFFLOAD_FLAG}")
+  set(OpenMP_Fortran_FLAGS "${OpenMP_Fortran_FLAGS} ${OpenMP_CXX_OFFLOAD_FLAG}")
+
+  list(APPEND LANGUAGES CUDA)
+  set(CUDA_TOOLKIT_ROOT_DIR ${CUDA_TOOLKIT_ROOT_DIR})
   include(FindCUDA)
+  set(GPU_ARCH "sm_60" CACHE STRING "LAMMPS GPU CUDA SM architecture")
+  set_property(CACHE GPU_ARCH PROPERTY STRINGS sm_30 sm_50 sm_60 sm_70)
+
+  message("CUDA libraries: ${CUDA_CUBLAS_LIBRARIES} xxx ${CUDA_LIBRARIES}")
+  #cuda_include_directories(${LAMMPS_LIB_SOURCE_DIR}/gpu ${LAMMPS_LIB_BINARY_DIR}/gpu)
+  #cuda_compile(GPU_OBJS ${GPU_LIB_CU} OPTIONS -O3 -Xptxas -v --use_fast_math -arch=${GPU_ARCH})
+  #target_link_libraries(bml ${CUDA_LIBRARIES} ${CUDA_CUDA_LIBRARY})
+
 endif()
+
+#set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
+#if(BML_CUDA)
+#  include(FindCUDA)
+#endif()
 
 set(BML_OPENCL FALSE CACHE BOOL "Whether to compiler with OpenCL support")
 if(BML_OPENCL)
@@ -230,10 +278,6 @@ elseif(BLAS_VENDOR STREQUAL "GNU")
 elseif(BLAS_VENDOR STREQUAL "None")
   set(NOBLAS TRUE)
   add_definitions(-DNOBLAS)
-elseif(BLAS_VENDOR STREQUAL "Auto")
-  set(BLAS_FOUND TRUE)
-  set(LAPACK_FOUND TRUE)
-  message(STATUS "I will skip BLAS/LAPACK detection")
 elseif(BLAS_VENDOR STREQUAL "")
   message(STATUS "I will rely on the default paths to find BLAS/LAPACK")
 else()
