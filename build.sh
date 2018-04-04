@@ -40,25 +40,28 @@ step and the build:
 
 EOF
     set_defaults
-    echo "CMAKE_BUILD_TYPE     {Release,Debug}             (default is ${CMAKE_BUILD_TYPE})"
-    echo "BUILD_SHARED_LIBS    Build a shared library      (default is ${BUILD_SHARED_LIBS})"
-    echo "CC                   Path to C compiler          (default is ${CC})"
-    echo "CXX                  Path to C++ compiler        (default is ${CXX})"
-    echo "FC                   Path to Fortran compiler    (default is ${FC})"
-    echo "BML_OPENMP           {yes,no}                    (default is ${BML_OPENMP})"
-    echo "BML_MPI              {yes,no}                    (default is ${BML_MPI})"
-    echo "BML_TESTING          {yes,no}                    (default is ${BML_TESTING})"
-    echo "BUILD_DIR            Path to build dir           (default is ${BUILD_DIR})"
-    echo "BLAS_VENDOR          {,Intel,MKL,ACML,GNU,Auto}  (default is '${BLAS_VENDOR}')"
-    echo "BML_INTERNAL_BLAS    {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
-    echo "PARALLEL_TEST_JOBS   The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
-    echo "INSTALL_DIR          Path to install dir         (default is ${INSTALL_DIR})"
-    echo "CMAKE_C_FLAGS        Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
-    echo "CMAKE_CXX_FLAGS      Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
-    echo "CMAKE_Fortran_FLAGS  Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
-    echo "EXTRA_CFLAGS         Extra C flags               (default is '${EXTRA_CFLAGS}')"
-    echo "EXTRA_FFLAGS         Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
-    echo "EXTRA_LINK_FLAGS     Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
+    echo "CMAKE_BUILD_TYPE       {Release,Debug}             (default is ${CMAKE_BUILD_TYPE})"
+    echo "BUILD_SHARED_LIBS      Build a shared library      (default is ${BUILD_SHARED_LIBS})"
+    echo "CC                     Path to C compiler          (default is ${CC})"
+    echo "CXX                    Path to C++ compiler        (default is ${CXX})"
+    echo "FC                     Path to Fortran compiler    (default is ${FC})"
+    echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
+    echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
+    echo "BML_TESTING            {yes,no}                    (default is ${BML_TESTING})"
+    echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
+    echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,Auto}  (default is '${BLAS_VENDOR}')"
+    echo "BML_INTERNAL_BLAS      {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
+    echo "PARALLEL_TEST_JOBS     The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
+    echo "INSTALL_DIR            Path to install dir         (default is ${INSTALL_DIR})"
+    echo "CMAKE_C_FLAGS          Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
+    echo "CMAKE_CXX_FLAGS        Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
+    echo "CMAKE_Fortran_FLAGS    Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
+    echo "EXTRA_CFLAGS           Extra C flags               (default is '${EXTRA_CFLAGS}')"
+    echo "EXTRA_FFLAGS           Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
+    echo "EXTRA_LINK_FLAGS       Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
+    echo "BML_GPU                {yes,no}                    (default is ${BML_GPU})"
+    echo "GPU_ARCH               GPU architecture            (default is ${GPU_ARCH})"
+    echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
 }
 
 set_defaults() {
@@ -79,6 +82,9 @@ set_defaults() {
     : ${BML_TESTING:=yes}
     : ${FORTRAN_FLAGS:=}
     : ${EXTRA_LINK_FLAGS:=}
+    : ${BML_GPU:=no}
+    : ${GPU_ARCH:=""}
+    : ${CUDA_TOOLKIT_ROOT_DIR:=""}
 }
 
 die() {
@@ -142,6 +148,9 @@ configure() {
         ${EXTRA_FFLAGS:+-DEXTRA_FFLAGS="${EXTRA_FFLAGS}"} \
         ${EXTRA_LINK_FLAGS:+-DBML_LINK_FLAGS="${EXTRA_LINK_FLAGS}"} \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
+        -DBML_GPU="${BML_GPU}" \
+        -DGPU_ARCH="${GPU_ARCH}" \
+        -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
