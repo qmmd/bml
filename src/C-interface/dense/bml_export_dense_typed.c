@@ -37,7 +37,7 @@ void *TYPED_FUNC(
                 for (int j = 0; j < A->N; j++)
                 {
                     A_dense[COLMAJOR(i, j, A->N, A->N)] =
-                        B_ptr[ROWMAJOR(i, j, A->N, A->N)];
+                        B_ptr[LINEARINDEX(i, j, A->N, A->N)];
                 }
             }
             break;

@@ -48,7 +48,7 @@ bml_diagonalize_dense_single_real(
         typed_eigenvalues[i] = (float) evals[i];
         for (int j = 0; j < A->N; j++)
         {
-            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+            A_matrix[LINEARINDEX(i, j, A->N, A->N)] =
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
@@ -86,7 +86,7 @@ bml_diagonalize_dense_double_real(
         typed_eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
-            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+            A_matrix[LINEARINDEX(i, j, A->N, A->N)] =
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
@@ -134,7 +134,7 @@ bml_diagonalize_dense_single_complex(
         typed_eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
-            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+            A_matrix[LINEARINDEX(i, j, A->N, A->N)] =
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
@@ -184,7 +184,7 @@ bml_diagonalize_dense_double_complex(
         typed_eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
-            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+            A_matrix[LINEARINDEX(i, j, A->N, A->N)] =
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }

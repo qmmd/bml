@@ -44,7 +44,7 @@ double TYPED_FUNC(
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
-        trace += A_matrix[ROWMAJOR(i, i, N, N)];
+        trace += A_matrix[LINEARINDEX(i, i, N, N)];
     }
 
     return (double) REAL_PART(trace);

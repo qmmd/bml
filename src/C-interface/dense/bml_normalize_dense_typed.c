@@ -83,11 +83,11 @@ void *TYPED_FUNC(
 
         for (int j = 0; j < N; j++)
         {
-            absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
+            absham = ABS(A_matrix[LINEARINDEX(i, j, N, N)]);
             radius += (double) absham;
         }
 
-        dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
+        dvalue = A_matrix[LINEARINDEX(i, i, N, N)];
 
         radius -= ABS(dvalue);
 
@@ -155,11 +155,11 @@ void *TYPED_FUNC(
 
         for (int j = 0; j < N; j++)
         {
-            absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
+            absham = ABS(A_matrix[LINEARINDEX(i, j, N, N)]);
             radius += (double) absham;
         }
 
-        dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
+        dvalue = A_matrix[LINEARINDEX(i, i, N, N)];
 
         radius -= ABS(dvalue);
 

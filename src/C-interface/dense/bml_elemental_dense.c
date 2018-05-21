@@ -28,7 +28,7 @@ bml_get_dense_single_real(
         LOG_ERROR("column index out of bounds\n");
         return -1;
     }
-    return ((float *) A->matrix)[ROWMAJOR(i, j, A->N, A->N)];
+    return ((float *) A->matrix)[LINEARINDEX(i, j, A->N, A->N)];
 }
 
 /** Return a single matrix element.
@@ -54,7 +54,7 @@ bml_get_dense_double_real(
         LOG_ERROR("column index out of bounds\n");
         return -1;
     }
-    return ((double *) A->matrix)[ROWMAJOR(i, j, A->N, A->N)];
+    return ((double *) A->matrix)[LINEARINDEX(i, j, A->N, A->N)];
 }
 
 /** Return a single matrix element.
@@ -80,7 +80,7 @@ bml_get_dense_single_complex(
         LOG_ERROR("column index out of bounds\n");
         return -1;
     }
-    return ((float complex *) A->matrix)[ROWMAJOR(i, j, A->N, A->N)];
+    return ((float complex *) A->matrix)[LINEARINDEX(i, j, A->N, A->N)];
 }
 
 /** Return a single matrix element.
@@ -106,5 +106,5 @@ bml_get_dense_double_complex(
         LOG_ERROR("column index out of bounds\n");
         return -1;
     }
-    return ((double complex *) A->matrix)[ROWMAJOR(i, j, A->N, A->N)];
+    return ((double complex *) A->matrix)[LINEARINDEX(i, j, A->N, A->N)];
 }

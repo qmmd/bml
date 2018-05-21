@@ -82,7 +82,7 @@ double TYPED_FUNC(
         //for (int j = 0; j < core_size; j++)
         for (int j = 0; j < N; j++)
         {
-            REAL_T value = A_matrix[ROWMAJOR(i, j, N, N)];
+            REAL_T value = A_matrix[LINEARINDEX(i, j, N, N)];
             sum += value * value;
         }
     }

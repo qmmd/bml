@@ -24,7 +24,7 @@ void TYPED_FUNC(
     }
 
     REAL_T *A_matrix = A->matrix;
-    A_matrix[ROWMAJOR(i, j, N, N)] = *((REAL_T *) value);
+    A_matrix[LINEARINDEX(i, j, N, N)] = *((REAL_T *) value);
 }
 
 void TYPED_FUNC(
@@ -43,7 +43,7 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {
-        A_matrix[ROWMAJOR(i, j, N, N)] = row[j];
+        A_matrix[LINEARINDEX(i, j, N, N)] = row[j];
     }
 }
 
@@ -62,6 +62,6 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {
-        A_matrix[ROWMAJOR(j, j, N, N)] = diagonal[j];
+        A_matrix[LINEARINDEX(j, j, N, N)] = diagonal[j];
     }
 }

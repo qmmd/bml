@@ -72,8 +72,8 @@ void TYPED_FUNC(
 #pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
-        memcpy(&A_matrix[ROWMAJOR(perm[i], 0, N, N)],
-               &B_matrix[ROWMAJOR(i, 0, N, N)], N * sizeof(REAL_T));
+        memcpy(&A_matrix[LINEARINDEX(perm[i], 0, N, N)],
+               &B_matrix[LINEARINDEX(i, 0, N, N)], N * sizeof(REAL_T));
     }
 
     // Reorder elements in each row - just change index
@@ -82,8 +82,8 @@ void TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            A_matrix[ROWMAJOR(i, j, N, N)] =
-                B_matrix[ROWMAJOR(i, perm[j], N, N)];
+            A_matrix[LINEARINDEX(i, j, N, N)] =
+                B_matrix[LINEARINDEX(i, perm[j], N, N)];
         }
     }
 

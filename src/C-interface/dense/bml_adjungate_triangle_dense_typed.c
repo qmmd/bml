@@ -41,8 +41,8 @@ void TYPED_FUNC(
             {
                 for (int j = i + 1; j < N; j++)
                 {
-                    A_matrix[ROWMAJOR(j, i, N, N)] =
-                        conj(A_matrix[ROWMAJOR(i, j, N, N)]);
+                    A_matrix[LINEARINDEX(j, i, N, N)] =
+                        conj(A_matrix[LINEARINDEX(i, j, N, N)]);
                 }
             }
             break;
@@ -53,8 +53,8 @@ void TYPED_FUNC(
             {
                 for (int j = i + 1; j < N; j++)
                 {
-                    A_matrix[ROWMAJOR(i, j, N, N)] =
-                        conj(A_matrix[ROWMAJOR(j, i, N, N)]);
+                    A_matrix[LINEARINDEX(i, j, N, N)] =
+                        conj(A_matrix[LINEARINDEX(j, i, N, N)]);
                 }
             }
             break;

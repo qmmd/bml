@@ -129,7 +129,7 @@ void TYPED_FUNC(
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
-        A_matrix[ROWMAJOR(i, i, N, N)] += beta_;
+        A_matrix[LINEARINDEX(i, i, N, N)] += beta_;
     }
 }
 

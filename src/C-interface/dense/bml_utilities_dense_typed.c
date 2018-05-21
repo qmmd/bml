@@ -77,12 +77,12 @@ void TYPED_FUNC(
         }
         irow--;
         icol--;
-        A_value[ROWMAJOR(irow, icol, N, N)] = val;
+        A_value[LINEARINDEX(irow, icol, N, N)] = val;
 
         // Set symmetric value if necessary
         if (symflag == 0 && icol != irow)
         {
-            A_value[ROWMAJOR(icol, irow, N, N)] = val;
+            A_value[LINEARINDEX(icol, irow, N, N)] = val;
         }
     }
 
@@ -122,7 +122,7 @@ void TYPED_FUNC(
         for (int j = 0; j < N; j++)
         {
             fprintf(mFile, "%d %d %20.15e\n", i + 1, j + 1,
-                    REAL_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    REAL_PART(A_value[LINEARINDEX(i, j, N, N)]));
         }
     }
 
