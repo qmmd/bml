@@ -1,4 +1,5 @@
 #include "bml.h"
+#include "../macros.h"
 #include "../typed.h"
 
 #include <complex.h>
@@ -19,10 +20,11 @@ static void TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            C[i * N + j] *= beta;
+            C[ROWMAJOR(i, j, N, N)] *= beta;
             for (int k = 0; k < N; k++)
             {
-                C[i * N + j] += alpha * A[i * N + k] * B[k * N + j];
+                C[ROWMAJOR(i, j, N, N)] +=
+                    alpha * A[ROWMAJOR(i, k, N, N)] * B[ROWMAJOR(k, j, N, N)];
             }
         }
     }
