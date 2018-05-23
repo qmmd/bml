@@ -2,56 +2,57 @@ language: python
 rvm: 2.0
 
 addons:
-    coverity_scan:
-        project:
-            name: "lanl/bml"
-            description: "Build submitted via Travis CI"
-        notification_email: nicolasbock@gmail.com
-        build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=no -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
-        build_command: "make"
-        branch_pattern: coverty_scan
-    apt:
-        sources:
-            - ubuntu-toolchain-r-test
-            - george-edison55-precise-backports
-        packages:
-            - cmake
-            - cmake-data
-            - doxygen
-            - g++-4.7
-            - g++-6
-            - gcc-4.7
-            - gcc-6
-            - gfortran
-            - gfortran-4.7
-            - gfortran-6
-            - indent
-            - libblas-dev
-            - liblapack-dev
-            - texlive
-            - valgrind
+  coverity_scan:
+    project:
+      name: "lanl/bml"
+      description: "Build submitted via Travis CI"
+    notification_email: nicolasbock@gmail.com
+    build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=no -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
+    build_command: "make"
+    branch_pattern: coverty_scan
+  apt:
+    update: true
+    sources:
+      - ubuntu-toolchain-r-test
+      - george-edison55-precise-backports
+    packages:
+      - cmake
+      - cmake-data
+      - doxygen
+      - g++-4.7
+      - g++-6
+      - gcc-4.7
+      - gcc-6
+      - gfortran
+      - gfortran-4.7
+      - gfortran-6
+      - indent
+      - libblas-dev
+      - liblapack-dev
+      - texlive
+      - valgrind
 
 env:
-    global:
-        # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-        # via the "travis encrypt" command using the project repo's public
-        # key.
-        - secure: "itC06I482XliT7b2yyoit5eWHdbIa/Wpp+cNIsZElMnWhUyBHCuKiLQHLgyovlhCR6UsL7ISDdyxxNz4Kn7Os1EdPhQ1Q+P+8vZf8pROK1LBIZLrTWM7npea3ydo3PCdpgJdr9qHAEvXhBG9mshmrBgJLdmDuNtJ7yFn2l8nLegCnmsdExkjN1ZbprRutPd9OH6iIu9C8lPAiYR1bcDEPm+fgF3VnE2JFztYvkUt+PBiwIveVFlwAQRjrBqvvF/fk2TqFmD97KFDQ6stdr6MzUmQ1m05arololkLp+y6aQxWYbwug66vorAHma+axXJClkd1Rmt/K7kyRBhRUOwE9CKKnHKL9lKYKvfyv5e7HDasg60PACErfBR1/SIyNOWATIV8KCyejn4qI8Q+QjyYGlIM3D2oUCIhIgy/FPnmb6IWGJmqE7Y2kk6BAYZv0PIXLWrffuht7L2qJnl1FI4nVsej9Kf71zJfhxfa2XY9vuFm40ldOMF0DuSOc5KNKHuIGliLhBFKws91cYqz2GnIJV2SU0Ut0ICJ935R9qz+vKE8dGlyV80RIR9+ILVCOOh/XRu5Ljb2fAT+NvlBfG5of3PwiEzQLZPHM0vtZD0wDd9N39GInYe510DwzRRPVfYpbXYSDhISEUugB4F7ASjsVNrJ7kbgZFMwU17YSe+i5DI="
-        - COVERTY_JOB_NUMBER: 1
-        - DANGER_JOB_NUMBER: 1
-        - COVERAGE_JOB_NUMBER: 4
-    matrix:
-        - BML_OPENMP=no VERBOSE_MAKEFILE=yes COMMAND=check_indent # 1. Job will be analyzed by coverty scan and danger.
-        - BML_OPENMP=no VERBOSE_MAKEFILE=yes COMMAND=docs # 2.
-        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing # 3.
-        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes  COMMAND=testing # 4. Job will be analyzed by coverage tools.
-        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
-        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
-        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing
+  global:
+    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+    # via the "travis encrypt" command using the project repo's public
+    # key.
+    - secure: "itC06I482XliT7b2yyoit5eWHdbIa/Wpp+cNIsZElMnWhUyBHCuKiLQHLgyovlhCR6UsL7ISDdyxxNz4Kn7Os1EdPhQ1Q+P+8vZf8pROK1LBIZLrTWM7npea3ydo3PCdpgJdr9qHAEvXhBG9mshmrBgJLdmDuNtJ7yFn2l8nLegCnmsdExkjN1ZbprRutPd9OH6iIu9C8lPAiYR1bcDEPm+fgF3VnE2JFztYvkUt+PBiwIveVFlwAQRjrBqvvF/fk2TqFmD97KFDQ6stdr6MzUmQ1m05arololkLp+y6aQxWYbwug66vorAHma+axXJClkd1Rmt/K7kyRBhRUOwE9CKKnHKL9lKYKvfyv5e7HDasg60PACErfBR1/SIyNOWATIV8KCyejn4qI8Q+QjyYGlIM3D2oUCIhIgy/FPnmb6IWGJmqE7Y2kk6BAYZv0PIXLWrffuht7L2qJnl1FI4nVsej9Kf71zJfhxfa2XY9vuFm40ldOMF0DuSOc5KNKHuIGliLhBFKws91cYqz2GnIJV2SU0Ut0ICJ935R9qz+vKE8dGlyV80RIR9+ILVCOOh/XRu5Ljb2fAT+NvlBfG5of3PwiEzQLZPHM0vtZD0wDd9N39GInYe510DwzRRPVfYpbXYSDhISEUugB4F7ASjsVNrJ7kbgZFMwU17YSe+i5DI="
+    - COVERTY_JOB_NUMBER: 1
+    - DANGER_JOB_NUMBER: 1
+    - COVERAGE_JOB_NUMBER: 4
+  matrix:
+    - BML_OPENMP=no VERBOSE_MAKEFILE=yes COMMAND=check_indent # 1. Job will be analyzed by coverty scan and danger.
+    - BML_OPENMP=no VERBOSE_MAKEFILE=yes COMMAND=docs # 2.
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing # 3.
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes  COMMAND=testing # 4. Job will be analyzed by coverage tools.
+    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
+    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
+    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing
 
 before_install:
     # If this is a coverty scan which is not the first matrix job we will exit
