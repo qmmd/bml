@@ -24,6 +24,19 @@
  *
  * \ingroup multiply_group
  *
+ * Note that the internal storage order of the dense matrix is
+ * row-major while the standard implementation of gemm assumes column
+ * major order. We therefore use a storage order transpose to the gemm
+ * implementation. Instead of multiplying \f$ A \, B f$ we will
+ * instead calculate \f$ B \, A \f$ and get:
+ *
+ * \f$ C^{T} \leftarrow \alpha \, B^{T} \, A^{T} + \beta C^{T} \f$
+ *
+ * \f$ C \f$ will then become:
+ *
+ * \f$ C \leftarrow \alpha \, \left( B^{T} \, A^{T} \right)^{T} + \beta C \f$
+ * \f$ C \leftarrow \alpha \, A \, B + \beta C \f$
+ *
  * \param A Matrix A
  * \param B Matrix B
  * \param C Matrix C
