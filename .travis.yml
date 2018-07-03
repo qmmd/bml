@@ -37,6 +37,8 @@ env:
         # via the "travis encrypt" command using the project repo's public
         # key.
         - secure: "itC06I482XliT7b2yyoit5eWHdbIa/Wpp+cNIsZElMnWhUyBHCuKiLQHLgyovlhCR6UsL7ISDdyxxNz4Kn7Os1EdPhQ1Q+P+8vZf8pROK1LBIZLrTWM7npea3ydo3PCdpgJdr9qHAEvXhBG9mshmrBgJLdmDuNtJ7yFn2l8nLegCnmsdExkjN1ZbprRutPd9OH6iIu9C8lPAiYR1bcDEPm+fgF3VnE2JFztYvkUt+PBiwIveVFlwAQRjrBqvvF/fk2TqFmD97KFDQ6stdr6MzUmQ1m05arololkLp+y6aQxWYbwug66vorAHma+axXJClkd1Rmt/K7kyRBhRUOwE9CKKnHKL9lKYKvfyv5e7HDasg60PACErfBR1/SIyNOWATIV8KCyejn4qI8Q+QjyYGlIM3D2oUCIhIgy/FPnmb6IWGJmqE7Y2kk6BAYZv0PIXLWrffuht7L2qJnl1FI4nVsej9Kf71zJfhxfa2XY9vuFm40ldOMF0DuSOc5KNKHuIGliLhBFKws91cYqz2GnIJV2SU0Ut0ICJ935R9qz+vKE8dGlyV80RIR9+ILVCOOh/XRu5Ljb2fAT+NvlBfG5of3PwiEzQLZPHM0vtZD0wDd9N39GInYe510DwzRRPVfYpbXYSDhISEUugB4F7ASjsVNrJ7kbgZFMwU17YSe+i5DI="
+        # The Intel compiler license key.
+        - secure: "tNJdKdOw2xyuthnRbBx2QkKvwYK0RNaxNWglasVkwJrIBX3Hp0lkzsW4ooJivxVNjj1A9B7F1JVWWBrANodP4YS5dr0/60yPcT+yrt2V7b/PU6/N3Ype/Hq3QbkaCYb99lTDIf+76hU8dbugqZLcsXAk0wNg98cT2tVxzZoFnrMqYnJW2/swhYC3Y9BKK07Y6uGynnPwG1gvfaMYdD5aFc0wrAEj8LBikoXw7kk8EFc24Yjz5tPwJ+O+h/+RtEKLTD3EriRJPCEA4wDM8pChizg13gIJjfvBPnPiZnijGmOz4vpfsIro3GvT2i6atyLEb99yQR1OD5nLK/xJTdXwqqK88a+zR/PBTpcAsQkpwU5XAWyj2NeDlFTqyDwZRJDmgFrhs4NS7bzDsbitToef5UmNrf2JeASj6Hw2QY1eYlE3PB7+R5n2QtdSTPnM4E0RXgeDNlMuSJkaBQmpCWeAAhX7pPAbcSfrix7l0iUXNTnV256zTHUQ/JpkNI1x8OWJ1VYQxNmtocT3tvf8G3DL5IvPmRN2cm2DSovN1fzhsISGIjU1C+5NtK7Nx8KejVBMv4/oVZk/u5G03fYee4LH9vl2oK6lIyFx9uUKxTmBvFSJ5YWfMpRCp3I/hCnNSUpNV8i0g4XDzrQOuWExA1DJRBtB3yu8Ew8hG0v5RiCos9I="
         - COVERTY_JOB_NUMBER: 1
         - DANGER_JOB_NUMBER: 1
         - COVERAGE_JOB_NUMBER: 4
@@ -52,27 +54,31 @@ env:
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing
+        - CC=icc     CXX=icc     FC=ifort                      BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
 
 before_install:
-    # If this is a coverty scan which is not the first matrix job we will exit
-    # early to avoid spending unnecessary CI resources.
-    - if [ "${TRAVIS_BRANCH}" = "coverty_scan" -a "${TRAVIS_JOB_NUMBER##*.}" != "${COVERTY_JOB_NUMBER}" ]; then exit 0; fi
-    - if [ "${TRAVIS_BRANCH}" = "coverty_scan" ]; then echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-; fi
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then pip install cpp-coveralls; fi
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then pip install codecov; fi
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then bundle install; fi
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then pip install proselint; fi
+  # If this is a coverty scan which is not the first matrix job we will exit
+  # early to avoid spending unnecessary CI resources.
+  - if [ "${TRAVIS_BRANCH}" = "coverty_scan" -a "${TRAVIS_JOB_NUMBER##*.}" != "${COVERTY_JOB_NUMBER}" ]; then exit 0; fi
+  - if [ "${TRAVIS_BRANCH}" = "coverty_scan" ]; then echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-; fi
+  - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then pip install cpp-coveralls; fi
+  - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then pip install codecov; fi
+  - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then bundle install; fi
+  - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then pip install proselint; fi
+  - if [ "${CC}" = "icc" ]; then ./install-icc.sh; fi
+  - env | sort
 
 before_script:
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then bundle exec danger || echo "**NOTE** ignoring danger failure"; fi
+  - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then bundle exec danger || echo "**NOTE** ignoring danger failure"; fi
 
 script:
-    - export OMP_NUM_THREADS=4
-    - export CMAKE_BUILD_TYPE=Debug
-    - export VERBOSE_MAKEFILE=yes
-    - export PARALLEL_TEST_JOBS=2
-    - if [ "${COVERITY_SCAN_BRANCH}" != "${COVERTY_JOB_NUMBER}" ]; then ./build.sh ${COMMAND}; fi
+  - if [ "${CC}" = "icc" ]; then source ~/.bashrc; fi
+  - export OMP_NUM_THREADS=4
+  - export CMAKE_BUILD_TYPE=Debug
+  - export VERBOSE_MAKEFILE=yes
+  - export PARALLEL_TEST_JOBS=2
+  - if [ "${COVERITY_SCAN_BRANCH}" != "${COVERTY_JOB_NUMBER}" ]; then ./build.sh ${COMMAND}; fi
 
 after_success:
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then codecov --gcov-exec ${GCOV}; fi
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then coveralls; fi
+  - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then codecov --gcov-exec ${GCOV}; fi
+  - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${COVERAGE_JOB_NUMBER}" ]; then coveralls; fi
