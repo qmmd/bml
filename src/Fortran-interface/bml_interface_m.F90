@@ -99,7 +99,7 @@ contains
        id = bml_matrix_type_ellpack_enum_id
     case default
        print *, "unknown matrix type"//trim(type_string)
-       error stop
+       stop 1
     end select
 
   end function get_matrix_id
@@ -159,7 +159,7 @@ contains
        id = bml_distribution_mode_graph_distributed_enum_id
     case default
        print *, "unknown distribution mode"//trim(dmode_string)
-       error stop
+       stop 1
     end select
 
   end function get_dmode_id

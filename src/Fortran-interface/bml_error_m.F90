@@ -50,7 +50,7 @@ contains
     integer, intent(in) :: line
 
     call bml_msg(file, line, "ERROR", message)
-    error stop
+        stop 1
 
   end subroutine bml_error
 

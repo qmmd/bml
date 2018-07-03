@@ -119,23 +119,21 @@ void *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-/*
     memset(ix, 0, X_N * sizeof(int));
     memset(jx, 0, X_N * sizeof(int));
     memset(x, 0.0, X_N * sizeof(REAL_T));
-*/
 
 #pragma omp parallel \
     default(none) \
     shared(X_N, X_M, X_index, X_nnz, X_value, myRank) \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value) \
-    shared(X_localRowMin, X_localRowMax) \
-    shared(ix, jx, x) \
+  shared(X_localRowMin, X_localRowMax, threshold)		   \
+    firstprivate(ix, jx, x) \
     reduction(+: traceX, traceX2)
 
-    memset(ix, 0, X_N * sizeof(int));
-    memset(jx, 0, X_N * sizeof(int));
-    memset(x, 0.0, X_N * sizeof(REAL_T));
+    //    memset(ix, 0, X_N * sizeof(int));
+    //    memset(jx, 0, X_N * sizeof(int));
+    //    memset(x, 0.0, X_N * sizeof(REAL_T));
 
 #pragma omp for 
 

@@ -69,7 +69,7 @@ double TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
 
 #pragma omp parallel for default(none) \
-    shared(N, A_matrix) \
+  shared(N, A_matrix, core_size)		       \
     reduction(+:sum)
     for (int i = 0; i < core_size * N; i++)
     {
@@ -128,7 +128,7 @@ double TYPED_FUNC(
     default(none) \
     shared(alpha_, beta_) \
     shared(N, A_matrix, B_matrix) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
+  shared(A_localRowMin, A_localRowMax, myRank, threshold) \
     reduction(+:sum)
     //for (int i = 0; i < N * N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;

@@ -79,7 +79,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
-#pragma omp parallel for default(none) shared(A_dense)
+#pragma omp parallel for default(none) shared(A_dense,N,M)
     for (int i = 0; i < N; i++)
     {
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
@@ -111,7 +111,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
-#pragma omp parallel for default(none) shared(A_dense)
+#pragma omp parallel for default(none) shared(A_dense,N)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -142,7 +142,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
-#pragma omp parallel for default(none) shared(A_dense)
+#pragma omp parallel for default(none) shared(A_dense,N)
     for (int i = 0; i < N; i++)
     {
         A_dense[ROWMAJOR(i, i, N, N)] = 1;

@@ -244,7 +244,7 @@ void TYPED_FUNC(
     default(none) \
     private(rvalue) \
     shared(core_halo_index) \
-    shared(A, B_matrix, B_N)
+  shared(A, B_matrix, B_N, lsize)
     for (int jb = 0; jb < lsize; jb++)
     {
         rvalue = TYPED_FUNC(bml_getVector_ellsort) (A, core_halo_index,
@@ -294,7 +294,7 @@ void TYPED_FUNC(
     private(ii, icol) \
     shared(core_halo_index) \
     shared(A_N, A_matrix) \
-    shared(B_N, B_M, B_nnz, B_index, B_value)
+  shared(B_N, B_M, B_nnz, B_index, B_value, llsize, lsize, threshold)
     for (int ja = 0; ja < llsize; ja++)
     {
         ii = core_halo_index[ja];
@@ -389,7 +389,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
 
 #pragma omp parallel for default(none) \
     private(hend) \
-    shared(hindex, hnode, A_N)
+  shared(hindex, hnode, A_N, ngroups)
     for (int i = 0; i < ngroups; i++)
     {
         hend = hindex[i + 1] - 1;
@@ -407,7 +407,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     shared(ix) \
     shared(hindex, hnode) \
     shared(A_nnz, A_index, A_value, A_N, A_M) \
-    shared(B_nnz, B_index, B_value, B_N, B_M)
+  shared(B_nnz, B_index, B_value, B_N, B_M, ngroups)
 
     memset(ix, 0, sizeof(int) * ngroups);
 

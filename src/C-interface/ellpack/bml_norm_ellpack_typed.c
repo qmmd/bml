@@ -80,7 +80,7 @@ double TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
 
 #pragma omp parallel for default(none) \
-    shared(N, M, A_index, A_nnz, A_value) \
+  shared(N, M, A_index, A_nnz, A_value, core_size)	\
     reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {

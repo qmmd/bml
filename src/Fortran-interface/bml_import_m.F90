@@ -59,7 +59,7 @@ contains
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
-        error stop
+        stop 1
       end if
     end if
 
@@ -119,7 +119,7 @@ contains
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
-        error stop
+        stop 1
       end if
     end if
 
@@ -179,7 +179,7 @@ contains
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
-        error stop
+        stop 1
       end if
     end if
 
@@ -239,7 +239,7 @@ contains
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
-        error stop
+        stop 1
       end if
     end if
 
