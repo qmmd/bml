@@ -73,6 +73,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     magma_int_t ret = MAGMA(malloc) ((MAGMA_T **) & A->matrix,
                                      A->ld * matrix_dimension.N_rows);
     assert(ret == MAGMA_SUCCESS);
+
+    bml_clear_dense(A);
 #else
     A->ld = matrix_dimension.N_rows;
     A->matrix =
