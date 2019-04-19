@@ -1,4 +1,4 @@
-language: python
+language: minimal
 rvm: 2.0
 sudo: required
 
