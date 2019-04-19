@@ -2,7 +2,9 @@ language: minimal
 rvm: 2.0
 sudo: required
 
-cache: bundler
+cache:
+  directories:
+    - /home/travis/.rvm
 
 env:
   global:
@@ -48,6 +50,8 @@ jobs:
       script:
         - bundle install
         - pip install proselint
+        - ls -lah ${HOME}
+        - ls -lah
         - bundle exec danger
         - env packages="indent" ./install_packages.sh
         - env BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh check_indent
