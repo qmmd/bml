@@ -42,18 +42,19 @@ env:
     - DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev valgrind"
     # COVERTY_SCAN_TOKEN
     - secure: tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g=
-  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
-  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
-  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
-  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  BML_VALGRIND=yes
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
-  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+  matrix:
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  BML_VALGRIND=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
 
 script:
   - ./install_packages.sh
