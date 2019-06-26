@@ -75,14 +75,12 @@ jobs:
   include:
     - stage: linter
       name: "Linter"
-      env:
-        - packages="indent" BML_OPENMP=no VERBOSE_MAKEFILE=yes
       script:
         - bundle install
         - pip install proselint
         - bundle exec danger
-        - ./install_packages.sh
-        - ./build.sh check_indent
+        - packages="indent" ./install_packages.sh
+        - BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh check_indent
     - stage: docs
       name: "Build Docs"
       env:
