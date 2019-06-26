@@ -15,8 +15,7 @@ env:
     - CMAKE_BUILD_TYPE=Debug
     - VERBOSE_MAKEFILE=yes
     - PARALLEL_TEST_JOBS=2
-    - GCC_VERSION=9
-    - DEVEL_PACKAGES="cmake cmake-data indent libblas-dev liblapack-dev valgrind"
+    - DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev valgrind"
     # COVERTY_SCAN_TOKEN
     - secure: tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g=
 
@@ -44,10 +43,26 @@ deploy:
     on:
       tags: true
 
+env:
+  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
+  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
+  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  BML_VALGRIND=yes
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
+  - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+
+script:
+  - ./install_packages.sh
+  - ./build.sh testing
+
 stages:
   - name: linter
-    if: branch != coverty_scan
-  - name: test-full
     if: branch != coverty_scan
   - name: coverage
     if: branch != coverty_scan
@@ -59,41 +74,34 @@ stages:
 jobs:
   include:
     - stage: linter
+      name: "Linter"
+      env:
+        - packages="indent" BML_OPENMP=no VERBOSE_MAKEFILE=yes
       script:
         - bundle install
         - pip install proselint
         - bundle exec danger
-        - env packages="indent" ./install_packages.sh
-        - env BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh check_indent
+        - ./install_packages.sh
+        - ./build.sh check_indent
     - stage: docs
-      script:
-        - env packages="${DEVEL_PACKAGES} gcc-${GCC_VERSION} g++-${GCC_VERSION} gfortran-${GCC_VERSION} doxygen texlive" ./install_packages.sh
-        - env CC=gcc-${GCC_VERSION} CXX=g++-${GCC_VERSION} FC=gfortran-${GCC_VERSION} GCOV=gcov-${GCC_VERSION} BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh docs
-    - stage: test
+      name: "Build Docs"
       env:
-        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
-        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
-        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
-        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  BML_VALGRIND=yes
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   GCOV=gcov-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+        - CC=gcc-9 CXX=g++-9 FC=gfortran-9 GCOV=gcov-9 BML_OPENMP=no VERBOSE_MAKEFILE=yes packages="doxygen texlive"
       script:
         - ./install_packages.sh
-        - ./build.sh testing
+        - ./build.sh docs
     - stage: coverage
+      name: "Get test coverage"
+      env:
+        - CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
       script:
         - pip install cpp-coveralls codecov
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
+        - ./install_packages.sh
+        - ./build.sh testing
       after_success:
         - codecov --gcov-exec ${GCOV}
         - coveralls
     - stage: coverty
+      name: "Run coverty"
       before_install:
         - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
