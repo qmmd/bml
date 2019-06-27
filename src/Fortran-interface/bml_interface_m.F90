@@ -101,7 +101,7 @@ contains
 
     select case (trim(type_string))
     case(BML_MATRIX_DENSE)
-      id = bml_matrix_type_dense_enum_id
+       id = bml_matrix_type_dense_enum_id
     case(BML_MATRIX_ELLPACK)
        id = bml_matrix_type_ellpack_enum_id
     case(BML_MATRIX_ELLBLOCK)
@@ -122,27 +122,27 @@ contains
     select case (trim(element_type))
 
     case (BML_ELEMENT_REAL)
-      select case (element_kind)
-      case (C_FLOAT)
-        id = bml_matrix_precision_single_real_enum_id
-      case (C_DOUBLE)
-        id = bml_matrix_precision_double_real_enum_id
-      case default
-        print "(A,1X,I0)", "Unknown element kind:", element_kind
-      end select
+       select case (element_kind)
+       case (C_FLOAT)
+          id = bml_matrix_precision_single_real_enum_id
+       case (C_DOUBLE)
+          id = bml_matrix_precision_double_real_enum_id
+       case default
+          print "(A,1X,I0)", "Unknown element kind:", element_kind
+       end select
 
     case (BML_ELEMENT_COMPLEX)
-      select case (element_kind)
-      case (C_FLOAT_COMPLEX)
-        id = bml_matrix_precision_single_complex_enum_id
-      case (C_DOUBLE_COMPLEX)
-        id = bml_matrix_precision_double_complex_enum_id
-      case default
-        print "(A,1X,I0)", "Unknown element kind:", element_kind
-      end select
+       select case (element_kind)
+       case (C_FLOAT_COMPLEX)
+          id = bml_matrix_precision_single_complex_enum_id
+       case (C_DOUBLE_COMPLEX)
+          id = bml_matrix_precision_double_complex_enum_id
+       case default
+          print "(A,1X,I0)", "Unknown element kind:", element_kind
+       end select
 
     case default
-      print "(A,1X,A)", "Unknown element type:", element_type
+       print "(A,1X,A)", "Unknown element type:", element_type
 
     end select
 
@@ -161,7 +161,7 @@ contains
 
     select case (trim(dmode_string))
     case(BML_DMODE_SEQUENTIAL)
-      id = bml_distribution_mode_sequential_enum_id
+       id = bml_distribution_mode_sequential_enum_id
     case(BML_DMODE_DISTRIBUTED)
        id = bml_distribution_mode_distributed_enum_id
     case(BML_DMODE_GRAPH_DISTRIBUTED)

@@ -15,7 +15,7 @@ module copy_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -31,7 +31,7 @@ contains
     REAL_TYPE, allocatable :: c_dense(:, :)
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_copy(a, b)
     call bml_copy(b, c)
 
@@ -42,7 +42,7 @@ contains
     call bml_print_matrix("B", b_dense, 1, n, 1, n)
     call bml_print_matrix("C", c_dense, 1, n, 1, n)
     if(maxval(abs(a_dense - b_dense)) > 1e-12 .or. &
-       maxval(abs(a_dense - c_dense)) > 1e-12) then
+         maxval(abs(a_dense - c_dense)) > 1e-12) then
        test_result = .false.
        print *, "matrices are not identical"
     else

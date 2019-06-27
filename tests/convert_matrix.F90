@@ -15,7 +15,7 @@ module convert_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision

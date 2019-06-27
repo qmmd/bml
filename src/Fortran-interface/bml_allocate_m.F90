@@ -60,9 +60,9 @@ contains
     aflag = bml_allocated_C(a%ptr)
 
     if (aflag .gt. 0) then
-      bml_allocated = .true.
+       bml_allocated = .true.
     else
-      bml_allocated = .false.
+       bml_allocated = .false.
     end if
 
   end function bml_allocated
@@ -79,7 +79,7 @@ contains
   !! \param a The matrix.
   !! \param distrib_mode The matrix distribution mode.
   subroutine bml_zero_matrix(matrix_type, element_type, element_precision, &
-      & n, m, a, distrib_mode)
+       & n, m, a, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type, element_type
     character(len=*), optional, intent(in) :: distrib_mode
@@ -90,20 +90,20 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-      distrib_mode_ = distrib_mode
+       distrib_mode_ = distrib_mode
     else
-      distrib_mode_ = bml_dmode_sequential
+       distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
     a%ptr = bml_zero_matrix_C(get_matrix_id(matrix_type), &
-        & get_element_id(element_type, element_precision), &
-        & n, m, get_dmode_id(distrib_mode_))
+         & get_element_id(element_type, element_precision), &
+         & n, m, get_dmode_id(distrib_mode_))
 
   end subroutine bml_zero_matrix
 
   subroutine bml_block_matrix(matrix_type, element_type, element_precision, &
-      & nb, mb, bsizes, a, distrib_mode)
+       & nb, mb, bsizes, a, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type, element_type
     character(len=*), optional, intent(in) :: distrib_mode
@@ -115,16 +115,16 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-      distrib_mode_ = distrib_mode
+       distrib_mode_ = distrib_mode
     else
-      distrib_mode_ = bml_dmode_sequential
+       distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
     print*,'bsizes=',bsizes(1)
     a%ptr = bml_block_matrix_C(get_matrix_id(matrix_type), &
-        & get_element_id(element_type, element_precision), &
-        & nb, mb, bsizes, get_dmode_id(distrib_mode_))
+         & get_element_id(element_type, element_precision), &
+         & nb, mb, bsizes, get_dmode_id(distrib_mode_))
 
   end subroutine bml_block_matrix
 
@@ -140,7 +140,7 @@ contains
   !! \param a The matrix.
   !! \param distrib_mode The matrix distribution mode.
   subroutine bml_noinit_matrix(matrix_type, element_type, element_precision, &
-      & n, m, a, distrib_mode)
+       & n, m, a, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type, element_type
     character(len=*), optional, intent(in) :: distrib_mode
@@ -151,15 +151,15 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-      distrib_mode_ = distrib_mode
+       distrib_mode_ = distrib_mode
     else
-      distrib_mode_ = bml_dmode_sequential
+       distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
     a%ptr = bml_noinit_matrix_C(get_matrix_id(matrix_type), &
-        & get_element_id(element_type, element_precision), &
-        & n, m, get_dmode_id(distrib_mode_))
+         & get_element_id(element_type, element_precision), &
+         & n, m, get_dmode_id(distrib_mode_))
 
   end subroutine bml_noinit_matrix
 
@@ -175,7 +175,7 @@ contains
   !! \param a The matrix.
   !! \param distrib_mode The matrix distribution mode.
   subroutine bml_banded_matrix(matrix_type, element_type, element_precision, &
-      & n, m, a, distrib_mode)
+       & n, m, a, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type, element_type
     character(len=*), optional, intent(in) :: distrib_mode
@@ -186,15 +186,15 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-      distrib_mode_ = distrib_mode
+       distrib_mode_ = distrib_mode
     else
-      distrib_mode_ = bml_dmode_sequential
+       distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
     a%ptr = bml_banded_matrix_C(get_matrix_id(matrix_type), &
-        & get_element_id(element_type, element_precision), &
-        & n, m, get_dmode_id(distrib_mode_))
+         & get_element_id(element_type, element_precision), &
+         & n, m, get_dmode_id(distrib_mode_))
 
   end subroutine bml_banded_matrix
 
@@ -210,7 +210,7 @@ contains
   !! \param a The matrix.
   !! \param distrib_mode The matrix distribution mode.
   subroutine bml_random_matrix(matrix_type, element_type, element_precision, &
-      & n, m, a, distrib_mode)
+       & n, m, a, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type, element_type
     character(len=*), optional, intent(in) :: distrib_mode
@@ -221,15 +221,15 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-      distrib_mode_ = distrib_mode
+       distrib_mode_ = distrib_mode
     else
-      distrib_mode_ = bml_dmode_sequential
+       distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
     a%ptr = bml_random_matrix_C(get_matrix_id(matrix_type), &
-        & get_element_id(element_type, element_precision), &
-        & n, m, get_dmode_id(distrib_mode_))
+         & get_element_id(element_type, element_precision), &
+         & n, m, get_dmode_id(distrib_mode_))
 
   end subroutine bml_random_matrix
 
@@ -245,7 +245,7 @@ contains
   !! \param a The matrix.
   !! \param distrib_mode The matrix distribution mode.
   subroutine bml_identity_matrix(matrix_type, element_type, element_precision, &
-      & n, m, a, distrib_mode)
+       & n, m, a, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type, element_type
     character(len=*), optional, intent(in) :: distrib_mode
@@ -256,15 +256,15 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-      distrib_mode_ = distrib_mode
+       distrib_mode_ = distrib_mode
     else
-      distrib_mode_ = bml_dmode_sequential
+       distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
     a%ptr = bml_identity_matrix_C(get_matrix_id(matrix_type), &
-        & get_element_id(element_type, element_precision), &
-        & n, m, get_dmode_id(distrib_mode_))
+         & get_element_id(element_type, element_precision), &
+         & n, m, get_dmode_id(distrib_mode_))
 
   end subroutine bml_identity_matrix
 
@@ -284,7 +284,7 @@ contains
     type(bml_matrix_t), intent(inout) :: a
 
     call bml_update_domain_C(a%ptr, c_loc(globalPartMin), c_loc(globalPartMax), &
-        c_loc(nnodesInPart))
+         c_loc(nnodesInPart))
 
   end subroutine bml_update_domain
 

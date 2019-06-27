@@ -16,7 +16,7 @@ module bml_add_m
 
   interface bml_add_deprecated
      module procedure add_two_deprecated
-   end interface bml_add_deprecated
+  end interface bml_add_deprecated
 
   !> Add identity matrix to a matrix.
   interface bml_add_identity
@@ -125,7 +125,7 @@ contains
 
     trnorm = bml_add_norm_C(a%ptr, b%ptr, alpha, beta, threshold_)
 
-    end function bml_add_norm
+  end function bml_add_norm
 
   !> Add a scaled identity matrix to a bml matrix.
   !!

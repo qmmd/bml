@@ -15,7 +15,7 @@ module scale_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -37,7 +37,7 @@ contains
     REAL_TYPE, allocatable :: c_dense(:, :)
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, c)
     call bml_scale(alpha, a, c)
 

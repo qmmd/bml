@@ -15,7 +15,7 @@ module normalize_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -46,7 +46,7 @@ contains
     threshold = 0.0
 
     call bml_identity_matrix(matrix_type, element_type, element_precision, n, &
-        & m, a)
+         & m, a)
     call bml_scale(scale_factor, a)
     call bml_gershgorin(a, a_gbnd)
     call bml_export_to_dense(a, a_dense)
@@ -76,7 +76,7 @@ contains
     end if
 
     if ((abs(b_gbnd(1) - scale_factor*scale_factor) > rel_tol) .or. &
-        (abs(b_gbnd(2) - (scale_factor*scale_factor - scale_factor)) > rel_tol)) then
+         (abs(b_gbnd(2) - (scale_factor*scale_factor - scale_factor)) > rel_tol)) then
        print *, "Incorrect maxeval or maxminusmin"
        test_result = .false.
     end if

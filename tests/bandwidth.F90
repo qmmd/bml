@@ -15,7 +15,7 @@ module bandwidth_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -59,7 +59,7 @@ contains
     call bml_deallocate(a)
 
     call bml_banded_matrix(matrix_type, element_type, element_precision, n, &
-        & m/2, a)
+         & m/2, a)
     call bml_print_matrix("A", a, 1, n, 1, n)
 
     call bml_deallocate(a)

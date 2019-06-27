@@ -21,9 +21,9 @@ contains
     integer :: arg_comm
 
     if(present(fcomm)) then
-      arg_comm = fcomm
+       arg_comm = fcomm
     else
-      arg_comm = 0
+       arg_comm = 0
     end if
     call bml_initF_C(arg_comm)
 

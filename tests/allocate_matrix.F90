@@ -15,7 +15,7 @@ module allocate_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -30,7 +30,7 @@ contains
     test_result = .true.
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_export_to_dense(a, a_dense)
     if(lbound(a_dense, 1) /= 1 .or. lbound(a_dense, 2) /= 1) then
        print *, "incorrect lbound"
@@ -50,7 +50,7 @@ contains
     deallocate(a_dense)
     call bml_deallocate(a)
     call bml_identity_matrix(matrix_type, element_type, element_precision, &
-        & n, m, a)
+         & n, m, a)
     call bml_export_to_dense(a, a_dense)
     call bml_print_matrix("A", a_dense, lbound(a_dense, 1), ubound(a_dense, 1), &
          lbound(a_dense, 2), ubound(a_dense, 2))

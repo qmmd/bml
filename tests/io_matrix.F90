@@ -15,7 +15,7 @@ module io_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -34,7 +34,7 @@ contains
     allocate(b_dense(n,n))
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_write_matrix(a, fname)
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, b)
     call bml_read_matrix(b, fname)

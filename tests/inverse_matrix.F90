@@ -15,7 +15,7 @@ module inverse_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -31,11 +31,11 @@ contains
     test_result = .false.
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a_inverse)
+         & a_inverse)
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, &
-        & aux)
+         & aux)
     call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_inverse(a, a_inverse)
     call bml_print_matrix("A_inverse", a_inverse, 1, n, 1, n)

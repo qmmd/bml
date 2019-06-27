@@ -15,7 +15,7 @@ module get_bandwidth_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -27,7 +27,7 @@ contains
     integer :: i
 
     call bml_identity_matrix(matrix_type, element_type, element_precision, n, &
-        & m, a)
+         & m, a)
 
     test_result = .true.
 

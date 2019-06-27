@@ -15,7 +15,7 @@ module diagonalize_matrix_m
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -35,7 +35,7 @@ contains
     test_result = .false.
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_transpose(a, a_t)
     call bml_print_matrix("A_t", a_t, 1, n, 1, n)
@@ -43,7 +43,7 @@ contains
     call bml_print_matrix("A", a, 1, n, 1, n)
     allocate(eigenvalues(n))
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, &
-        & eigenvectors)
+         & eigenvectors)
     call bml_diagonalize(a, eigenvalues, eigenvectors)
     call bml_transpose(eigenvectors, eigenvectors_t)
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, b)

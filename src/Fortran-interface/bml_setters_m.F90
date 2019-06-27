@@ -158,9 +158,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row), threshold_)
@@ -177,9 +177,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row), threshold_)
@@ -196,9 +196,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row), threshold_)
@@ -215,9 +215,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row), threshold_)
@@ -234,9 +234,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_diagonal_C(a%ptr, c_loc(diagonal), threshold_)
@@ -252,9 +252,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_diagonal_C(a%ptr, c_loc(diagonal), threshold_)
@@ -270,9 +270,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_diagonal_C(a%ptr,c_loc(diagonal), threshold_)
@@ -288,9 +288,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
-      threshold_ = threshold
+       threshold_ = threshold
     else
-      threshold_ = 0d0
+       threshold_ = 0d0
     end if
 
     call bml_set_diagonal_C(a%ptr,c_loc(diagonal), threshold_)

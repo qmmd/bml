@@ -25,20 +25,20 @@ module bml_types_m
   type :: bml_vector_t
      !> The C pointer to the vector.
      type(C_PTR) :: ptr = C_NULL_PTR
-  !contains
-  !   procedure :: bml_vector_t_assign
-  !   generic :: assignment(=) => bml_vector_t_assign
-  !   final :: destruct_bml_vector_t
+     !contains
+     !   procedure :: bml_vector_t_assign
+     !   generic :: assignment(=) => bml_vector_t_assign
+     !   final :: destruct_bml_vector_t
   end type bml_vector_t
 
   !> The bml matrix type.
   type :: bml_matrix_t
      !> The C pointer to the matrix.
      type(C_PTR) :: ptr = C_NULL_PTR
-  !contains
-  !   procedure :: bml_matrix_t_assign
-  !   generic :: assignment(=) => bml_matrix_t_assign
-  !   final :: destruct_bml_matrix_t
+     !contains
+     !   procedure :: bml_matrix_t_assign
+     !   generic :: assignment(=) => bml_matrix_t_assign
+     !   final :: destruct_bml_matrix_t
   end type bml_matrix_t
 
   !> The bml-dense matrix type identifier.
@@ -77,7 +77,7 @@ contains
     type(bml_matrix_t), intent(inout) :: a
 
     if (c_associated(a%ptr)) then
-      call bml_deallocate_C(a%ptr)
+       call bml_deallocate_C(a%ptr)
     end if
     a%ptr = C_NULL_PTR
 
