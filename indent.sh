@@ -41,3 +41,10 @@ done
 for f in "${C_FILES[@]}"; do
   indent ${INDENT_ARGS} "${f}"
 done
+
+for f in "${FORTRAN_FILES[@]}"; do
+  emacs --batch \
+    "${f}" \
+    --eval "(indent-region (minibuffer-prompt-end) (point-max) nil)" \
+    -f save-buffer
+done
