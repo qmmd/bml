@@ -75,7 +75,7 @@ jobs:
     - stage: linter
       name: "Linter"
       before_install:
-        - sudo add-apt-repository ppa:kelleyk/emacs
+        - sudo add-apt-repository --yes ppa:kelleyk/emacs
         - sudo apt-get update
       script:
         - bundle install
