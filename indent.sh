@@ -45,6 +45,7 @@ done
 for f in "${FORTRAN_FILES[@]}"; do
   emacs --batch \
     "${f}" \
+    --eval "(describe-variable major-mode)" \
     --eval "(indent-region (minibuffer-prompt-end) (point-max) nil)" \
     -f save-buffer
 done
