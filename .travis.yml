@@ -14,7 +14,6 @@ addons:
     update: true
     sources:
       - ubuntu-toolchain-r-test
-      - kelleyk-emacs
     coverity_scan:
       project:
         name: lanl/bml
@@ -75,6 +74,9 @@ jobs:
   include:
     - stage: linter
       name: "Linter"
+      before_install:
+        - sudo add-apt-repository ppa:kelleyk/emacs
+        - sudo apt-get update
       script:
         - bundle install
         - pip install proselint
