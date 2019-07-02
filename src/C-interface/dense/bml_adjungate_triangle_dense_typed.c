@@ -26,8 +26,8 @@
  */
 void TYPED_FUNC(
     bml_adjungate_triangle_dense) (
-    bml_matrix_dense_t * A,
-    char *triangle)
+    bml_matrix_dense_t * const A,
+    const char *const triangle)
 {
     int N = A->N;
 
@@ -61,6 +61,5 @@ void TYPED_FUNC(
 
         default:
             LOG_ERROR("Unknown triangle type in bml_adjungate\n");
-
     }
 }

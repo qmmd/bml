@@ -16,8 +16,8 @@
  */
 void
 bml_adjungate_triangle(
-    bml_matrix_t * A,
-    char *triangle)
+    bml_matrix_t * const A,
+    const char *const triangle)
 {
     switch (bml_get_type(A))
     {

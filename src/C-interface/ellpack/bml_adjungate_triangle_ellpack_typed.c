@@ -26,8 +26,8 @@
  */
 void TYPED_FUNC(
     bml_adjungate_triangle_ellpack) (
-    bml_matrix_ellpack_t * A,
-    char *triangle)
+    bml_matrix_ellpack_t * const A,
+    const char *const triangle)
 {
     int A_N = A->N;
     int A_M = A->M;

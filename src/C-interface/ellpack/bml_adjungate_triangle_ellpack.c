@@ -14,8 +14,8 @@
 
 void
 bml_adjungate_triangle_ellpack(
-    bml_matrix_ellpack_t * A,
-    char *triangle)
+    bml_matrix_ellpack_t * const A,
+    const char *const triangle)
 {
 //   LOG_ERROR("unkonwn precision for bml_adjungate_triangle\n");
 
