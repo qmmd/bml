@@ -16,11 +16,12 @@
 This website is intended to provide some guidance on how to get and install
 the bml library. LA-UR number LA-UR-**17-27373**.
 
-The basic matrix library (bml) is a collection of various matrix data formats
-(in dense and sparse) and their associated algorithms for basic matrix
-operations. Application programming interfaces (API) are available for both C
-and FORTRAN. The current status of this library allows us to use two different
-formats for representing matrix data: dense and ELLPACK.
+The basic matrix library (bml) is a collection of various matrix data
+formats (in dense and sparse) and their associated algorithms for
+basic matrix operations. [Application programming interfaces
+(API)](/bml/API) are available for both C and FORTRAN. The current
+status of this library allows us to use two different formats for
+representing matrix data: dense and ELLPACK.
 
 # Mailing List
 
