@@ -47,10 +47,14 @@ env:
     - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
     - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
     - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
-    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*single_real"    BML_VALGRIND=yes packages="valgrind"
-    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*double_real"    BML_VALGRIND=yes packages="valgrind"
-    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*single_complex" BML_VALGRIND=yes packages="valgrind"
-    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*double_complex" BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellblock|dense)-single_real"     BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellpack|ellsort)-single_real"    BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellblock|dense)-double_real"     BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellpack|ellsort)-double_real"    BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellblock|dense)-single_complex"  BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellpack|ellsort)-single_complex" BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellblock|dense)-double_complex"  BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*(ellpack|ellsort)-double_complex" BML_VALGRIND=yes packages="valgrind"
     - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes
     - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no
     - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes
