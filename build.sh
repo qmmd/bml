@@ -12,9 +12,10 @@ fi
 
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
-LOG_FILE="${TOP_DIR}/build.log"
-: ${VERBOSE_MAKEFILE:=no}
 : ${PARALLEL_TEST_JOBS:=1}
+: ${TESTING_EXTRA_ARGS:=}
+: ${VERBOSE_MAKEFILE:=no}
+LOG_FILE="${TOP_DIR}/build.log"
 
 help() {
     cat <<EOF
@@ -192,7 +193,10 @@ install() {
 
 testing() {
     cd "${BUILD_DIR}"
-    ctest --output-on-failure --parallel ${PARALLEL_TEST_JOBS} 2>&1 | tee -a "${LOG_FILE}"
+    ctest --output-on-failure \
+      --parallel ${PARALLEL_TEST_JOBS} \
+      ${TESTING_EXTRA_ARGS} \
+      2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
