@@ -47,6 +47,8 @@ void *TYPED_FUNC(
             MAGMA(getmatrix) (A->N, A->N,
                               A->matrix, A->ld,
                               (MAGMA_T *) A_dense, A->N, A->queue);
+            
+            MAGMABLAS(transpose_inplace) (A->N, A->matrix, A->ld, A->queue);
 #else
             REAL_T *B_ptr = (REAL_T *) A->matrix;
             for (int i = 0; i < A->N; i++)
