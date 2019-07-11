@@ -177,6 +177,8 @@ int TYPED_FUNC(
     //fprintf(fp3, "Test Successful!\n");
     //fclose(fp3);
 
+    bml_free_memory(A_dense);
+
     bml_deallocate(&A);
     free(data);
 
