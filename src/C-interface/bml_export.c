@@ -35,7 +35,6 @@ bml_export_to_dense(
     bml_matrix_t * A,
     bml_dense_order_t order)
 {
-    LOG_DEBUG("Exporting bml matrix to dense\n");
     switch (bml_get_type(A))
     {
         case dense:

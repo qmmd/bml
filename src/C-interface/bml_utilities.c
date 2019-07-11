@@ -365,7 +365,6 @@ bml_print_dense_vector(
     int i_l,
     int i_u)
 {
-    LOG_DEBUG("printing vector [%d:%d]\n", i_l, i_u);
     switch (matrix_precision)
     {
         case single_real:

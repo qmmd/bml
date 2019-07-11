@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 200809L
+
 #include "bml.h"
 #include "../macros.h"
 #include "../typed.h"
@@ -5,11 +7,14 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <math.h>
 #include <string.h>
+#include <unistd.h>
 
-// print content of file in stderr
+// print content of file in stdout
 void TYPED_FUNC(
     filecontent) (
     char *fname)
@@ -27,7 +32,7 @@ void TYPED_FUNC(
     while ((ch = fgetc(fp)) != EOF)
     {
         // print current character
-        putc(ch, stderr);
+        putc(ch, stdout);
     }
 
     fclose(fp);
@@ -48,59 +53,49 @@ int TYPED_FUNC(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
 
-    // define filename for testing based on matrix_precision to avoid
-    // conflicts when two tests are run simultaneously
-    char filename[20];
-    switch (matrix_precision)
-    {
-        case single_real:
-            strcpy(filename, "single");
-            break;
-        case double_real:
-            strcpy(filename, "double");
-            break;
-        case single_complex:
-            strcpy(filename, "scomplex");
-            break;
-        case double_complex:
-            strcpy(filename, "dcomplex");
-            break;
-        default:
-            fprintf(stderr, "Unknown precision\n");
-            break;
-    }
-    char str[10] = "_test.dat";
-    strcat(filename, str);
-    fprintf(stdout, "filename used for this test: %s\n", filename);
+    /* Create unique filename (in case we run tests in parallel). */
+    char *filename = strdup(tmpnam(NULL));
+    fprintf(stdout, "Filename used for this test: %s\n", filename);
 
-    // Redirect stdout
-    // note: no good way to restore it later, so don't try to print
-    // anything else but the matrix
-    FILE *fp = freopen(filename, "w", stdout);
-    if (fp == NULL)
+    int fd = open(filename, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+    if (fd < 0)
     {
-        fprintf(stderr, "Failed to associate %s with stdout", filename);
+        fprintf(stderr, "Failed to open %s\n", filename);
         return -1;
     }
 
-    //assumes matrix is at least 2x2
+    /* Flush stdout before redirecting to file. */
+    fflush(stdout);
+    int original_stdout = dup(fileno(stdout));
+    if (dup2(fd, fileno(stdout)) < 0)
+    {
+        fprintf(stderr, "Failed to duplicate stdout\n");
+        return -1;
+    }
+
+    /* Assumes matrix is at least 2x2 */
     const int up = 2;
     bml_print_bml_matrix(A, 0, up, 0, up);
 
-    if (fclose(fp) == EOF)
+    /* Flush stdout before switching back. */
+    fflush(stdout);
+    close(fd);
+
+    /* Close file and re-instate stdout. */
+    if (dup2(original_stdout, fileno(stdout)) < 0)
     {
-        fprintf(stderr, "ERROR closing file1\n");
+        fprintf(stderr, "Failed to re-activate stdout\n");
         return -1;
     }
 
-    fprintf(stderr, "FILE content:\n");
+    printf("FILE content:\n");
     TYPED_FUNC(filecontent) (filename);
 
     //now read file just written
     REAL_T *data = calloc(up * up, sizeof(REAL_T));
     if (data == NULL)
     {
-        fprintf(stderr, "callo failed!\n");
+        fprintf(stderr, "calloc failed!\n");
         return -1;
     }
 
@@ -126,6 +121,7 @@ int TYPED_FUNC(
                 case single_real:
                 case double_real:
                     fscanf(fp2, "%f", &realp);
+                    printf("Read: %f\n", realp);
                     data[ROWMAJOR(i, j, up, up)] = realp;
                     break;
                 case single_complex:
@@ -135,10 +131,9 @@ int TYPED_FUNC(
                     if (sign == '-')
                         imagp *= -1;
                     REAL_T tmp = realp + imagp * _Complex_I;
-                    //fprintf(fp3, "tmp1 %f \n", REAL_PART(tmp));
-                    //fprintf(fp3, "tmp1 %f \n", IMAGINARY_PART(tmp));
+                    printf("realp %f\n", REAL_PART(tmp));
+                    printf("imagp %f\n", IMAGINARY_PART(tmp));
                     data[ROWMAJOR(i, j, up, up)] = tmp;
-
                     break;
                 default:
                     fprintf(stderr, "Unknown precision\n");
@@ -165,11 +160,11 @@ int TYPED_FUNC(
             double diff = sqrt(diff1 * diff1 + diff2 * diff2);
 //            if (diff > tol)
             {
-                fprintf(stderr, "real parts= %f and %f\n", REAL_PART(val1),
-                        REAL_PART(val2));
-                fprintf(stderr, "imag part= %f and %f\n",
-                        IMAGINARY_PART(val1), IMAGINARY_PART(val2));
-                fprintf(stderr, "i=%d, j=%d, diff=%lf\n", i, j, diff);
+                printf("real parts= %f and %f\n", REAL_PART(val1),
+                       REAL_PART(val2));
+                printf("imag part= %f and %f\n",
+                       IMAGINARY_PART(val1), IMAGINARY_PART(val2));
+                printf("i=%d, j=%d, diff=%lf\n", i, j, diff);
                 //fclose(fp3);
                 if (diff > tol)
                 {
