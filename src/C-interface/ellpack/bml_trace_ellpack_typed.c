@@ -72,7 +72,7 @@ double TYPED_FUNC(
  *  \return the trace of A*B
  */
 double TYPED_FUNC(
-    bml_traceMult_ellpack) (
+    bml_trace_mult_ellpack) (
     bml_matrix_ellpack_t * A,
     bml_matrix_ellpack_t * B)
 {
@@ -93,7 +93,7 @@ double TYPED_FUNC(
     if (A_N != B->N || A_M != B->M)
     {
         LOG_ERROR
-            ("bml_traceMult_ellpack: Matrices A and B have different sizes.");
+            ("bml_trace_mult_ellpack: Matrices A and B have different sizes.");
     }
 
 #pragma omp parallel for                        \
@@ -104,6 +104,7 @@ double TYPED_FUNC(
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+
         rvalue =
             TYPED_FUNC(bml_getVector_ellpack) (B,
                                                &A_index[ROWMAJOR
@@ -113,6 +114,7 @@ double TYPED_FUNC(
         for (int j = 0; j < A_nnz[i]; j++)
         {
             trace += A_value[ROWMAJOR(i, j, A_N, A_M)] * rvalue[j];
+            //printf("%lf\n", trace);
         }
     }
 

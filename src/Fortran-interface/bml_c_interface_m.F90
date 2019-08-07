@@ -534,12 +534,12 @@ module bml_c_interface_m
       real(C_DOUBLE) :: bml_trace_C
     end function bml_trace_C
 
-    function bml_traceMult_C(a, b) bind(C, name="bml_traceMult")
+    function bml_trace_mult_C(a, b) bind(C, name="bml_trace_mult")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
-      real(C_DOUBLE) :: bml_traceMult_C
-    end function bml_traceMult_C
+      real(C_DOUBLE) :: bml_trace_mult_C
+    end function bml_trace_mult_C
 
     function bml_transpose_new_C(a) bind(C, name="bml_transpose_new")
       import :: C_PTR

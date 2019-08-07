@@ -53,23 +53,23 @@ bml_trace_dense(
  *  \return The trace of A*B
  */
 double
-bml_traceMult_dense(
+bml_trace_mult_dense(
     bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_traceMult_dense_single_real(A, B);
+            return bml_trace_mult_dense_single_real(A, B);
             break;
         case double_real:
-            return bml_traceMult_dense_double_real(A, B);
+            return bml_trace_mult_dense_double_real(A, B);
             break;
         case single_complex:
-            return bml_traceMult_dense_single_complex(A, B);
+            return bml_trace_mult_dense_single_complex(A, B);
             break;
         case double_complex:
-            return bml_traceMult_dense_double_complex(A, B);
+            return bml_trace_mult_dense_double_complex(A, B);
             break;
         default:
             LOG_ERROR("unknown precision\n");

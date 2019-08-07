@@ -72,7 +72,7 @@ double TYPED_FUNC(
  *  \return the trace of A*B
  */
 double TYPED_FUNC(
-    bml_traceMult_ellsort) (
+    bml_trace_mult_ellsort) (
     bml_matrix_ellsort_t * A,
     bml_matrix_ellsort_t * B)
 {
@@ -93,7 +93,7 @@ double TYPED_FUNC(
     if (A_N != B->N || A_M != B->M)
     {
         LOG_ERROR
-            ("bml_traceMult_ellsort: Matrices A and B have different sizes.");
+            ("bml_trace_mult_ellsort: Matrices A and B have different sizes.");
     }
 
 #pragma omp parallel for                        \

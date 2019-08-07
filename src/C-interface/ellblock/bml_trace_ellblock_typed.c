@@ -67,7 +67,7 @@ double TYPED_FUNC(
  *  \return the trace of A*B
  */
 double TYPED_FUNC(
-    bml_traceMult_ellblock) (
+    bml_trace_mult_ellblock) (
     bml_matrix_ellblock_t * A,
     bml_matrix_ellblock_t * B)
 {
@@ -88,7 +88,7 @@ double TYPED_FUNC(
     if (NB != B->NB || MB != B->MB)
     {
         LOG_ERROR
-            ("bml_traceMult_ellblock: Matrices A and B have different number of blocks.");
+            ("bml_trace_mult_ellblock: Matrices A and B have different number of blocks.");
     }
 
     for (int ib = 0; ib < NB; ib++)

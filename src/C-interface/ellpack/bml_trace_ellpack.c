@@ -5,6 +5,7 @@
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 /** Calculate the trace of a matrix.
@@ -51,7 +52,7 @@ bml_trace_ellpack(
  *  \return the trace of A*B
  */
 double
-bml_traceMult_ellpack(
+bml_trace_mult_ellpack(
     bml_matrix_ellpack_t * A,
     bml_matrix_ellpack_t * B)
 {
@@ -60,16 +61,16 @@ bml_traceMult_ellpack(
     switch (A->matrix_precision)
     {
         case single_real:
-            trace = bml_traceMult_ellpack_single_real(A, B);
+            trace = bml_trace_mult_ellpack_single_real(A, B);
             break;
         case double_real:
-            trace = bml_traceMult_ellpack_double_real(A, B);
+            trace = bml_trace_mult_ellpack_double_real(A, B);
             break;
         case single_complex:
-            trace = bml_traceMult_ellpack_single_complex(A, B);
+            trace = bml_trace_mult_ellpack_single_complex(A, B);
             break;
         case double_complex:
-            trace = bml_traceMult_ellpack_double_complex(A, B);
+            trace = bml_trace_mult_ellpack_double_complex(A, B);
             break;
         default:
             LOG_ERROR("unknown precision\n");

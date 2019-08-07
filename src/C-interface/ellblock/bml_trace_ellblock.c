@@ -51,7 +51,7 @@ bml_trace_ellblock(
  *  \return the trace of A*B
  */
 double
-bml_traceMult_ellblock(
+bml_trace_mult_ellblock(
     bml_matrix_ellblock_t * A,
     bml_matrix_ellblock_t * B)
 {
@@ -60,16 +60,16 @@ bml_traceMult_ellblock(
     switch (A->matrix_precision)
     {
         case single_real:
-            trace = bml_traceMult_ellblock_single_real(A, B);
+            trace = bml_trace_mult_ellblock_single_real(A, B);
             break;
         case double_real:
-            trace = bml_traceMult_ellblock_double_real(A, B);
+            trace = bml_trace_mult_ellblock_double_real(A, B);
             break;
         case single_complex:
-            trace = bml_traceMult_ellblock_single_complex(A, B);
+            trace = bml_trace_mult_ellblock_single_complex(A, B);
             break;
         case double_complex:
-            trace = bml_traceMult_ellblock_double_complex(A, B);
+            trace = bml_trace_mult_ellblock_double_complex(A, B);
             break;
         default:
             LOG_ERROR("unknown precision\n");

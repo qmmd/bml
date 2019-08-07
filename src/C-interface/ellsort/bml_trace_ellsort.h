@@ -18,23 +18,23 @@ double bml_trace_ellsort_single_complex(
 double bml_trace_ellsort_double_complex(
     bml_matrix_ellsort_t * A);
 
-double bml_traceMult_ellsort(
+double bml_trace_mult_ellsort(
     bml_matrix_ellsort_t * A,
     bml_matrix_ellsort_t * B);
 
-double bml_traceMult_ellsort_single_real(
+double bml_trace_mult_ellsort_single_real(
     bml_matrix_ellsort_t * A,
     bml_matrix_ellsort_t * B);
 
-double bml_traceMult_ellsort_double_real(
+double bml_trace_mult_ellsort_double_real(
     bml_matrix_ellsort_t * A,
     bml_matrix_ellsort_t * B);
 
-double bml_traceMult_ellsort_single_complex(
+double bml_trace_mult_ellsort_single_complex(
     bml_matrix_ellsort_t * A,
     bml_matrix_ellsort_t * B);
 
-double bml_traceMult_ellsort_double_complex(
+double bml_trace_mult_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
     bml_matrix_ellsort_t * B);
 

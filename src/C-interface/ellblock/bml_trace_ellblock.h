@@ -18,23 +18,23 @@ double bml_trace_ellblock_single_complex(
 double bml_trace_ellblock_double_complex(
     bml_matrix_ellblock_t * A);
 
-double bml_traceMult_ellblock(
+double bml_trace_mult_ellblock(
     bml_matrix_ellblock_t * A,
     bml_matrix_ellblock_t * B);
 
-double bml_traceMult_ellblock_single_real(
+double bml_trace_mult_ellblock_single_real(
     bml_matrix_ellblock_t * A,
     bml_matrix_ellblock_t * B);
 
-double bml_traceMult_ellblock_double_real(
+double bml_trace_mult_ellblock_double_real(
     bml_matrix_ellblock_t * A,
     bml_matrix_ellblock_t * B);
 
-double bml_traceMult_ellblock_single_complex(
+double bml_trace_mult_ellblock_single_complex(
     bml_matrix_ellblock_t * A,
     bml_matrix_ellblock_t * B);
 
-double bml_traceMult_ellblock_double_complex(
+double bml_trace_mult_ellblock_double_complex(
     bml_matrix_ellblock_t * A,
     bml_matrix_ellblock_t * B);
 

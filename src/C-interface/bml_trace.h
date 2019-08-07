@@ -10,7 +10,7 @@ double bml_trace(
     bml_matrix_t * A);
 
 // Calculate trace of matrix mult
-double bml_traceMult(
+double bml_trace_mult(
     bml_matrix_t * A,
     bml_matrix_t * B);
 
