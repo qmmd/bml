@@ -43,19 +43,19 @@ void TYPED_FUNC(
 #endif
 
     // All data and copy stays on deveice
-#pragma omp target teams distribute parallel for 
+#pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
-        {
-             A_nnz[i] = 0;
-        }
+    {
+        A_nnz[i] = 0;
+    }
 
 #pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < M; j++)
         {
-            A_index[ROWMAJOR(i,j,N,M)] = 0;
-            A_value[ROWMAJOR(i,j,N,M)] = 0.0;
+            A_index[ROWMAJOR(i, j, N, M)] = 0;
+            A_value[ROWMAJOR(i, j, N, M)] = 0.0;
         }
     }
 
@@ -148,19 +148,19 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
     // All arrays set on device
-#pragma omp target teams distribute parallel for 
+#pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
-        {
-             A_nnz[i] = 0;
-        }
+    {
+        A_nnz[i] = 0;
+    }
 
 #pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < M; j++)
         {
-            A_index[ROWMAJOR(i,j,N,M)] = 0;
-            A_value[ROWMAJOR(i,j,N,M)] = 0.0;
+            A_index[ROWMAJOR(i, j, N, M)] = 0;
+            A_value[ROWMAJOR(i, j, N, M)] = 0.0;
         }
     }
     return A;

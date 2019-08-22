@@ -59,7 +59,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     // all work on device
 
-#pragma omp target teams distribute parallel for 
+#pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
     {
         B_nnz[i] = A_nnz[i];
@@ -70,8 +70,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     {
         for (int j = 0; j < M; j++)
         {
-            B_index[ROWMAJOR(i,j,N,M)] = A_index[ROWMAJOR(i, j, N, M)];
-            B_value[ROWMAJOR(i,j,N,M)] = A_value[ROWMAJOR(i, j, N, M)];
+            B_index[ROWMAJOR(i, j, N, M)] = A_index[ROWMAJOR(i, j, N, M)];
+            B_value[ROWMAJOR(i, j, N, M)] = A_value[ROWMAJOR(i, j, N, M)];
         }
     }
 
@@ -123,7 +123,7 @@ void TYPED_FUNC(
 #endif // NOGPU
 
 // All data and copy stays on deveice
-#pragma omp target teams distribute parallel for 
+#pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
     {
         B_nnz[i] = A_nnz[i];
@@ -134,8 +134,8 @@ void TYPED_FUNC(
     {
         for (int j = 0; j < M; j++)
         {
-            B_index[ROWMAJOR(i,j,N,M)] = A_index[ROWMAJOR(i, j, N, M)];
-            B_value[ROWMAJOR(i,j,N,M)] = A_value[ROWMAJOR(i, j, N, M)];
+            B_index[ROWMAJOR(i, j, N, M)] = A_index[ROWMAJOR(i, j, N, M)];
+            B_value[ROWMAJOR(i, j, N, M)] = A_value[ROWMAJOR(i, j, N, M)];
         }
     }
 

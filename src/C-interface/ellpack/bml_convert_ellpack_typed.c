@@ -19,8 +19,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int N = bml_get_N(A);
 
     bml_matrix_type_t A_type = bml_get_type(A);
-    if (A_type == ellpack) {
-        bml_matrix_ellpack_t *A_ellpack = (bml_matrix_ellpack_t*)A;
+    if (A_type == ellpack)
+    {
+        bml_matrix_ellpack_t *A_ellpack = (bml_matrix_ellpack_t *) A;
         int *A_nnz = A_ellpack->nnz;
         int *A_index = A_ellpack->index;
         REAL_T *A_value = A_ellpack->value;

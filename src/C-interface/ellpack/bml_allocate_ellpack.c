@@ -20,8 +20,8 @@ bml_deallocate_ellpack(
     int N = A->N;
     int M = A->M;
 
-    int *A_nnz      =   A->nnz;
-    int *A_index    =   A->index;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
     // JAMAL: need to make a typed deallocator
     double *A_value = A->value;
 

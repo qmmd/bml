@@ -37,8 +37,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     //printf("got to here\n");
     bml_matrix_ellpack_t *B =
         TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension, dist_mode);
-        //TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, dist_mode);
-        
+    //TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, dist_mode);
+
     //printf("got to here\n");
 
     REAL_T *A_value = (REAL_T *) A->value;

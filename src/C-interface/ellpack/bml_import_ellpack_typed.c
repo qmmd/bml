@@ -71,7 +71,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
     }
 
-    // push the new values to the GPU 
+    // push the new values to the GPU
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
     return A_bml;

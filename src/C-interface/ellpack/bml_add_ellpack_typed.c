@@ -94,9 +94,9 @@ void TYPED_FUNC(
         //REAL_T x[N];
         //memset(ix, 0, N * sizeof(int));
 
-        int *ix = (int*)omp_target_alloc(N*sizeof(int),0);
-        int *jx = (int*)omp_target_alloc(N*sizeof(int),0);
-        REAL_T *x = (REAL_T*)omp_target_alloc(N*sizeof(REAL_T),0);
+        int *ix = (int *) omp_target_alloc(N * sizeof(int), 0);
+        int *jx = (int *) omp_target_alloc(N * sizeof(int), 0);
+        REAL_T *x = (REAL_T *) omp_target_alloc(N * sizeof(REAL_T), 0);
 
 #endif
 

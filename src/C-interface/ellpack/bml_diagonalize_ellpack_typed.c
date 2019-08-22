@@ -46,7 +46,7 @@ void TYPED_FUNC(
     REAL_T *eigenvectors_dense;
     REAL_T *typed_eigenvalues = (REAL_T *) eigenvalues;
     bml_matrix_ellpack_t *myeigenvectors;
-        //(bml_matrix_ellpack_t *) eigenvectors;
+    //(bml_matrix_ellpack_t *) eigenvectors;
 
     // Form ellpack_bml to dense_array
     A_dense = bml_export_to_dense_ellpack(A, dense_row_major);

@@ -39,7 +39,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp target 
+#pragma omp target
     A_value[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = *((REAL_T *) element);
     A_index[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = j;
     A_nnz[i]++;

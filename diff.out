@@ -1,3 +1,38 @@
+diff --git a/ibm_build.sh b/ibm_build.sh
+new file mode 100755
+index 0000000..8d4121b
+--- /dev/null
++++ b/ibm_build.sh
+@@ -0,0 +1,29 @@
++#!/bin/bash
++
++# Make sure all the paths are correct
++
++rm -r build
++rm -r install
++
++MY_PATH=$(pwd)
++
++export CC=${CC:=xlc_r}
++export FC=${FC:=xlf_r}
++#export CXX=${CXX:=g++}
++export BLAS_VENDOR=${BLAS_VENDOR:=IBM}
++export BML_OPENMP=${BML_OPENMP:=yes}
++export BML_GPU=${BML_GPU:=yes}
++export INSTALL_DIR=${INSTALL_DIR:="${MY_PATH}/install"}
++export BML_TESTING=${BML_TESTING:=yes}
++export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Release}
++export EXTRA_CFLAGS=${EXTRA_CFLAGS:="-qoffload"}
++export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:=""}
++export ESSL_DIR=/opt/ibmmath/essl/6.1/
++export CMAKE_Fortran_FLAGS="-qxlf2003=polymorphic -qthreaded -qsmp=omp -qoffload"
++export CMAKE_C_FLAGS="-D_OPENMP=201511 -qthreaded -qsmp=omp -qoffload"
++export CMAKE_CXX_FLAGS="-D_OPENMP=201511 -qthreaded -qsmp=omp -qoffload"
++
++./build.sh install
++
++                                                                                                                                                                                              
++                                    
 diff --git a/src/C-interface/ellpack/bml_add_ellpack.c b/src/C-interface/ellpack/bml_add_ellpack.c
 index 2d38ab1..c500fec 100644
 --- a/src/C-interface/ellpack/bml_add_ellpack.c
@@ -142,7 +177,7 @@ index 2f66a57..7674456 100644
      const double beta,
      const double threshold);
 diff --git a/src/C-interface/ellpack/bml_add_ellpack_typed.c b/src/C-interface/ellpack/bml_add_ellpack_typed.c
-index 51dd2f0..db7dd30 100644
+index f7ecbbc..db7dd30 100644
 --- a/src/C-interface/ellpack/bml_add_ellpack_typed.c
 +++ b/src/C-interface/ellpack/bml_add_ellpack_typed.c
 @@ -9,6 +9,7 @@
@@ -162,16 +197,19 @@ index 51dd2f0..db7dd30 100644
      const bml_matrix_ellpack_t * B,
      const double alpha,
      const double beta,
-@@ -53,6 +54,8 @@ void TYPED_FUNC(
+@@ -53,6 +54,11 @@ void TYPED_FUNC(
      REAL_T *B_value = (REAL_T *) B->value;
  
      int myRank = bml_getMyRank();
 +    int rowMin = A_localRowMin[myRank];
 +    int rowMax = A_localRowMax[myRank];
++
++#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
++#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
  
- #pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
- #pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
-@@ -67,35 +70,39 @@ void TYPED_FUNC(
+ #if !(defined(__IBMC__) || defined(__ibmxl__))
+     int ix[N], jx[N];
+@@ -64,35 +70,39 @@ void TYPED_FUNC(
  #endif
  
  #if defined(__IBMC__) || defined(__ibmxl__)
@@ -222,7 +260,7 @@ index 51dd2f0..db7dd30 100644
              for (int jp = 0; jp < A_nnz[i]; jp++)
              {
                  int k = A_index[ROWMAJOR(i, jp, N, A_M)];
-@@ -106,10 +113,14 @@ void TYPED_FUNC(
+@@ -103,10 +113,14 @@ void TYPED_FUNC(
                      jx[l] = k;
                      l++;
                  }
@@ -237,7 +275,7 @@ index 51dd2f0..db7dd30 100644
              for (int jp = 0; jp < B_nnz[i]; jp++)
              {
                  int k = B_index[ROWMAJOR(i, jp, N, B_M)];
-@@ -120,10 +131,14 @@ void TYPED_FUNC(
+@@ -117,10 +131,14 @@ void TYPED_FUNC(
                      jx[l] = k;
                      l++;
                  }
@@ -252,24 +290,28 @@ index 51dd2f0..db7dd30 100644
          int ll = 0;
          for (int jp = 0; jp < l; jp++)
          {
-@@ -141,7 +156,6 @@ void TYPED_FUNC(
+@@ -137,6 +155,8 @@ void TYPED_FUNC(
+         }
          A_nnz[i] = ll;
      }
- #pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
--#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
- 
++#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
++
  }
  
-@@ -185,6 +199,8 @@ double TYPED_FUNC(
+ /** Matrix addition.
+@@ -179,6 +199,11 @@ double TYPED_FUNC(
      double trnorm = 0.0;
  
      int myRank = bml_getMyRank();
 +    int rowMin = A_localRowMin[myRank];
 +    int rowMax = A_localRowMax[myRank];
++
++#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
++#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
  
- #pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
- #pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
-@@ -203,24 +219,23 @@ double TYPED_FUNC(
+ #if !(defined(__IBMC__) || defined(__ibmxl__))
+     int ix[N], jx[N];
+@@ -194,24 +219,23 @@ double TYPED_FUNC(
  #if defined(__IBMC__) || defined(__ibmxl__)
  #pragma omp parallel for                  \
      default(none)                         \
@@ -299,15 +341,16 @@ index 51dd2f0..db7dd30 100644
      {
  
  #if defined(__IBMC__) || defined(__ibmxl__)
-@@ -286,7 +301,6 @@ double TYPED_FUNC(
+@@ -276,6 +300,8 @@ double TYPED_FUNC(
+         A_nnz[i] = ll;
      }
  
- #pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
--#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
- 
++#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
++
      return trnorm;
  }
-@@ -303,7 +317,7 @@ double TYPED_FUNC(
+ 
+@@ -291,7 +317,7 @@ double TYPED_FUNC(
   */
  void TYPED_FUNC(
      bml_add_identity_ellpack) (
@@ -316,7 +359,7 @@ index 51dd2f0..db7dd30 100644
      const double beta,
      const double threshold)
  {
-@@ -331,7 +345,7 @@ void TYPED_FUNC(
+@@ -319,7 +345,7 @@ void TYPED_FUNC(
   */
  void TYPED_FUNC(
      bml_scale_add_identity_ellpack) (
@@ -325,23 +368,70 @@ index 51dd2f0..db7dd30 100644
      const double alpha,
      const double beta,
      const double threshold)
+diff --git a/src/C-interface/ellpack/bml_adjungate_triangle_ellpack_typed.c b/src/C-interface/ellpack/bml_adjungate_triangle_ellpack_typed.c
+index 50744e5..e4611f9 100644
+--- a/src/C-interface/ellpack/bml_adjungate_triangle_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_adjungate_triangle_ellpack_typed.c
+@@ -49,7 +49,7 @@ void TYPED_FUNC(
+                 omp_init_lock(&(lock[i]));
+ #endif
+ 
+-#pragma omp parallel for default(none)            \
++#pragma omp target parallel for default(none)            \
+   shared(A_N, A_M, A_index, A_nnz, A_value, lock) \
+   private(l, ll)
+             // WARNING: Please, check for race conditions ...
+@@ -92,7 +92,7 @@ void TYPED_FUNC(
+                 omp_init_lock(&(lock[i]));
+ #endif
+ 
+-#pragma omp parallel for default(none)                  \
++#pragma omp target parallel for default(none)                  \
+   shared(lock, A_N, A_M, A_index, A_nnz, A_value)       \
+   private(l, ll)
+             //    WARNING: Please, check for race conditions and parallel performances ...
+diff --git a/src/C-interface/ellpack/bml_allocate_ellpack.c b/src/C-interface/ellpack/bml_allocate_ellpack.c
+index 65973c8..faca789 100644
+--- a/src/C-interface/ellpack/bml_allocate_ellpack.c
++++ b/src/C-interface/ellpack/bml_allocate_ellpack.c
+@@ -17,6 +17,15 @@ void
+ bml_deallocate_ellpack(
+     bml_matrix_ellpack_t * A)
+ {
++    int N = A->N;
++    int M = A->M;
++
++    int *A_nnz      =   A->nnz;
++    int *A_index    =   A->index;
++    // JAMAL: need to make a typed deallocator
++    double *A_value = A->value;
++
++#pragma omp target exit data map(delete: A_nnz[:N], A_index[:N*M], A_value[:N*M])
+     bml_deallocate_domain(A->domain);
+     bml_deallocate_domain(A->domain2);
+     bml_free_memory(A->value);
 diff --git a/src/C-interface/ellpack/bml_allocate_ellpack_typed.c b/src/C-interface/ellpack/bml_allocate_ellpack_typed.c
-index 4957467..c3f67ab 100644
+index e78f898..c3f67ab 100644
 --- a/src/C-interface/ellpack/bml_allocate_ellpack_typed.c
 +++ b/src/C-interface/ellpack/bml_allocate_ellpack_typed.c
-@@ -31,11 +31,34 @@ void TYPED_FUNC(
-     int *A_index = A->index;
-     int *A_nnz = A->nnz;
-     REAL_T *A_value = A->value;
+@@ -26,9 +26,39 @@ void TYPED_FUNC(
+     bml_clear_ellpack) (
+     bml_matrix_ellpack_t * A)
+ {
++    int N = A->N;
++    int M = A->M;
++    int *A_index = A->index;
++    int *A_nnz = A->nnz;
++    REAL_T *A_value = A->value;
 +
 +#ifdef NOGPU
- #pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++#pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 +
      memset(A->nnz, 0, A->N * sizeof(int));
      memset(A->index, 0, A->N * A->M * sizeof(int));
      memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
 +
- #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 +#endif
 +
 +    // All data and copy stays on deveice
@@ -364,7 +454,7 @@ index 4957467..c3f67ab 100644
  }
  
  /** Allocate a matrix with uninitialized values.
-@@ -64,6 +87,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+@@ -57,12 +87,22 @@ bml_matrix_ellpack_t *TYPED_FUNC(
      A->N = matrix_dimension.N_rows;
      A->M = matrix_dimension.N_nz_max;
      A->distribution_mode = distrib_mode;
@@ -372,17 +462,22 @@ index 4957467..c3f67ab 100644
      A->index = bml_noinit_allocate_memory(sizeof(int) * A->N * A->M);
      A->nnz = bml_allocate_memory(sizeof(int) * A->N);
      A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * A->N * A->M);
-@@ -75,7 +99,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
-     int *A_index = A->index;
-     int *A_nnz = A->nnz;
-     REAL_T *A_value = A->value;
--#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
+     A->domain = bml_default_domain(A->N, A->M, distrib_mode);
+     A->domain2 = bml_default_domain(A->N, A->M, distrib_mode);
+ 
++    int N = A->N;
++    int M = A->M;
++    int *A_index = A->index;
++    int *A_nnz = A->nnz;
++    REAL_T *A_value = A->value;
 +
 +#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
- #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
- 
++#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++
      return A;
-@@ -109,6 +134,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+ }
+ 
+@@ -94,12 +134,35 @@ bml_matrix_ellpack_t *TYPED_FUNC(
      A->N = N;
      A->M = M;
      A->distribution_mode = distrib_mode;
@@ -390,13 +485,13 @@ index 4957467..c3f67ab 100644
      A->index = bml_allocate_memory(sizeof(int) * N * M);
      A->nnz = bml_allocate_memory(sizeof(int) * N);
      A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
-@@ -118,9 +144,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
-     int *A_index = A->index;
-     int *A_nnz = A->nnz;
-     REAL_T *A_value = A->value;
--#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
--#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+     A->domain = bml_default_domain(N, M, distrib_mode);
+     A->domain2 = bml_default_domain(N, M, distrib_mode);
  
++    int *A_index = A->index;
++    int *A_nnz = A->nnz;
++    REAL_T *A_value = A->value;
++
 +#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 +
 +    // All arrays set on device
@@ -418,7 +513,7 @@ index 4957467..c3f67ab 100644
      return A;
  }
  
-@@ -152,6 +194,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+@@ -131,6 +194,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
      int *A_index = A->index;
      int *A_nnz = A->nnz;
  
@@ -426,40 +521,102 @@ index 4957467..c3f67ab 100644
  #pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
      for (int i = 0; i < N; i++)
      {
-@@ -165,7 +208,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+@@ -144,6 +208,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
          }
          A_nnz[i] = jind;
      }
--#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
- #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
- 
++#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++
      return A;
-@@ -258,8 +300,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+ }
+ 
+@@ -178,6 +244,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+ 
++#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
++
+     for (int i = 0; i < N; i++)
+     {
+         int jind = 0;
+@@ -189,6 +257,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+         }
+         A_nnz[i] = jind;
+     }
++#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++
+     return A;
+ }
+ 
+@@ -220,12 +290,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+ 
+-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
++#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
++#pragma omp \
++    target \
++    parallel for default(none) shared(A_value, A_index, A_nnz)
+     for (int i = 0; i < N; i++)
+     {
+         A_value[ROWMAJOR(i, 0, N, M)] = (REAL_T) 1.0;
          A_index[ROWMAJOR(i, 0, N, M)] = i;
          A_nnz[i] = 1;
      }
--    // GPU version and CPU version out of sync
--//#pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
- 
++
      return A;
  }
+diff --git a/src/C-interface/ellpack/bml_convert_ellpack_typed.c b/src/C-interface/ellpack/bml_convert_ellpack_typed.c
+index 25ad0ea..4f73aaa 100644
+--- a/src/C-interface/ellpack/bml_convert_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_convert_ellpack_typed.c
+@@ -18,6 +18,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+ {
+     int N = bml_get_N(A);
+ 
++    bml_matrix_type_t A_type = bml_get_type(A);
++    if (A_type == ellpack) {
++        bml_matrix_ellpack_t *A_ellpack = (bml_matrix_ellpack_t*)A;
++        int *A_nnz = A_ellpack->nnz;
++        int *A_index = A_ellpack->index;
++        REAL_T *A_value = A_ellpack->value;
++
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++    }
++
+     if (N < 0)
+     {
+         LOG_ERROR("A is not intialized\n");
+@@ -34,5 +44,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+         }
+     }
+ 
++    int *B_nnz = B->nnz;
++    int *B_index = B->index;
++    REAL_T *B_value = B->value;
++#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+     return B;
+ }
 diff --git a/src/C-interface/ellpack/bml_copy_ellpack_typed.c b/src/C-interface/ellpack/bml_copy_ellpack_typed.c
-index 64af28c..2f8460e 100644
+index 5900dc0..2f8460e 100644
 --- a/src/C-interface/ellpack/bml_copy_ellpack_typed.c
 +++ b/src/C-interface/ellpack/bml_copy_ellpack_typed.c
-@@ -38,6 +38,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+@@ -38,6 +38,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
      int *B_nnz = B->nnz;
      REAL_T *B_value = B->value;
  
 +#ifdef NOGPU
 +    // copy to host and copy back
- #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
      //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
      memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
-@@ -53,6 +55,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+@@ -50,6 +53,28 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+                M * sizeof(REAL_T));
+         //      A_nnz[perm[i]] = B_nnz[i];
      }
- // push the data to the GPU
- #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++// push the data to the GPU
++#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 +#endif // NOGPU
 +
 +    // all work on device
@@ -479,21 +636,27 @@ index 64af28c..2f8460e 100644
 +            B_value[ROWMAJOR(i,j,N,M)] = A_value[ROWMAJOR(i, j, N, M)];
 +        }
 +    }
- 
++
      bml_copy_domain(A->domain, B->domain);
      bml_copy_domain(A->domain2, B->domain2);
-@@ -82,6 +103,7 @@ void TYPED_FUNC(
+     return B;
+@@ -77,6 +102,9 @@ void TYPED_FUNC(
+     int *B_index = B->index;
      int *B_nnz = B->nnz;
      REAL_T *B_value = B->value;
- 
++
 +#ifdef NOGPU
- #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
      // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
      memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
-@@ -98,6 +120,26 @@ void TYPED_FUNC(
- // push the data to the GPU
- #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
- 
+     //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+@@ -89,6 +117,29 @@ void TYPED_FUNC(
+                M * sizeof(REAL_T));
+         //      A_nnz[perm[i]] = B_nnz[i];
+     }
++// push the data to the GPU
++#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++
 +#endif // NOGPU
 +
 +// All data and copy stays on deveice
@@ -518,7 +681,7 @@ index 64af28c..2f8460e 100644
      {
          bml_copy_domain(A->domain, B->domain);
 diff --git a/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c b/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c
-index 21e708d..c4fa29f 100644
+index cb6173e..c4fa29f 100644
 --- a/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c
 +++ b/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c
 @@ -45,8 +45,8 @@ void TYPED_FUNC(
@@ -532,8 +695,215 @@ index 21e708d..c4fa29f 100644
  
      // Form ellpack_bml to dense_array
      A_dense = bml_export_to_dense_ellpack(A, dense_row_major);
+@@ -85,7 +85,7 @@ void TYPED_FUNC(
+     // This is done in order to pass the changes back to the upper level
+     bml_copy_ellpack(myeigenvectors, eigenvectors);
+ 
+-    bml_deallocate_ellpack(myeigenvectors);
++    //bml_deallocate_ellpack(myeigenvectors);
+ 
+     return;
+ }
+diff --git a/src/C-interface/ellpack/bml_export_ellpack_typed.c b/src/C-interface/ellpack/bml_export_ellpack_typed.c
+index e021ae5..4ad9d70 100644
+--- a/src/C-interface/ellpack/bml_export_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_export_ellpack_typed.c
+@@ -32,12 +32,17 @@ void *TYPED_FUNC(
+     int M = A->M;
+     int *A_nnz = A->nnz;
+     int *A_index = A->index;
+-    REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+     REAL_T *A_value = A->value;
+ 
++    REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
++
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+     switch (order)
+     {
+         case dense_row_major:
++            // copy data from device
++
++            // export to dense format
+ #pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
+             for (int i = 0; i < N; i++)
+             {
+@@ -48,8 +53,12 @@ void *TYPED_FUNC(
+                              N)] = A_value[ROWMAJOR(i, j, N, M)];
+                 }
+             }
++//#pragma omp target update from(A_dense[:N*N])
+             break;
+         case dense_column_major:
++            // copy data from device
++
++            // export to dense format
+ #pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
+             for (int i = 0; i < N; i++)
+             {
+diff --git a/src/C-interface/ellpack/bml_getters_ellpack_typed.c b/src/C-interface/ellpack/bml_getters_ellpack_typed.c
+index 6dbdbca..eb99cf0 100644
+--- a/src/C-interface/ellpack/bml_getters_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_getters_ellpack_typed.c
+@@ -25,6 +25,11 @@ REAL_T *TYPED_FUNC(
+     static REAL_T ZERO = 0;
+     REAL_T *A_value = (REAL_T *) A->value;
+ 
++    int A_N = A->N;
++    int A_M = A->M;
++    int *A_index = A->index;
++    int *A_nnz = A->nnz;
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+     if (i < 0 || i >= A->N)
+     {
+         LOG_ERROR("row index out of bounds\n");
+@@ -67,6 +72,7 @@ void *TYPED_FUNC(
+     int *A_nnz = A->nnz;
+     REAL_T *row = calloc(A_N, sizeof(REAL_T));
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+     for (int i = 0; i < A_N; i++)
+     {
+         row[i] = 0.0;
+@@ -103,6 +109,7 @@ void *TYPED_FUNC(
+     int *A_nnz = A->nnz;
+     REAL_T *diagonal = calloc(A_N, sizeof(REAL_T));
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+     for (int i = 0; i < A_N; i++)
+     {
+         diagonal[i] = 0.0;
+diff --git a/src/C-interface/ellpack/bml_import_ellpack_typed.c b/src/C-interface/ellpack/bml_import_ellpack_typed.c
+index fad8bb4..b531656 100644
+--- a/src/C-interface/ellpack/bml_import_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_import_ellpack_typed.c
+@@ -71,5 +71,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+         }
+     }
+ 
++    // push the new values to the GPU 
++#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++
+     return A_bml;
+ }
+diff --git a/src/C-interface/ellpack/bml_multiply_ellpack_typed.c b/src/C-interface/ellpack/bml_multiply_ellpack_typed.c
+index 23b3a3d..6d3cc65 100644
+--- a/src/C-interface/ellpack/bml_multiply_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_multiply_ellpack_typed.c
+@@ -131,6 +131,8 @@ void *TYPED_FUNC(
+     memset(x, 0.0, X_N * sizeof(REAL_T));
+ #endif
+ 
++#pragma omp target update from(X_nnz[:X_N], X_index[:X_N*X_M], X_value[:X_N*X_M])
++
+ #if defined(__IBMC__) || defined(__ibmxl__)
+ #pragma omp parallel for                               \
+     default(none)                                      \
+@@ -215,6 +217,8 @@ void *TYPED_FUNC(
+         X2_nnz[i] = ll;
+     }
+ 
++#pragma omp target update to(X2_nnz[:X2_N], X2_index[:X2_N*X2_M], X2_value[:X2_N*X2_M])
++
+     trace[0] = traceX;
+     trace[1] = traceX2;
+ 
+@@ -262,6 +266,9 @@ void TYPED_FUNC(
+ 
+     int myRank = bml_getMyRank();
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
++#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
++
+ #if !(defined(__IBMC__) || defined(__ibmxl__))
+     int ix[C->N], jx[C->N];
+     REAL_T x[C->N];
+@@ -351,6 +358,7 @@ void TYPED_FUNC(
+         }
+         C_nnz[i] = ll;
+     }
++#pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
+ }
+ 
+ /** Matrix multiply with threshold adjustment.
+@@ -398,6 +406,9 @@ void TYPED_FUNC(
+ 
+     int myRank = bml_getMyRank();
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
++#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
++
+ #if !(defined(__IBMC__) || defined(__ibmxl__))
+     int ix[C->N], jx[C->N];
+     REAL_T x[C->N];
+@@ -498,4 +509,5 @@ void TYPED_FUNC(
+ 
+         adjust_threshold *= (REAL_T) 2.0;
+     }
++#pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
+ }
+diff --git a/src/C-interface/ellpack/bml_norm_ellpack_typed.c b/src/C-interface/ellpack/bml_norm_ellpack_typed.c
+index cf1ed43..14c48e2 100644
+--- a/src/C-interface/ellpack/bml_norm_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_norm_ellpack_typed.c
+@@ -30,6 +30,7 @@ double TYPED_FUNC(
+     int M = A->M;
+ 
+     int *A_nnz = (int *) A->nnz;
++    int *A_index = (int *) A->index;
+     int *A_localRowMin = A->domain->localRowMin;
+     int *A_localRowMax = A->domain->localRowMax;
+ 
+@@ -37,6 +38,7 @@ double TYPED_FUNC(
+     REAL_T *A_value = (REAL_T *) A->value;
+ 
+     int myRank = bml_getMyRank();
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+ 
+ #pragma omp parallel for                        \
+   default(none)                                 \
+@@ -79,7 +81,7 @@ double TYPED_FUNC(
+     REAL_T sum = 0.0;
+     REAL_T *A_value = (REAL_T *) A->value;
+ 
+-#pragma omp parallel for default(none)          \
++#pragma omp target parallel for default(none)          \
+   shared(N, M, A_index, A_nnz, A_value)         \
+   reduction(+:sum)
+     for (int i = 0; i < core_size; i++)
+@@ -271,6 +273,9 @@ double TYPED_FUNC(
+ 
+     int myRank = bml_getMyRank();
+ 
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++#pragma omp target update from(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++
+ #pragma omp parallel for                        \
+   default(none)                                 \
+   private(rvalue, temp)                         \
+diff --git a/src/C-interface/ellpack/bml_normalize_ellpack_typed.c b/src/C-interface/ellpack/bml_normalize_ellpack_typed.c
+index d033188..d9407b7 100644
+--- a/src/C-interface/ellpack/bml_normalize_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_normalize_ellpack_typed.c
+@@ -78,6 +78,8 @@ void *TYPED_FUNC(
+ 
+     REAL_T *A_value = (REAL_T *) A->value;
+ 
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++
+ #pragma omp parallel for default(none)          \
+   shared(N, M, A_nnz, A_index, A_value)         \
+   shared(A_localRowMin, A_localRowMax, myRank)  \
+@@ -175,6 +177,8 @@ void *TYPED_FUNC(
+ 
+     REAL_T *A_value = (REAL_T *) A->value;
+ 
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++
+ #pragma omp parallel for default(none)          \
+   shared(N, M, A_nnz, A_index, A_value)         \
+   shared(rad, dval)                             \
 diff --git a/src/C-interface/ellpack/bml_scale_ellpack_typed.c b/src/C-interface/ellpack/bml_scale_ellpack_typed.c
-index 606b1bd..95592aa 100644
+index 79d66f1..95592aa 100644
 --- a/src/C-interface/ellpack/bml_scale_ellpack_typed.c
 +++ b/src/C-interface/ellpack/bml_scale_ellpack_typed.c
 @@ -1,4 +1,5 @@
@@ -542,32 +912,33 @@ index 606b1bd..95592aa 100644
  #include "../blas.h"
  #include "bml_allocate.h"
  #include "bml_allocate_ellpack.h"
-@@ -39,10 +40,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+@@ -37,12 +38,40 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int startIndex = B->domain->localDispl[myRank];
+     int inc = 1;
  
-     int N = A->N;
-     int M = A->M;
++    int N = A->N;
++    int M = A->M;
 +
-     int *A_nnz = A->nnz;
-     int *A_index = A->index;
--    int *A_value = A->value;
++    int *A_nnz = A->nnz;
++    int *A_index = A->index;
 +    REAL_T *A_value = A->value;
- 
++
 +    int *B_nnz = B->nnz;
 +    int *B_index = B->index;
 +    REAL_T scale = *scale_factor;
 +
 +#ifdef NOGPU
- #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
- 
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++
  #ifdef NOBLAS
-@@ -52,10 +59,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     LOG_ERROR("No BLAS library");
+ #else
+     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
  #endif
  
-     // push result to GPU
--    int *B_nnz = B->nnz;
--    int *B_index = B->index;
- 
- #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++    // push result to GPU
++
++#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 +#endif
 +
 +#pragma omp target teams distribute parallel for collapse(2)
@@ -578,25 +949,35 @@ index 606b1bd..95592aa 100644
 +            B_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
 +        }
 +    }
- 
++
      return B;
  }
-@@ -86,8 +101,10 @@ void TYPED_FUNC(
-     int M = A->M;
-     int *A_nnz = A->nnz;
-     int *A_index = A->index;
--    int *A_value = A->value;
+ 
+@@ -68,12 +97,38 @@ void TYPED_FUNC(
+     int startIndex = B->domain->localDispl[myRank];
+     int inc = 1;
+ 
++    int N = A->N;
++    int M = A->M;
++    int *A_nnz = A->nnz;
++    int *A_index = A->index;
 +    REAL_T *A_value = A->value;
 +    REAL_T scale = *scale_factor;
- 
++
 +#ifdef NOGPU
- #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
- 
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++
  #ifdef NOBLAS
-@@ -101,6 +118,16 @@ void TYPED_FUNC(
-     int *B_index = B->index;
+     LOG_ERROR("No BLAS library");
+ #else
+     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
+ #endif
  
- #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++    // push result to GPU
++    int *B_nnz = B->nnz;
++    int *B_index = B->index;
++
++#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 +#endif
 +
 +#pragma omp target teams distribute parallel for collapse(2)
@@ -607,23 +988,33 @@ index 606b1bd..95592aa 100644
 +            B_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
 +        }
 +    }
- 
++
  }
  
-@@ -120,7 +147,9 @@ void TYPED_FUNC(
-     int M = A->M;
-     int *A_nnz = A->nnz;
-     int *A_index = A->index;
+ void TYPED_FUNC(
+@@ -88,6 +143,15 @@ void TYPED_FUNC(
+     int startIndex = A->domain->localDispl[myRank];
+     int inc = 1;
+ 
++    int N = A->N;
++    int M = A->M;
++    int *A_nnz = A->nnz;
++    int *A_index = A->index;
 +    REAL_T scale = *scale_factor;
- 
++
 +#ifdef NOGPU
- #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
- 
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++
  #ifdef NOBLAS
-@@ -133,5 +162,15 @@ void TYPED_FUNC(
-     // push result to GPU
+     LOG_ERROR("No BLAS library");
+ #else
+@@ -95,4 +159,18 @@ void TYPED_FUNC(
+                   &inc);
+ #endif
  
- #pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++    // push result to GPU
++
++#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 +#endif
 +
 +#pragma omp target teams distribute parallel for collapse(2)
@@ -634,7 +1025,134 @@ index 606b1bd..95592aa 100644
 +            A_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
 +        }
 +    }
++
+ }
+diff --git a/src/C-interface/ellpack/bml_setters_ellpack_typed.c b/src/C-interface/ellpack/bml_setters_ellpack_typed.c
+index 648436f..9710956 100644
+--- a/src/C-interface/ellpack/bml_setters_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_setters_ellpack_typed.c
+@@ -39,6 +39,7 @@ void TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
  
++#pragma omp target 
+     A_value[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = *((REAL_T *) element);
+     A_index[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = j;
+     A_nnz[i]++;
+@@ -75,6 +76,7 @@ void TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+     ll = 0;
+     if (A_nnz[i] > 2)
+     {
+@@ -100,6 +102,7 @@ void TYPED_FUNC(
+         A_index[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = j;
+         A_nnz[i]++;
+     }
++#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+ }
+ 
+ /** Set row i of matrix A.
+@@ -128,6 +131,7 @@ void TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+     for (int j = 0; j < A_N; j++)
+     {
+ 
+@@ -141,6 +145,7 @@ void TYPED_FUNC(
+         }
+     }
+     A_nnz[i] = ll + 1;
++#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+ 
+ }
+ 
+@@ -166,6 +171,7 @@ void TYPED_FUNC(
+     int *A_nnz = A->nnz;
+     int ll = 0;
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+     for (int i = 0; i < A_N; i++)
+     {
+         ll = 0;
+@@ -198,4 +204,5 @@ void TYPED_FUNC(
+         }
+ 
+     }
++#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+ }
+diff --git a/src/C-interface/ellpack/bml_submatrix_ellpack_typed.c b/src/C-interface/ellpack/bml_submatrix_ellpack_typed.c
+index 19450f2..934077d 100644
+--- a/src/C-interface/ellpack/bml_submatrix_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_submatrix_ellpack_typed.c
+@@ -57,6 +57,9 @@ void TYPED_FUNC(
+ 
+     int ix[A_N];
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M])
++#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M])
++
+     memset(ix, 0, A_N * sizeof(int));
+ 
+     l = 0;
+@@ -168,6 +171,8 @@ void TYPED_FUNC(
+     l = 0;
+     ll = 0;
+ 
++#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M])
++
+     // Cores are first followed by halos
+     for (int j = 0; j < nsize; j++)
+     {
+@@ -248,6 +253,13 @@ void TYPED_FUNC(
+     REAL_T *B_matrix = B->matrix;
+ #endif
+ 
++    int A_N = A->N;
++    int A_M = A->M;
++    int *A_nnz = A->nnz;
++    int *A_index = A->index;
++
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M])
++
+ #pragma omp parallel for     \
+     default(none)            \
+     private(rvalue)          \
+@@ -308,6 +320,8 @@ void TYPED_FUNC(
+ 
+     int ii, icol;
+ 
++#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
++
+ #pragma omp parallel for                      \
+     default(none)                             \
+     private(ii, icol)                         \
+@@ -339,6 +353,7 @@ void TYPED_FUNC(
+ #ifdef BML_USE_MAGMA
+     free(A_matrix);
+ #endif
++#pragma omp target update to(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
+ }
+ 
+ // Get matching vector of values
+@@ -395,6 +410,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int *A_nnz = A->nnz;
+     REAL_T *A_value = A->value;
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
++
+ #if !(defined(__IBMC_) || defined(__ibmxl__))
+     int ix[ngroups];
+ 
+@@ -513,4 +530,5 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     }
+ 
+     return B;
++#pragma omp target update to(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
  }
 diff --git a/src/C-interface/ellpack/bml_threshold_ellpack_typed.c b/src/C-interface/ellpack/bml_threshold_ellpack_typed.c
 index 8ec8a87..cc6985e 100644
@@ -743,62 +1261,65 @@ index 8045307..f354d90 100644
    private(rvalue)                               \
    shared(B, A_N, A_M, A_value, A_index, A_nnz)  \
 diff --git a/src/C-interface/ellpack/bml_transpose_ellpack_typed.c b/src/C-interface/ellpack/bml_transpose_ellpack_typed.c
-index 32e5cd6..70541e1 100644
+index 5064858..70541e1 100644
 --- a/src/C-interface/ellpack/bml_transpose_ellpack_typed.c
 +++ b/src/C-interface/ellpack/bml_transpose_ellpack_typed.c
-@@ -28,17 +28,19 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+@@ -28,11 +28,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
      bml_transpose_new_ellpack) (
      const bml_matrix_ellpack_t * A)
  {
 -    bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
--
--    bml_matrix_ellpack_t *B =
--        //TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension,
--                                               //A->distribution_mode);
--        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M, 
--                                               A->distribution_mode);
--
-     int N = A->N;
-     int M = A->M;
- 
++    int N = A->N;
++    int M = A->M;
++
 +    bml_matrix_dimension_t matrix_dimension = { N, N, M };
 +    bml_distribution_mode_t dist_mode = A->distribution_mode;
-+
+ 
 +    //printf("got to here\n");
-+    bml_matrix_ellpack_t *B =
+     bml_matrix_ellpack_t *B =
+-        TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension,
+-                                               A->distribution_mode);
 +        TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension, dist_mode);
 +        //TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, dist_mode);
 +        
 +    //printf("got to here\n");
-+
+ 
      REAL_T *A_value = (REAL_T *) A->value;
      int *A_index = A->index;
-     int *A_nnz = A->nnz;
-@@ -64,7 +66,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+@@ -58,6 +65,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     }
  #endif
  
- #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
--#pragma omp target update from(B_nnz[:N], B_index[:N*M], B_value[:N*M])
- 
++#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++
  #pragma omp parallel for default(none)                                  \
    shared(matrix_dimension, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
-@@ -147,9 +148,9 @@ void TYPED_FUNC(
+     for (int i = 0; i < matrix_dimension.N_rows; i++)
+@@ -85,6 +94,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+ #endif
+         }
+     }
++#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+ 
+     return B;
+     /*
+@@ -137,7 +147,10 @@ void TYPED_FUNC(
+     int *A_index = A->index;
      int *A_nnz = A->nnz;
  
-     // bring all the data back to the CPU and transpose in place
--#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
-+//#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
- 
 -#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
++    // bring all the data back to the CPU and transpose in place
++//#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++
 +#pragma omp target parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
      for (int i = 0; i < N; i++)
      {
          for (int j = A_nnz[i] - 1; j >= 0; j--)
-@@ -194,6 +195,6 @@ void TYPED_FUNC(
+@@ -181,5 +194,7 @@ void TYPED_FUNC(
+             }
          }
      }
-     // push data back to GPU
--#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++    // push data back to GPU
 +//#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
  
  }
