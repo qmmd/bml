@@ -93,11 +93,7 @@ void TYPED_FUNC(
                 omp_init_lock(&(lock[i]));
 #endif
 
-<<<<<<< HEAD
 #pragma omp target parallel for default(none)                  \
-=======
-#pragma omp parallel for                                \
->>>>>>> master
   shared(lock, A_N, A_M, A_index, A_nnz, A_value)       \
   private(l, ll)
             //    WARNING: Please, check for race conditions and parallel performances ...
