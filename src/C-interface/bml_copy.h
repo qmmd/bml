@@ -6,10 +6,10 @@
 #include "bml_types.h"
 
 bml_matrix_t *bml_copy_new(
-    const bml_matrix_t * A);
+    bml_matrix_t * A);
 
 void bml_copy(
-    const bml_matrix_t * A,
+    bml_matrix_t * A,
     bml_matrix_t * B);
 
 void bml_reorder(
@@ -17,7 +17,7 @@ void bml_reorder(
     int *perm);
 
 void bml_copy_domain(
-    const bml_domain_t * A,
+    bml_domain_t * A,
     bml_domain_t * B);
 
 void bml_save_domain(

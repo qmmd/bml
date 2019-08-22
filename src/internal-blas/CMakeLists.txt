@@ -1,5 +1,3 @@
-include_directories(.)
-
 # Public headers.
 set(HEADERS-INTERNAL-BLAS
   bml_gemm.h)

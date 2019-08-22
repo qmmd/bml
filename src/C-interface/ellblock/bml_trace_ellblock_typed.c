@@ -1,12 +1,12 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_trace.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_submatrix.h"
+#include "../bml_trace.h"
+#include "../bml_types.h"
 #include "bml_trace_ellblock.h"
-#include "bml_submatrix.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
-#include "bml_logger.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -26,7 +26,7 @@
  */
 double TYPED_FUNC(
     bml_trace_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     int NB = A->NB;
     int MB = A->MB;
@@ -67,9 +67,9 @@ double TYPED_FUNC(
  *  \return the trace of A*B
  */
 double TYPED_FUNC(
-    bml_traceMult_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    bml_trace_mult_ellblock) (
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
     int NB = A->NB;
     int MB = A->MB;
@@ -88,7 +88,7 @@ double TYPED_FUNC(
     if (NB != B->NB || MB != B->MB)
     {
         LOG_ERROR
-            ("bml_traceMult_ellblock: Matrices A and B have different number of blocks.");
+            ("bml_trace_mult_ellblock: Matrices A and B have different number of blocks.");
     }
 
     for (int ib = 0; ib < NB; ib++)

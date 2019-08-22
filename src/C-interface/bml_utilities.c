@@ -20,9 +20,9 @@
  */
 void
 bml_print_bml_vector(
-    const bml_vector_t * v,
-    const int i_l,
-    const int i_u)
+    bml_vector_t * v,
+    int i_l,
+    int i_u)
 {
     LOG_ERROR("[FIXME]\n");
 }
@@ -37,11 +37,11 @@ bml_print_bml_vector(
  */
 void
 bml_print_bml_matrix(
-    const bml_matrix_t * A,
-    const int i_l,
-    const int i_u,
-    const int j_l,
-    const int j_u)
+    bml_matrix_t * A,
+    int i_l,
+    int i_u,
+    int j_l,
+    int j_u)
 {
     switch (bml_get_type(A))
     {
@@ -196,14 +196,14 @@ bml_print_bml_matrix(
  */
 void
 bml_print_dense_matrix(
-    const int N,
-    const bml_matrix_precision_t matrix_precision,
-    const bml_dense_order_t order,
-    const void *A,
-    const int i_l,
-    const int i_u,
-    const int j_l,
-    const int j_u)
+    int N,
+    bml_matrix_precision_t matrix_precision,
+    bml_dense_order_t order,
+    void *A,
+    int i_l,
+    int i_u,
+    int j_l,
+    int j_u)
 {
     if (N < 0)
     {
@@ -213,7 +213,7 @@ bml_print_dense_matrix(
     {
         case single_real:
         {
-            const float *A_typed = A;
+            float *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -244,7 +244,7 @@ bml_print_dense_matrix(
         }
         case double_real:
         {
-            const double *A_typed = A;
+            double *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -275,7 +275,7 @@ bml_print_dense_matrix(
         }
         case single_complex:
         {
-            const float complex *A_typed = A;
+            float complex *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -310,7 +310,7 @@ bml_print_dense_matrix(
         }
         case double_complex:
         {
-            const double complex *A_typed = A;
+            double complex *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -359,18 +359,17 @@ bml_print_dense_matrix(
  */
 void
 bml_print_dense_vector(
-    const int N,
+    int N,
     bml_matrix_precision_t matrix_precision,
-    const void *v,
-    const int i_l,
-    const int i_u)
+    void *v,
+    int i_l,
+    int i_u)
 {
-    LOG_DEBUG("printing vector [%d:%d]\n", i_l, i_u);
     switch (matrix_precision)
     {
         case single_real:
         {
-            const float *v_typed = v;
+            float *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f", v_typed[i]);
@@ -380,7 +379,7 @@ bml_print_dense_vector(
         }
         case double_real:
         {
-            const double *v_typed = v;
+            double *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f", v_typed[i]);
@@ -390,7 +389,7 @@ bml_print_dense_vector(
         }
         case single_complex:
         {
-            const float complex *v_typed = v;
+            float complex *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f%+1.3fi", creal(v_typed[i]),
@@ -401,7 +400,7 @@ bml_print_dense_vector(
         }
         case double_complex:
         {
-            const double complex *v_typed = v;
+            double complex *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f%+1.3fi", creal(v_typed[i]),
@@ -423,8 +422,8 @@ bml_print_dense_vector(
  */
 void
 bml_read_bml_matrix(
-    const bml_matrix_t * A,
-    const char *filename)
+    bml_matrix_t * A,
+    char *filename)
 {
     switch (bml_get_type(A))
     {
@@ -453,8 +452,8 @@ bml_read_bml_matrix(
  */
 void
 bml_write_bml_matrix(
-    const bml_matrix_t * A,
-    const char *filename)
+    bml_matrix_t * A,
+    char *filename)
 {
     switch (bml_get_type(A))
     {

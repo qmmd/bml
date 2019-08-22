@@ -1,8 +1,8 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellblock.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <complex.h>
@@ -42,8 +42,8 @@ void TYPED_FUNC(
 
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_noinit_matrix_ellblock) (
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     int N = matrix_dimension.N_rows;
 
@@ -69,10 +69,10 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_block_matrix_ellblock) (
-    const int NB,
-    const int MB,
-    const int *bsize,
-    const bml_distribution_mode_t distrib_mode)
+    int NB,
+    int MB,
+    int *bsize,
+    bml_distribution_mode_t distrib_mode)
 {
     assert(NB > 0);
     assert(MB > 0);
@@ -106,9 +106,9 @@ bml_matrix_ellblock_t *TYPED_FUNC(
 
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_zero_matrix_ellblock) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     //use default block values that could have been reset by user
     int *bsize = bml_get_block_sizes(N, M);
@@ -141,9 +141,9 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_random_matrix_ellblock) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     //create matrix
     int *bsize = bml_get_block_sizes(N, M);
@@ -205,9 +205,9 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_identity_matrix_ellblock) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     int *bsize = bml_get_block_sizes(N, M);
     int mb = bml_get_mb();

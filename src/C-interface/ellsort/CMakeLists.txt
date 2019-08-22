@@ -1,5 +1,3 @@
-include_directories(..)
-
 set(HEADERS-ELLSORT
   bml_add_ellsort.h
   bml_adjungate_triangle_ellsort.h

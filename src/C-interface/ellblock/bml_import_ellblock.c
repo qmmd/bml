@@ -1,12 +1,12 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_import_ellblock.h"
-#include "bml_logger.h"
 #include "bml_types_ellblock.h"
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 /** Convert a dense matrix into a bml matrix.
  *
@@ -20,13 +20,13 @@
  */
 bml_matrix_ellblock_t *
 bml_import_from_dense_ellblock(
-    const bml_matrix_precision_t matrix_precision,
-    const bml_dense_order_t order,
-    const int N,
-    const void *A,
-    const double threshold,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    bml_dense_order_t order,
+    int N,
+    void *A,
+    double threshold,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {

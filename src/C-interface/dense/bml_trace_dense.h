@@ -4,38 +4,38 @@
 #include "bml_types_dense.h"
 
 double bml_trace_dense(
-    const bml_matrix_dense_t * A);
+    bml_matrix_dense_t * A);
 
 double bml_trace_dense_single_real(
-    const bml_matrix_dense_t * A);
+    bml_matrix_dense_t * A);
 
 double bml_trace_dense_double_real(
-    const bml_matrix_dense_t * A);
+    bml_matrix_dense_t * A);
 
 double bml_trace_dense_single_complex(
-    const bml_matrix_dense_t * A);
+    bml_matrix_dense_t * A);
 
 double bml_trace_dense_double_complex(
-    const bml_matrix_dense_t * A);
+    bml_matrix_dense_t * A);
 
-double bml_traceMult_dense(
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+double bml_trace_mult_dense(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B);
 
-double bml_traceMult_dense_single_real(
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+double bml_trace_mult_dense_single_real(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B);
 
-double bml_traceMult_dense_double_real(
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+double bml_trace_mult_dense_double_real(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B);
 
-double bml_traceMult_dense_single_complex(
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+double bml_trace_mult_dense_single_complex(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B);
 
-double bml_traceMult_dense_double_complex(
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+double bml_trace_mult_dense_double_complex(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B);
 
 #endif

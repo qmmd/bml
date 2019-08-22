@@ -8,14 +8,14 @@ module add_matrix_m
   private
 
   type, public, extends(test_t) :: add_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type add_matrix_t
 
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -48,11 +48,11 @@ contains
     test_result = .true.
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_copy(a, b)
     call bml_copy(a, d)
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & c)
+         & c)
 
     call bml_add(alpha, b, beta, c, threshold)
     call bml_add_identity(d, alpha, threshold)
@@ -66,25 +66,25 @@ contains
     call bml_print_matrix("C", c_dense, 1, n, 1, n)
     call bml_print_matrix("D", d_dense, 1, n, 1, n)
     do i = 1, n
-       do j = 1, n
-          expected = alpha * a_dense(i, j) + beta * c_dense(i, j)
-          rel_diff = abs((expected - b_dense(i, j)) / expected)
-          if(rel_diff > rel_tol) then
-             print *, "rel. diff = ", rel_diff
-             call bml_error(__FILE__, __LINE__, "add() matrices are not identical")
-          end if
+      do j = 1, n
+        expected = alpha * a_dense(i, j) + beta * c_dense(i, j)
+        rel_diff = abs((expected - b_dense(i, j)) / expected)
+        if(rel_diff > rel_tol) then
+          print *, "rel. diff = ", rel_diff
+          call bml_error(__FILE__, __LINE__, "add() matrices are not identical")
+        end if
 
-          if(i == j) then
-             expected = a_dense(i, j) + alpha
-          else
-             expected = a_dense(i, j)
-          end if
-          rel_diff = abs((expected - d_dense(i, j)) / expected)
-          if(rel_diff > rel_tol) then
-             print *, "rel. diff = ", rel_diff
-             call bml_error(__FILE__, __LINE__, "add_identity() matrices are not identical")
-          end if
-       end do
+        if(i == j) then
+          expected = a_dense(i, j) + alpha
+        else
+          expected = a_dense(i, j)
+        end if
+        rel_diff = abs((expected - d_dense(i, j)) / expected)
+        if(rel_diff > rel_tol) then
+          print *, "rel. diff = ", rel_diff
+          call bml_error(__FILE__, __LINE__, "add_identity() matrices are not identical")
+        end if
+      end do
     end do
 
     call bml_deallocate(a)

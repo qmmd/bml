@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
 #include "../bml_introspection.h"
+#include "../bml_types.h"
 #include "bml_introspection_ellblock.h"
 #include "bml_types_ellblock.h"
-#include "bml_types.h"
 #include "bml_utilities_ellblock.h"
 
 #include <stdio.h>
@@ -25,8 +25,8 @@
  */
 double TYPED_FUNC(
     bml_get_sparsity_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double threshold)
 {
     int nnzs = 0;
     double sparsity;

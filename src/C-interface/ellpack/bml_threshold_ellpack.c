@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_threshold.h"
+#include "../bml_logger.h"
+#include "../bml_threshold.h"
+#include "../bml_types.h"
 #include "bml_threshold_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
@@ -16,8 +16,7 @@
  *  \return the thresholded A
  */
 bml_matrix_ellpack_t
-    * bml_threshold_new_ellpack(const bml_matrix_ellpack_t * A,
-                                const double threshold)
+    * bml_threshold_new_ellpack(bml_matrix_ellpack_t * A, double threshold)
 {
     bml_matrix_ellpack_t *B = NULL;
 
@@ -52,8 +51,8 @@ bml_matrix_ellpack_t
  */
 void
 bml_threshold_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double threshold)
 {
 
     switch (A->matrix_precision)

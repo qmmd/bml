@@ -16,9 +16,9 @@
  */
 float
 bml_get_single_real(
-    const bml_matrix_t * A,
-    const int i,
-    const int j)
+    bml_matrix_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_type(A))
     {
@@ -47,9 +47,9 @@ bml_get_single_real(
  */
 double
 bml_get_double_real(
-    const bml_matrix_t * A,
-    const int i,
-    const int j)
+    bml_matrix_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_type(A))
     {
@@ -78,9 +78,9 @@ bml_get_double_real(
  */
 float complex
 bml_get_single_complex(
-    const bml_matrix_t * A,
-    const int i,
-    const int j)
+    bml_matrix_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_type(A))
     {
@@ -109,9 +109,9 @@ bml_get_single_complex(
  */
 double complex
 bml_get_double_complex(
-    const bml_matrix_t * A,
-    const int i,
-    const int j)
+    bml_matrix_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_type(A))
     {

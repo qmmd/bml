@@ -8,14 +8,14 @@ module scale_matrix_m
   private
 
   type, public, extends(test_t) :: scale_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type scale_matrix_t
 
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -37,7 +37,7 @@ contains
     REAL_TYPE, allocatable :: c_dense(:, :)
 
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, c)
     call bml_scale(alpha, a, c)
 
@@ -45,14 +45,14 @@ contains
     call bml_export_to_dense(c, c_dense)
 
     if(maxval(abs(alpha * a_dense - c_dense)) > abs_tol) then
-       test_result = .false.
-       call bml_print_matrix("A", alpha * a_dense, 1, n, 1, n)
-       call bml_print_matrix("C", c_dense, 1, n, 1, n)
-       print *, "maxval abs difference = ", maxval(abs(alpha * a_dense - c_dense))
-       print *, "abs_tol = ", abs_tol
-       print *, "matrix element mismatch"
+      test_result = .false.
+      call bml_print_matrix("A", alpha * a_dense, 1, n, 1, n)
+      call bml_print_matrix("C", c_dense, 1, n, 1, n)
+      print *, "maxval abs difference = ", maxval(abs(alpha * a_dense - c_dense))
+      print *, "abs_tol = ", abs_tol
+      print *, "matrix element mismatch"
     else
-       test_result = .true.
+      test_result = .true.
     endif
 
     call bml_deallocate(a)

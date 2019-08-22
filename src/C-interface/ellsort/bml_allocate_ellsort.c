@@ -1,8 +1,8 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellsort.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdio.h>
@@ -71,9 +71,9 @@ bml_clear_ellsort(
  */
 bml_matrix_ellsort_t *
 bml_noinit_matrix_ellsort(
-    const bml_matrix_precision_t matrix_precision,
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellsort_t *A = NULL;
 
@@ -119,10 +119,10 @@ bml_noinit_matrix_ellsort(
  */
 bml_matrix_ellsort_t *
 bml_zero_matrix_ellsort(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellsort_t *A = NULL;
 
@@ -164,10 +164,10 @@ bml_zero_matrix_ellsort(
  */
 bml_matrix_ellsort_t *
 bml_banded_matrix_ellsort(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -209,10 +209,10 @@ bml_banded_matrix_ellsort(
  */
 bml_matrix_ellsort_t *
 bml_random_matrix_ellsort(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -254,10 +254,10 @@ bml_random_matrix_ellsort(
  */
 bml_matrix_ellsort_t *
 bml_identity_matrix_ellsort(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {

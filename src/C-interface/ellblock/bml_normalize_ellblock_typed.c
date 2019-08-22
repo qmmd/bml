@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_logger.h"
-#include "bml_allocate.h"
-#include "bml_normalize.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_logger.h"
+#include "../bml_allocate.h"
+#include "../bml_normalize.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_normalize_ellblock.h"
 #include "bml_scale_ellblock.h"
@@ -33,8 +33,8 @@
 void TYPED_FUNC(
     bml_normalize_ellblock) (
     bml_matrix_ellblock_t * A,
-    const double mineval,
-    const double maxeval)
+    double mineval,
+    double maxeval)
 {
     double maxminusmin = maxeval - mineval;
     double gershfact = maxeval / maxminusmin;
@@ -56,7 +56,7 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_gershgorin_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     double emin = DBL_MAX;
     double emax = DBL_MIN;

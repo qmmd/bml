@@ -1,14 +1,14 @@
+#include "../bml_logger.h"
 #include "bml_convert_ellpack.h"
-#include "bml_logger.h"
 
 #include <stdlib.h>
 
 bml_matrix_ellpack_t *
 bml_convert_ellpack(
-    const bml_matrix_t * A,
-    const bml_matrix_precision_t matrix_precision,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_t * A,
+    bml_matrix_precision_t matrix_precision,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {

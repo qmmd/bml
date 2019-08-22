@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_transpose.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_transpose_ellblock.h"
 #include "bml_types_ellblock.h"
@@ -27,7 +27,7 @@
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_transpose_new_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     int NB = A->NB;
     int MB = A->MB;
@@ -82,7 +82,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_transpose_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     int NB = A->NB;
     int MB = A->MB;

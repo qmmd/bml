@@ -12,7 +12,7 @@
 
 bml_matrix_ellblock_t *
 bml_inverse_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
 
     bml_matrix_ellblock_t *B = NULL;

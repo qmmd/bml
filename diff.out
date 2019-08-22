@@ -1,0 +1,1009 @@
+diff --git a/src/C-interface/ellpack/bml_add_ellpack.c b/src/C-interface/ellpack/bml_add_ellpack.c
+index 2d38ab1..c500fec 100644
+--- a/src/C-interface/ellpack/bml_add_ellpack.c
++++ b/src/C-interface/ellpack/bml_add_ellpack.c
+@@ -21,7 +21,7 @@
+  */
+ void
+ bml_add_ellpack(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const bml_matrix_ellpack_t * B,
+     const double alpha,
+     const double beta,
+@@ -110,7 +110,7 @@ bml_add_norm_ellpack(
+  */
+ void
+ bml_add_identity_ellpack(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double beta,
+     const double threshold)
+ {
+@@ -146,7 +146,7 @@ bml_add_identity_ellpack(
+  */
+ void
+ bml_scale_add_identity_ellpack(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double alpha,
+     const double beta,
+     const double threshold)
+diff --git a/src/C-interface/ellpack/bml_add_ellpack.h b/src/C-interface/ellpack/bml_add_ellpack.h
+index 2f66a57..7674456 100644
+--- a/src/C-interface/ellpack/bml_add_ellpack.h
++++ b/src/C-interface/ellpack/bml_add_ellpack.h
+@@ -4,35 +4,35 @@
+ #include "bml_types_ellpack.h"
+ 
+ void bml_add_ellpack(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const bml_matrix_ellpack_t * B,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_ellpack_single_real(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const bml_matrix_ellpack_t * B,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_ellpack_double_real(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const bml_matrix_ellpack_t * B,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_ellpack_single_complex(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const bml_matrix_ellpack_t * B,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_ellpack_double_complex(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const bml_matrix_ellpack_t * B,
+     const double alpha,
+     const double beta,
+@@ -74,56 +74,56 @@ double bml_add_norm_ellpack_double_complex(
+     const double threshold);
+ 
+ void bml_add_identity_ellpack(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_identity_ellpack_single_real(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_identity_ellpack_double_real(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_identity_ellpack_single_complex(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double beta,
+     const double threshold);
+ 
+ void bml_add_identity_ellpack_double_complex(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double beta,
+     const double threshold);
+ 
+ void bml_scale_add_identity_ellpack(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_scale_add_identity_ellpack_single_real(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_scale_add_identity_ellpack_double_real(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_scale_add_identity_ellpack_single_complex(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double alpha,
+     const double beta,
+     const double threshold);
+ 
+ void bml_scale_add_identity_ellpack_double_complex(
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double alpha,
+     const double beta,
+     const double threshold);
+diff --git a/src/C-interface/ellpack/bml_add_ellpack_typed.c b/src/C-interface/ellpack/bml_add_ellpack_typed.c
+index 51dd2f0..db7dd30 100644
+--- a/src/C-interface/ellpack/bml_add_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_add_ellpack_typed.c
+@@ -9,6 +9,7 @@
+ #include "bml_types_ellpack.h"
+ 
+ #include <complex.h>
++#include <cuComplex.h>
+ #include <math.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -31,7 +32,7 @@
+  */
+ void TYPED_FUNC(
+     bml_add_ellpack) (
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const bml_matrix_ellpack_t * B,
+     const double alpha,
+     const double beta,
+@@ -53,6 +54,8 @@ void TYPED_FUNC(
+     REAL_T *B_value = (REAL_T *) B->value;
+ 
+     int myRank = bml_getMyRank();
++    int rowMin = A_localRowMin[myRank];
++    int rowMax = A_localRowMax[myRank];
+ 
+ #pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+ #pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+@@ -67,35 +70,39 @@ void TYPED_FUNC(
+ #endif
+ 
+ #if defined(__IBMC__) || defined(__ibmxl__)
+-#pragma omp parallel for \
++#pragma omp target parallel for \
+     default(none)                         \
+-    shared(N, A_M, B_M, myRank)           \
++    shared(N, A_M, B_M)           \
++    shared(rowMin, rowMax)                \
+     shared(A_index, A_value, A_nnz)       \
+-    shared(A_localRowMin, A_localRowMax)  \
+     shared(B_index, B_value, B_nnz)
+ #else
+ #pragma omp parallel for                  \
+     default(none)                         \
+-    shared(N, A_M, B_M, myRank)           \
++    shared(N, A_M, B_M)           \
++    shared(rowMin, rowMax)                \
+     shared(A_index, A_value, A_nnz)       \
+-    shared(A_localRowMin, A_localRowMax)  \
+     shared(B_index, B_value, B_nnz)       \
+     firstprivate(ix, jx, x)
+ #endif
+ 
+-    //for (int i = 0; i < N; i++)
+-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
++    for (int i = rowMin; i < rowMax; i++)
+     {
+ 
+ #if defined(__IBMC__) || defined(__ibmxl__)
+-        int ix[N], jx[N];
+-        REAL_T x[N];
++        //int ix[N], jx[N];
++        //REAL_T x[N];
++        //memset(ix, 0, N * sizeof(int));
++
++        int *ix = (int*)omp_target_alloc(N*sizeof(int),0);
++        int *jx = (int*)omp_target_alloc(N*sizeof(int),0);
++        REAL_T *x = (REAL_T*)omp_target_alloc(N*sizeof(REAL_T),0);
+ 
+-        memset(ix, 0, N * sizeof(int));
+ #endif
+ 
+         int l = 0;
+-        if (alpha > (double) 0.0 || alpha < (double) 0.0)
++        if ((alpha > (double) 0.0) || (alpha < (double) 0.0))
++        {
+             for (int jp = 0; jp < A_nnz[i]; jp++)
+             {
+                 int k = A_index[ROWMAJOR(i, jp, N, A_M)];
+@@ -106,10 +113,14 @@ void TYPED_FUNC(
+                     jx[l] = k;
+                     l++;
+                 }
++//#if defined (SINGLE_REAL) || defined(DOUBLE_REAL)
+                 x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
++//#endif
+             }
++        }
+ 
+         if (beta > (double) 0.0 || beta < (double) 0.0)
++        {
+             for (int jp = 0; jp < B_nnz[i]; jp++)
+             {
+                 int k = B_index[ROWMAJOR(i, jp, N, B_M)];
+@@ -120,10 +131,14 @@ void TYPED_FUNC(
+                     jx[l] = k;
+                     l++;
+                 }
++//#if defined (SINGLE_REAL) || defined(DOUBLE_REAL)
+                 x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
++//#endif
+             }
++        }
+         A_nnz[i] = l;
+ 
++
+         int ll = 0;
+         for (int jp = 0; jp < l; jp++)
+         {
+@@ -141,7 +156,6 @@ void TYPED_FUNC(
+         A_nnz[i] = ll;
+     }
+ #pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+-#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+ 
+ }
+ 
+@@ -185,6 +199,8 @@ double TYPED_FUNC(
+     double trnorm = 0.0;
+ 
+     int myRank = bml_getMyRank();
++    int rowMin = A_localRowMin[myRank];
++    int rowMax = A_localRowMax[myRank];
+ 
+ #pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+ #pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+@@ -203,24 +219,23 @@ double TYPED_FUNC(
+ #if defined(__IBMC__) || defined(__ibmxl__)
+ #pragma omp parallel for                  \
+     default(none)                         \
+-    shared(N, A_M, B_M, myRank)           \
++    shared(N, A_M, B_M)           \
++    shared(rowMin, rowMax)                \
+     shared(A_index, A_value, A_nnz)       \
+-    shared(A_localRowMin, A_localRowMax)  \
+     shared(B_index, B_value, B_nnz)       \
+     reduction(+:trnorm)
+ #else
+ #pragma omp parallel for                  \
+     default(none)                         \
+-    shared(N, A_M, B_M, myRank)           \
++    shared(N, A_M, B_M)           \
++    shared(rowMin, rowMax)                \
+     shared(A_index, A_value, A_nnz)       \
+-    shared(A_localRowMin, A_localRowMax)  \
+     shared(B_index, B_value, B_nnz)       \
+     firstprivate(ix, jx, x, y)            \
+     reduction(+:trnorm)
+ #endif
+ 
+-    //for (int i = 0; i < N; i++)
+-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
++    for (int i = rowMin; i < rowMax; i++)
+     {
+ 
+ #if defined(__IBMC__) || defined(__ibmxl__)
+@@ -286,7 +301,6 @@ double TYPED_FUNC(
+     }
+ 
+ #pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+-#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+ 
+     return trnorm;
+ }
+@@ -303,7 +317,7 @@ double TYPED_FUNC(
+  */
+ void TYPED_FUNC(
+     bml_add_identity_ellpack) (
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double beta,
+     const double threshold)
+ {
+@@ -331,7 +345,7 @@ void TYPED_FUNC(
+  */
+ void TYPED_FUNC(
+     bml_scale_add_identity_ellpack) (
+-    const bml_matrix_ellpack_t * A,
++    bml_matrix_ellpack_t * A,
+     const double alpha,
+     const double beta,
+     const double threshold)
+diff --git a/src/C-interface/ellpack/bml_allocate_ellpack_typed.c b/src/C-interface/ellpack/bml_allocate_ellpack_typed.c
+index 4957467..c3f67ab 100644
+--- a/src/C-interface/ellpack/bml_allocate_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_allocate_ellpack_typed.c
+@@ -31,11 +31,34 @@ void TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+     REAL_T *A_value = A->value;
++
++#ifdef NOGPU
+ #pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++
+     memset(A->nnz, 0, A->N * sizeof(int));
+     memset(A->index, 0, A->N * A->M * sizeof(int));
+     memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
++
+ #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
++#endif
++
++    // All data and copy stays on deveice
++#pragma omp target teams distribute parallel for 
++    for (int i = 0; i < N; i++)
++        {
++             A_nnz[i] = 0;
++        }
++
++#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
++    for (int i = 0; i < N; i++)
++    {
++        for (int j = 0; j < M; j++)
++        {
++            A_index[ROWMAJOR(i,j,N,M)] = 0;
++            A_value[ROWMAJOR(i,j,N,M)] = 0.0;
++        }
++    }
++
+ }
+ 
+ /** Allocate a matrix with uninitialized values.
+@@ -64,6 +87,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     A->N = matrix_dimension.N_rows;
+     A->M = matrix_dimension.N_nz_max;
+     A->distribution_mode = distrib_mode;
++    // need to keep these allocates for host copy
+     A->index = bml_noinit_allocate_memory(sizeof(int) * A->N * A->M);
+     A->nnz = bml_allocate_memory(sizeof(int) * A->N);
+     A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * A->N * A->M);
+@@ -75,7 +99,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+     REAL_T *A_value = A->value;
+-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
++
++#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
+ #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+ 
+     return A;
+@@ -109,6 +134,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     A->N = N;
+     A->M = M;
+     A->distribution_mode = distrib_mode;
++    // need to keep these allocates for host copy
+     A->index = bml_allocate_memory(sizeof(int) * N * M);
+     A->nnz = bml_allocate_memory(sizeof(int) * N);
+     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
+@@ -118,9 +144,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+     REAL_T *A_value = A->value;
+-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
+-#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+ 
++#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
++
++    // All arrays set on device
++#pragma omp target teams distribute parallel for 
++    for (int i = 0; i < N; i++)
++        {
++             A_nnz[i] = 0;
++        }
++
++#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
++    for (int i = 0; i < N; i++)
++    {
++        for (int j = 0; j < M; j++)
++        {
++            A_index[ROWMAJOR(i,j,N,M)] = 0;
++            A_value[ROWMAJOR(i,j,N,M)] = 0.0;
++        }
++    }
+     return A;
+ }
+ 
+@@ -152,6 +194,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+ 
++#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
+ #pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
+     for (int i = 0; i < N; i++)
+     {
+@@ -165,7 +208,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+         }
+         A_nnz[i] = jind;
+     }
+-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
+ #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+ 
+     return A;
+@@ -258,8 +300,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+         A_index[ROWMAJOR(i, 0, N, M)] = i;
+         A_nnz[i] = 1;
+     }
+-    // GPU version and CPU version out of sync
+-//#pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+ 
+     return A;
+ }
+diff --git a/src/C-interface/ellpack/bml_copy_ellpack_typed.c b/src/C-interface/ellpack/bml_copy_ellpack_typed.c
+index 64af28c..2f8460e 100644
+--- a/src/C-interface/ellpack/bml_copy_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_copy_ellpack_typed.c
+@@ -38,6 +38,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     int *B_nnz = B->nnz;
+     REAL_T *B_value = B->value;
+ 
++#ifdef NOGPU
++    // copy to host and copy back
+ #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+     //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
+     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
+@@ -53,6 +55,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     }
+ // push the data to the GPU
+ #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++#endif // NOGPU
++
++    // all work on device
++
++#pragma omp target teams distribute parallel for 
++    for (int i = 0; i < N; i++)
++    {
++        B_nnz[i] = A_nnz[i];
++    }
++
++#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
++    for (int i = 0; i < N; i++)
++    {
++        for (int j = 0; j < M; j++)
++        {
++            B_index[ROWMAJOR(i,j,N,M)] = A_index[ROWMAJOR(i, j, N, M)];
++            B_value[ROWMAJOR(i,j,N,M)] = A_value[ROWMAJOR(i, j, N, M)];
++        }
++    }
+ 
+     bml_copy_domain(A->domain, B->domain);
+     bml_copy_domain(A->domain2, B->domain2);
+@@ -82,6 +103,7 @@ void TYPED_FUNC(
+     int *B_nnz = B->nnz;
+     REAL_T *B_value = B->value;
+ 
++#ifdef NOGPU
+ #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+     // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
+     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
+@@ -98,6 +120,26 @@ void TYPED_FUNC(
+ // push the data to the GPU
+ #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+ 
++#endif // NOGPU
++
++// All data and copy stays on deveice
++#pragma omp target teams distribute parallel for 
++    for (int i = 0; i < N; i++)
++    {
++        B_nnz[i] = A_nnz[i];
++    }
++
++#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
++    for (int i = 0; i < N; i++)
++    {
++        for (int j = 0; j < M; j++)
++        {
++            B_index[ROWMAJOR(i,j,N,M)] = A_index[ROWMAJOR(i, j, N, M)];
++            B_value[ROWMAJOR(i,j,N,M)] = A_value[ROWMAJOR(i, j, N, M)];
++        }
++    }
++
++
+     if (A->distribution_mode == B->distribution_mode)
+     {
+         bml_copy_domain(A->domain, B->domain);
+diff --git a/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c b/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c
+index 21e708d..c4fa29f 100644
+--- a/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_diagonalize_ellpack_typed.c
+@@ -45,8 +45,8 @@ void TYPED_FUNC(
+     REAL_T *A_dense;
+     REAL_T *eigenvectors_dense;
+     REAL_T *typed_eigenvalues = (REAL_T *) eigenvalues;
+-    bml_matrix_ellpack_t *myeigenvectors =
+-        (bml_matrix_ellpack_t *) eigenvectors;
++    bml_matrix_ellpack_t *myeigenvectors;
++        //(bml_matrix_ellpack_t *) eigenvectors;
+ 
+     // Form ellpack_bml to dense_array
+     A_dense = bml_export_to_dense_ellpack(A, dense_row_major);
+diff --git a/src/C-interface/ellpack/bml_scale_ellpack_typed.c b/src/C-interface/ellpack/bml_scale_ellpack_typed.c
+index 606b1bd..95592aa 100644
+--- a/src/C-interface/ellpack/bml_scale_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_scale_ellpack_typed.c
+@@ -1,4 +1,5 @@
+ #include "../../typed.h"
++#include "../../macros.h"
+ #include "../blas.h"
+ #include "bml_allocate.h"
+ #include "bml_allocate_ellpack.h"
+@@ -39,10 +40,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+ 
+     int N = A->N;
+     int M = A->M;
++
+     int *A_nnz = A->nnz;
+     int *A_index = A->index;
+-    int *A_value = A->value;
++    REAL_T *A_value = A->value;
+ 
++    int *B_nnz = B->nnz;
++    int *B_index = B->index;
++    REAL_T scale = *scale_factor;
++
++#ifdef NOGPU
+ #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+ 
+ #ifdef NOBLAS
+@@ -52,10 +59,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+ #endif
+ 
+     // push result to GPU
+-    int *B_nnz = B->nnz;
+-    int *B_index = B->index;
+ 
+ #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++#endif
++
++#pragma omp target teams distribute parallel for collapse(2)
++    for (int i = 0; i < N; i++) 
++    {
++        for (int j = 0; j < M; j++)
++        {
++            B_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
++        }
++    }
+ 
+     return B;
+ }
+@@ -86,8 +101,10 @@ void TYPED_FUNC(
+     int M = A->M;
+     int *A_nnz = A->nnz;
+     int *A_index = A->index;
+-    int *A_value = A->value;
++    REAL_T *A_value = A->value;
++    REAL_T scale = *scale_factor;
+ 
++#ifdef NOGPU
+ #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+ 
+ #ifdef NOBLAS
+@@ -101,6 +118,16 @@ void TYPED_FUNC(
+     int *B_index = B->index;
+ 
+ #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
++#endif
++
++#pragma omp target teams distribute parallel for collapse(2)
++    for (int i = 0; i < N; i++) 
++    {
++        for (int j = 0; j < M; j++)
++        {
++            B_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
++        }
++    }
+ 
+ }
+ 
+@@ -120,7 +147,9 @@ void TYPED_FUNC(
+     int M = A->M;
+     int *A_nnz = A->nnz;
+     int *A_index = A->index;
++    REAL_T scale = *scale_factor;
+ 
++#ifdef NOGPU
+ #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+ 
+ #ifdef NOBLAS
+@@ -133,5 +162,15 @@ void TYPED_FUNC(
+     // push result to GPU
+ 
+ #pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++#endif
++
++#pragma omp target teams distribute parallel for collapse(2)
++    for (int i = 0; i < N; i++) 
++    {
++        for (int j = 0; j < M; j++)
++        {
++            A_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
++        }
++    }
+ 
+ }
+diff --git a/src/C-interface/ellpack/bml_threshold_ellpack_typed.c b/src/C-interface/ellpack/bml_threshold_ellpack_typed.c
+index 8ec8a87..cc6985e 100644
+--- a/src/C-interface/ellpack/bml_threshold_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_threshold_ellpack_typed.c
+@@ -36,24 +36,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     bml_matrix_ellpack_t *B =
+         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, A->distribution_mode);
+ 
+-    REAL_T *A_value = (REAL_T *) A->value;
++    REAL_T *A_value = A->value;
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+     int *A_localRowMin = A->domain->localRowMin;
+     int *A_localRowMax = A->domain->localRowMax;
+ 
+-    REAL_T *B_value = (REAL_T *) B->value;
++    REAL_T *B_value = B->value;
+     int *B_index = B->index;
+     int *B_nnz = B->nnz;
+ 
+     int myRank = bml_getMyRank();
++    int rowMin = A_localRowMin[myRank];
++    int rowMax = A_localRowMax[myRank];
+ 
+-#pragma omp parallel for default(none) \
+-    shared(N, M, A_value, A_index, A_nnz) \
+-    shared(A_localRowMin, A_localRowMax, myRank) \
++#pragma omp target parallel for default(none) \
++    shared(N,M, rowMin, rowMax) \
++    shared(A_value, A_index, A_nnz) \
+     shared(B_value, B_index, B_nnz)
+-    //for (int i = 0; i < N; i++)
+-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
++    for (int i = rowMin; i < rowMax; i++)
+     {
+         for (int j = 0; j < A_nnz[i]; j++)
+         {
+@@ -94,14 +95,15 @@ void TYPED_FUNC(
+     int *A_localRowMax = A->domain->localRowMax;
+ 
+     int myRank = bml_getMyRank();
++    int rowMin = A_localRowMin[myRank];
++    int rowMax = A_localRowMax[myRank];
+ 
+     int rlen;
+-#pragma omp parallel for default(none) \
++#pragma omp target parallel for default(none) \
+     private(rlen) \
+-    shared(N,M,A_value,A_index,A_nnz) \
+-    shared(A_localRowMin, A_localRowMax, myRank)
+-    //for (int i = 0; i < N; i++)
+-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
++    shared(N,M, rowMin, rowMax) \
++    shared(A_value,A_index,A_nnz)
++    for (int i = rowMin; i < rowMax; i++)
+     {
+         rlen = 0;
+         for (int j = 0; j < A_nnz[i]; j++)
+diff --git a/src/C-interface/ellpack/bml_trace_ellpack_typed.c b/src/C-interface/ellpack/bml_trace_ellpack_typed.c
+index 8045307..f354d90 100644
+--- a/src/C-interface/ellpack/bml_trace_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_trace_ellpack_typed.c
+@@ -41,13 +41,16 @@ double TYPED_FUNC(
+     REAL_T *A_value = (REAL_T *) A->value;
+ 
+     int myRank = bml_getMyRank();
++    int rowMin = A_localRowMin[myRank];
++    int rowMax = A_localRowMax[myRank];
+ 
+-#pragma omp parallel for default(none)          \
++#pragma omp target parallel for  \
++  default(none)          \
+   shared(N, M, A_value, A_index, A_nnz)         \
+-  shared(A_localRowMin, A_localRowMax, myRank)  \
++  shared(rowMin, rowMax)  \
+   reduction(+:trace)
+     //for (int i = 0; i < N; i++)
+-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
++    for (int i = rowMin; i < rowMax; i++)
+     {
+         for (int j = 0; j < A_nnz[i]; j++)
+         {
+@@ -88,6 +91,13 @@ double TYPED_FUNC(
+     REAL_T *A_value = (REAL_T *) A->value;
+     REAL_T *rvalue;
+ 
++    int B_N = B->N;
++    int B_M = B->M;
++
++    REAL_T *B_value = (REAL_T *) B->value;
++    int *B_index = (int *) B->index;
++    int *B_nnz = (int *) B->nnz;
++
+     int myRank = bml_getMyRank();
+ 
+     if (A_N != B->N || A_M != B->M)
+@@ -96,6 +106,9 @@ double TYPED_FUNC(
+             ("bml_traceMult_ellpack: Matrices A and B have different sizes.");
+     }
+ 
++#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
++#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
++
+ #pragma omp parallel for default(none)          \
+   private(rvalue)                               \
+   shared(B, A_N, A_M, A_value, A_index, A_nnz)  \
+diff --git a/src/C-interface/ellpack/bml_transpose_ellpack_typed.c b/src/C-interface/ellpack/bml_transpose_ellpack_typed.c
+index 32e5cd6..70541e1 100644
+--- a/src/C-interface/ellpack/bml_transpose_ellpack_typed.c
++++ b/src/C-interface/ellpack/bml_transpose_ellpack_typed.c
+@@ -28,17 +28,19 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+     bml_transpose_new_ellpack) (
+     const bml_matrix_ellpack_t * A)
+ {
+-    bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
+-
+-    bml_matrix_ellpack_t *B =
+-        //TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension,
+-                                               //A->distribution_mode);
+-        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M, 
+-                                               A->distribution_mode);
+-
+     int N = A->N;
+     int M = A->M;
+ 
++    bml_matrix_dimension_t matrix_dimension = { N, N, M };
++    bml_distribution_mode_t dist_mode = A->distribution_mode;
++
++    //printf("got to here\n");
++    bml_matrix_ellpack_t *B =
++        TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension, dist_mode);
++        //TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, dist_mode);
++        
++    //printf("got to here\n");
++
+     REAL_T *A_value = (REAL_T *) A->value;
+     int *A_index = A->index;
+     int *A_nnz = A->nnz;
+@@ -64,7 +66,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
+ #endif
+ 
+ #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+-#pragma omp target update from(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+ 
+ #pragma omp parallel for default(none)                                  \
+   shared(matrix_dimension, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
+@@ -147,9 +148,9 @@ void TYPED_FUNC(
+     int *A_nnz = A->nnz;
+ 
+     // bring all the data back to the CPU and transpose in place
+-#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++//#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+ 
+-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
++#pragma omp target parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
+     for (int i = 0; i < N; i++)
+     {
+         for (int j = A_nnz[i] - 1; j >= 0; j--)
+@@ -194,6 +195,6 @@ void TYPED_FUNC(
+         }
+     }
+     // push data back to GPU
+-#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
++//#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+ 
+ }
+diff --git a/src/typed.h b/src/typed.h
+index d8cebba..763db4e 100644
+--- a/src/typed.h
++++ b/src/typed.h
+@@ -36,7 +36,7 @@
+ #define IMAGINARY_PART(x) (cimagf(x))
+ #define COMPLEX_CONJUGATE(x) (conjf(x))
+ #define ABS(x) (cabsf(x))
+-#define is_above_threshold(x, t) (cabsf(x) > (float) (t))
++#define is_above_threshold(x, t) ((creal(x)*creal(x)+cimag(x)+cimag(x)) > (float)(t*t))
+ #elif defined(DOUBLE_COMPLEX)
+ #define REAL_T double _Complex
+ #define MAGMA_T magmaDoubleComplex
+@@ -48,7 +48,7 @@
+ #define IMAGINARY_PART(x) (cimag(x))
+ #define COMPLEX_CONJUGATE(x) (conj(x))
+ #define ABS(x) (cabs(x))
+-#define is_above_threshold(x, t) (cabs(x) > (double) (t))
++#define is_above_threshold(x, t) ((creal(x)*creal(x)+cimag(x)+cimag(x)) > (double)(t*t))
+ #else
+ #error Unknown precision type
+ #endif
+diff --git a/tests/add_matrix_typed.c b/tests/add_matrix_typed.c
+index bc873ea..dce22e4 100644
+--- a/tests/add_matrix_typed.c
++++ b/tests/add_matrix_typed.c
+@@ -41,10 +41,13 @@ int TYPED_FUNC(
+     A_dense = bml_export_to_dense(A, dense_row_major);
+     B_dense = bml_export_to_dense(B, dense_row_major);
+     C_dense = bml_export_to_dense(C, dense_row_major);
++    printf("A = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                            N, 0, N);
++    printf("B = %f * copy_new(A) + %f * C\n", alpha, beta);
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                            N, 0, N);
++    printf("C = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
+                            N, 0, N);
+     for (int i = 0; i < N * N; i++)
+diff --git a/tests/convert_matrix_typed.c b/tests/convert_matrix_typed.c
+index 27a7397..d8bb76e 100644
+--- a/tests/convert_matrix_typed.c
++++ b/tests/convert_matrix_typed.c
+@@ -6,7 +6,7 @@
+ #include <stdlib.h>
+ 
+ int TYPED_FUNC(
+-    test_import_export) (
++    test_convert) (
+     const int N,
+     const bml_matrix_type_t matrix_type,
+     const bml_matrix_precision_t matrix_precision,
+@@ -27,8 +27,10 @@ int TYPED_FUNC(
+                               N, M, A_dense, 0, sequential);
+     B = bml_convert(A, matrix_type, matrix_precision, M, sequential);
+     B_dense = bml_export_to_dense(B, dense_row_major);
++    printf("A = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                            N, 0, N);
++    printf("B = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                            N, 0, N);
+     for (int i = 0; i < N * N; i++)
+diff --git a/tests/diagonalize_matrix_typed.c b/tests/diagonalize_matrix_typed.c
+index 2290181..eaabb2d 100644
+--- a/tests/diagonalize_matrix_typed.c
++++ b/tests/diagonalize_matrix_typed.c
+@@ -75,7 +75,13 @@ int TYPED_FUNC(
+     printf("%s\n", "eigenvectors");
+     bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
+ 
+-    aux = bml_transpose_new(eigenvectors);
++    //aux = bml_transpose_new(eigenvectors);
++    aux = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
++    bml_copy(eigenvectors, aux);
++    bml_transpose(aux);
++
++    printf("%s\n", "aux");
++    bml_print_bml_matrix(aux, 0, N, 0, N);
+ 
+     bml_set_diagonal(aux1, eigenvalues, 0.0);
+ 
+diff --git a/tests/import_export_matrix_typed.c b/tests/import_export_matrix_typed.c
+index 456f198..28f197d 100644
+--- a/tests/import_export_matrix_typed.c
++++ b/tests/import_export_matrix_typed.c
+@@ -6,7 +6,7 @@
+ #include <stdlib.h>
+ 
+ int TYPED_FUNC(
+-    test_convert) (
++    test_import_export) (
+     const int N,
+     const bml_matrix_type_t matrix_type,
+     const bml_matrix_precision_t matrix_precision,
+@@ -25,8 +25,10 @@ int TYPED_FUNC(
+                               N, M, A_dense, 0, sequential);
+     B_dense = bml_export_to_dense(A, dense_row_major);
+ 
++    printf("A = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                            N, 0, N);
++    printf("B = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                            N, 0, N);
+     for (int i = 0; i < N * N; i++)
+diff --git a/tests/scale_matrix_typed.c b/tests/scale_matrix_typed.c
+index 68e7611..ff452d1 100644
+--- a/tests/scale_matrix_typed.c
++++ b/tests/scale_matrix_typed.c
+@@ -22,8 +22,8 @@ int TYPED_FUNC(
+ 
+     REAL_T scale_factor = 2.0;
+ 
+-    //A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
++    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
++    //A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+     B = bml_scale_new(&scale_factor, A);
+     C = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
+     bml_scale(&scale_factor, A, C);
+@@ -32,10 +32,13 @@ int TYPED_FUNC(
+     A_dense = bml_export_to_dense(A, dense_row_major);
+     B_dense = bml_export_to_dense(B, dense_row_major);
+     C_dense = bml_export_to_dense(C, dense_row_major);
++    printf("A = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                            N, 0, N);
++    printf("B (scale_new) = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                            N, 0, N);
++    printf("C (scale) = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
+                            N, 0, N);
+     for (int i = 0; i < N * N; i++)
+diff --git a/tests/threshold_matrix_typed.c b/tests/threshold_matrix_typed.c
+index 0b6dd1b..3cd9c02 100644
+--- a/tests/threshold_matrix_typed.c
++++ b/tests/threshold_matrix_typed.c
+@@ -12,8 +12,8 @@ int TYPED_FUNC(
+     const bml_matrix_precision_t matrix_precision,
+     const int M)
+ {
+-    bml_matrix_t *A = NULL;
+-    bml_matrix_t *B = NULL;
++    bml_matrix_t *A;
++    bml_matrix_t *B;
+ 
+     REAL_T *A_dense = NULL;
+     REAL_T *B_dense = NULL;
+@@ -32,9 +32,13 @@ int TYPED_FUNC(
+     B = bml_threshold_new(A, threshold);
+ 
+     A_dense = bml_export_to_dense(A, dense_row_major);
++
+     B_dense = bml_export_to_dense(B, dense_row_major);
++
++    printf("A = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                            N, 0, N);
++    printf("B = threshold_new(A, %f)\n", threshold);
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                            N, 0, N);
+     for (int i = 0; i < N * N; i++)
+@@ -49,5 +53,8 @@ int TYPED_FUNC(
+     bml_free_memory(B_dense);
+     bml_deallocate(&A);
+     bml_deallocate(&B);
++
++    LOG_INFO("threshold matrix test passed\n");
++
+     return 0;
+ }
+diff --git a/tests/trace_matrix_typed.c b/tests/trace_matrix_typed.c
+index d6038bd..aa4aa1d 100644
+--- a/tests/trace_matrix_typed.c
++++ b/tests/trace_matrix_typed.c
+@@ -46,10 +46,13 @@ int TYPED_FUNC(
+     B_dense = bml_export_to_dense(B, dense_row_major);
+     C_dense = bml_export_to_dense(C, dense_row_major);
+ 
++    printf("A = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                            N, 0, N);
++    printf("B = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                            N, 0, N);
++    printf("C = \n");
+     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
+                            N, 0, N);
+ 
+diff --git a/tests/transpose_matrix_typed.c b/tests/transpose_matrix_typed.c
+index 97c0978..7ba0093 100644
+--- a/tests/transpose_matrix_typed.c
++++ b/tests/transpose_matrix_typed.c
+@@ -52,5 +52,8 @@ int TYPED_FUNC(
+     bml_deallocate(&A);
+     bml_deallocate(&B);
+     bml_deallocate(&C);
++
++    LOG_INFO("transpose matrix test passed\n");
++
+     return 0;
+ }

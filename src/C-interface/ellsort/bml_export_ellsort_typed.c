@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_export_ellsort.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>
@@ -25,8 +25,8 @@
  */
 void *TYPED_FUNC(
     bml_export_to_dense_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_ellsort_t * A,
+    bml_dense_order_t order)
 {
     int N = A->N;
     int M = A->M;
@@ -38,7 +38,7 @@ void *TYPED_FUNC(
     switch (order)
     {
         case dense_row_major:
-#pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
+#pragma omp parallel for shared(N, M, A_nnz, A_index, A_value, A_dense)
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < A_nnz[i]; j++)
@@ -50,7 +50,7 @@ void *TYPED_FUNC(
             }
             break;
         case dense_column_major:
-#pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
+#pragma omp parallel for shared(N, M, A_nnz, A_index, A_value, A_dense)
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < A_nnz[i]; j++)

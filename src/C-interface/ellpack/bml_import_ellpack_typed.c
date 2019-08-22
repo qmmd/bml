@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_import_ellpack.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
@@ -27,12 +27,12 @@
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_import_from_dense_ellpack) (
-    const bml_dense_order_t order,
-    const int N,
-    const void *A,
-    const double threshold,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_dense_order_t order,
+    int N,
+    void *A,
+    double threshold,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A_bml =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
@@ -43,7 +43,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *dense_A = (REAL_T *) A;
     REAL_T *A_value = A_bml->value;
 
-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz, dense_A)
+#pragma omp parallel for shared(A_value, A_index, A_nnz, dense_A)
     for (int i = 0; i < N; i++)
     {
         A_nnz[i] = 0;

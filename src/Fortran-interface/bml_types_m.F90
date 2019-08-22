@@ -23,22 +23,22 @@ module bml_types_m
 
   !> The bml vector type.
   type :: bml_vector_t
-     !> The C pointer to the vector.
-     type(C_PTR) :: ptr = C_NULL_PTR
-  !contains
-  !   procedure :: bml_vector_t_assign
-  !   generic :: assignment(=) => bml_vector_t_assign
-  !   final :: destruct_bml_vector_t
+    !> The C pointer to the vector.
+    type(C_PTR) :: ptr = C_NULL_PTR
+    !contains
+    !   procedure :: bml_vector_t_assign
+    !   generic :: assignment(=) => bml_vector_t_assign
+    !   final :: destruct_bml_vector_t
   end type bml_vector_t
 
   !> The bml matrix type.
   type :: bml_matrix_t
-     !> The C pointer to the matrix.
-     type(C_PTR) :: ptr = C_NULL_PTR
-  !contains
-  !   procedure :: bml_matrix_t_assign
-  !   generic :: assignment(=) => bml_matrix_t_assign
-  !   final :: destruct_bml_matrix_t
+    !> The C pointer to the matrix.
+    type(C_PTR) :: ptr = C_NULL_PTR
+    !contains
+    !   procedure :: bml_matrix_t_assign
+    !   generic :: assignment(=) => bml_matrix_t_assign
+    !   final :: destruct_bml_matrix_t
   end type bml_matrix_t
 
   !> The bml-dense matrix type identifier.

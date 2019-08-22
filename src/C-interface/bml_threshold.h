@@ -6,11 +6,11 @@
 #include "bml_types.h"
 
 bml_matrix_t *bml_threshold_new(
-    const bml_matrix_t * A,
-    const double threshold);
+    bml_matrix_t * A,
+    double threshold);
 
 void bml_threshold(
     bml_matrix_t * A,
-    const double threshold);
+    double threshold);
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef __BML_TYPES_DENSE_H
 #define __BML_TYPES_DENSE_H
 
-#include "bml_types.h"
+#include "../bml_types.h"
 
 #ifdef BML_USE_MAGMA
 #include "magma_auxiliary.h"

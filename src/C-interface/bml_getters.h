@@ -6,13 +6,13 @@
 #include "bml_types.h"
 
 void *bml_get(
-    const bml_matrix_t * A,
-    const int i,
-    const int j);
+    bml_matrix_t * A,
+    int i,
+    int j);
 
 void *bml_get_row(
     bml_matrix_t * A,
-    const int i);
+    int i);
 
 void *bml_get_diagonal(
     bml_matrix_t * A);

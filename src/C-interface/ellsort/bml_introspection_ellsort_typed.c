@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
 #include "../bml_introspection.h"
+#include "../bml_types.h"
 #include "bml_introspection_ellsort.h"
 #include "bml_types_ellsort.h"
-#include "bml_types.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,8 +24,8 @@
  */
 double TYPED_FUNC(
     bml_get_sparsity_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double threshold)
 {
     int nnzs = 0;
     int i;

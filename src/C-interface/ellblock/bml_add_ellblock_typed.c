@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_add.h"
-#include "bml_types.h"
-#include "bml_parallel.h"
-#include "bml_allocate_ellblock.h"
+#include "../bml_add.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_add_ellblock.h"
+#include "bml_allocate_ellblock.h"
 #include "bml_types_ellblock.h"
 #include "bml_utilities_ellblock.h"
 
@@ -33,11 +33,11 @@
  */
 void TYPED_FUNC(
     bml_add_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     assert(A->NB == B->NB);
     assert(A->bsize[0] == B->bsize[0]);
@@ -169,11 +169,11 @@ void TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_add_norm_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int NB = A->NB;
     int MB = A->MB;
@@ -302,7 +302,7 @@ double TYPED_FUNC(
 
 /** Matrix addition.
  *
- *  A = A + beta * I
+ *  \f$ A \leftarrow A + beta * I \f$
  *
  *  \ingroup add_group
  *
@@ -312,9 +312,9 @@ double TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double beta,
+    double threshold)
 {
     REAL_T alpha = (REAL_T) 1.0;
 
@@ -340,10 +340,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_add_identity_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double alpha,
+    double beta,
+    double threshold)
 {
     bml_matrix_ellblock_t *Id =
         TYPED_FUNC(bml_identity_matrix_ellblock) (A->N, A->M,

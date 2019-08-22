@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_trace.h"
+#include "../bml_logger.h"
+#include "../bml_trace.h"
+#include "../bml_types.h"
 #include "bml_norm_ellblock.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>
@@ -16,7 +16,7 @@
  */
 double
 bml_sum_squares_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
 
     switch (A->matrix_precision)
@@ -53,11 +53,11 @@ bml_sum_squares_ellblock(
  */
 double
 bml_sum_squares2_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
 
     switch (A->matrix_precision)
@@ -94,7 +94,7 @@ bml_sum_squares2_ellblock(
  */
 double
 bml_fnorm_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
 
     switch (A->matrix_precision)
@@ -128,8 +128,8 @@ bml_fnorm_ellblock(
  */
 double
 bml_fnorm2_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
 
     switch (A->matrix_precision)

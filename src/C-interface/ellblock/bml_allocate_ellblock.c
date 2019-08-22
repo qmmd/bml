@@ -1,10 +1,10 @@
-#include "bml_allocate.h"
-#include "bml_allocate_ellblock.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
-#include "bml_types_ellblock.h"
 #include "../../macros.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
+#include "bml_allocate_ellblock.h"
+#include "bml_types_ellblock.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -23,7 +23,7 @@ static int s_mb = 0;
  *    */
 void
 bml_set_block_sizes(
-    const int *bsize,
+    int *bsize,
     int nb,
     int mb)
 {
@@ -47,8 +47,8 @@ bml_set_block_sizes(
 
 int *
 bml_get_block_sizes(
-    const int N,
-    const int M)
+    int N,
+    int M)
 {
     if (s_default_bsize == NULL)
     {
@@ -159,9 +159,9 @@ bml_clear_ellblock(
 
 bml_matrix_ellblock_t *
 bml_noinit_matrix_ellblock(
-    const bml_matrix_precision_t matrix_precision,
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellblock_t *A = NULL;
 
@@ -207,10 +207,10 @@ bml_noinit_matrix_ellblock(
  */
 bml_matrix_ellblock_t *
 bml_zero_matrix_ellblock(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellblock_t *A = NULL;
 
@@ -237,11 +237,11 @@ bml_zero_matrix_ellblock(
 
 bml_matrix_ellblock_t *
 bml_block_matrix_ellblock(
-    const bml_matrix_precision_t matrix_precision,
-    const int NB,
-    const int MB,
-    const int *bsizes,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int NB,
+    int MB,
+    int *bsizes,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellblock_t *A = NULL;
 
@@ -287,10 +287,10 @@ bml_block_matrix_ellblock(
  */
 bml_matrix_ellblock_t *
 bml_random_matrix_ellblock(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -332,10 +332,10 @@ bml_random_matrix_ellblock(
  */
 bml_matrix_ellblock_t *
 bml_identity_matrix_ellblock(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {

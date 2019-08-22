@@ -1,7 +1,7 @@
-#include "bml_add.h"
+#include "../bml_add.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_add_ellpack.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
@@ -22,10 +22,10 @@
 void
 bml_add_ellpack(
     bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (B->matrix_precision)
     {
@@ -61,11 +61,11 @@ bml_add_ellpack(
  */
 double
 bml_add_norm_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     double trnorm = 0.0;
 
@@ -111,8 +111,8 @@ bml_add_norm_ellpack(
 void
 bml_add_identity_ellpack(
     bml_matrix_ellpack_t * A,
-    const double beta,
-    const double threshold)
+    double beta,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -147,9 +147,9 @@ bml_add_identity_ellpack(
 void
 bml_scale_add_identity_ellpack(
     bml_matrix_ellpack_t * A,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (A->matrix_precision)
     {

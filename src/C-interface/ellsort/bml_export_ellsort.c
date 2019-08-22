@@ -1,7 +1,7 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_export_ellsort.h"
-#include "bml_logger.h"
 #include "bml_types_ellsort.h"
 
 #include <stdlib.h>
@@ -17,8 +17,8 @@
  */
 void *
 bml_export_to_dense_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_ellsort_t * A,
+    bml_dense_order_t order)
 {
     switch (A->matrix_precision)
     {

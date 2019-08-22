@@ -10,7 +10,7 @@ module bml_utilities_MATRIX_TYPE_m
 
   !> Print a dense matrix.
   interface bml_print_matrix
-     module procedure bml_print_dense_matrix_MATRIX_TYPE
+    module procedure bml_print_dense_matrix_MATRIX_TYPE
   end interface bml_print_matrix
 
   public :: bml_print_matrix
@@ -39,11 +39,11 @@ contains
       ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
       ! exclusive in the upper bound in the C code.
       call bml_print_dense_matrix_C(size(a, 1, kind=C_INT), &
-          & get_element_id(REAL_NAME, REAL_KIND), &
-          & BML_DENSE_COLUMN_MAJOR, &
-          & c_loc(a_ptr), &
-          & i_l-lbound(a, 1, kind=C_INT), i_u-lbound(a, 1, kind=C_INT)+1, &
-          & j_l-lbound(a, 2, kind=C_INT), j_u-lbound(a, 2, kind=C_INT)+1)
+           & get_element_id(REAL_NAME, REAL_KIND), &
+           & BML_DENSE_COLUMN_MAJOR, &
+           & c_loc(a_ptr), &
+           & i_l-lbound(a, 1, kind=C_INT), i_u-lbound(a, 1, kind=C_INT)+1, &
+           & j_l-lbound(a, 2, kind=C_INT), j_u-lbound(a, 2, kind=C_INT)+1)
     end associate
 
   end subroutine bml_print_dense_matrix_MATRIX_TYPE

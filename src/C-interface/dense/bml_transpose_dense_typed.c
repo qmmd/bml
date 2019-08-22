@@ -4,12 +4,12 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_transpose.h"
-#include "bml_parallel.h"
 #include "bml_transpose_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -30,7 +30,7 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_transpose_new_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     int N = A->N;
 
@@ -50,7 +50,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     MAGMABLAS(transpose) (A->N, A->N, A->matrix, A->ld,
                           B->matrix, B->ld, A->queue);
 #else
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N; i++)
@@ -84,7 +84,7 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T tmp;
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   private(tmp)                                  \
   shared(N, A_matrix)
     for (int i = 0; i < N - 1; i++)

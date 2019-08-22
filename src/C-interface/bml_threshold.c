@@ -18,8 +18,8 @@
  */
 bml_matrix_t *
 bml_threshold_new(
-    const bml_matrix_t * A,
-    const double threshold)
+    bml_matrix_t * A,
+    double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -53,7 +53,7 @@ bml_threshold_new(
 void
 bml_threshold(
     bml_matrix_t * A,
-    const double threshold)
+    double threshold)
 {
     switch (bml_get_type(A))
     {

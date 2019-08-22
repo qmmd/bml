@@ -4,39 +4,39 @@
 #include "bml_types_ellblock.h"
 
 bml_matrix_ellblock_t *bml_copy_ellblock_new(
-    const bml_matrix_ellblock_t * A);
+    bml_matrix_ellblock_t * A);
 
 bml_matrix_ellblock_t *bml_copy_ellblock_new_single_real(
-    const bml_matrix_ellblock_t * A);
+    bml_matrix_ellblock_t * A);
 
 bml_matrix_ellblock_t *bml_copy_ellblock_new_double_real(
-    const bml_matrix_ellblock_t * A);
+    bml_matrix_ellblock_t * A);
 
 bml_matrix_ellblock_t *bml_copy_ellblock_new_single_complex(
-    const bml_matrix_ellblock_t * A);
+    bml_matrix_ellblock_t * A);
 
 bml_matrix_ellblock_t *bml_copy_ellblock_new_double_complex(
-    const bml_matrix_ellblock_t * A);
+    bml_matrix_ellblock_t * A);
 
 void bml_copy_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B);
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B);
 
 void bml_copy_ellblock_single_real(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B);
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B);
 
 void bml_copy_ellblock_double_real(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B);
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B);
 
 void bml_copy_ellblock_single_complex(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B);
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B);
 
 void bml_copy_ellblock_double_complex(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B);
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B);
 
 void bml_reorder_ellblock(
     bml_matrix_ellblock_t * A,

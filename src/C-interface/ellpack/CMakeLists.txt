@@ -1,5 +1,3 @@
-include_directories(..)
-
 set(HEADERS-ELLPACK
   bml_add_ellpack.h
   bml_adjungate_triangle_ellpack.h
@@ -56,7 +54,7 @@ set_target_properties(bml-ellpack
 if(OPENMP_FOUND)
   set_target_properties(bml-ellpack
     PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
 endif()
 
 set(SOURCES-ELLPACK-TYPED

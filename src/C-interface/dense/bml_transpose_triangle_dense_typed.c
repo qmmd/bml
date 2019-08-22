@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_transpose_triangle.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_transpose_triangle.h"
 #include "bml_transpose_triangle_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -35,7 +35,7 @@ void TYPED_FUNC(
     switch (triangle)
     {
         case 'u':
-#pragma omp parallel for default(none) shared(N, A_matrix)
+#pragma omp parallel for shared(N, A_matrix)
             for (int i = 0; i < N - 1; i++)
             {
                 for (int j = i + 1; j < N; j++)
@@ -47,7 +47,7 @@ void TYPED_FUNC(
             break;
 
         case 'l':
-#pragma omp parallel for default(none) shared(N, A_matrix)
+#pragma omp parallel for shared(N, A_matrix)
             for (int i = 0; i < N - 1; i++)
             {
                 for (int j = i + 1; j < N; j++)

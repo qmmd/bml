@@ -1,5 +1,5 @@
+#include "../bml_logger.h"
 #include "bml_introspection_dense.h"
-#include "bml_logger.h"
 
 #include <stdlib.h>
 
@@ -10,7 +10,7 @@
  */
 bml_matrix_precision_t
 bml_get_precision_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     if (A != NULL)
     {
@@ -29,7 +29,7 @@ bml_get_precision_dense(
  */
 bml_distribution_mode_t
 bml_get_distribution_mode_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     if (A != NULL)
     {
@@ -48,7 +48,7 @@ bml_get_distribution_mode_dense(
  */
 int
 bml_get_N_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     if (A != NULL)
     {
@@ -67,7 +67,7 @@ bml_get_N_dense(
  */
 int
 bml_get_M_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     if (A != NULL)
     {
@@ -87,8 +87,8 @@ bml_get_M_dense(
  */
 int
 bml_get_row_bandwidth_dense(
-    const bml_matrix_dense_t * A,
-    const int i)
+    bml_matrix_dense_t * A,
+    int i)
 {
     switch (bml_get_precision_dense(A))
     {
@@ -121,7 +121,7 @@ bml_get_row_bandwidth_dense(
  */
 int
 bml_get_bandwidth_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     switch (bml_get_precision_dense(A))
     {
@@ -161,8 +161,8 @@ bml_get_bandwidth_dense(
  */
 double
 bml_get_sparsity_dense(
-    const bml_matrix_dense_t * A,
-    const double threshold)
+    bml_matrix_dense_t * A,
+    double threshold)
 {
     switch (bml_get_precision_dense(A))
     {

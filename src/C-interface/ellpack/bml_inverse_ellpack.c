@@ -12,7 +12,7 @@
 
 bml_matrix_ellpack_t *
 bml_inverse_ellpack(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
 
     bml_matrix_ellpack_t *B = NULL;

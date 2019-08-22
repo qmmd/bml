@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_transpose.h"
+#include "../bml_logger.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_transpose_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
@@ -20,7 +20,7 @@
  */
 bml_matrix_dense_t *
 bml_transpose_new_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     switch (A->matrix_precision)
     {

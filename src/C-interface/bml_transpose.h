@@ -7,7 +7,7 @@
 
 // Transpose A - B = A^T
 bml_matrix_t *bml_transpose_new(
-    const bml_matrix_t * A);
+    bml_matrix_t * A);
 
 void bml_transpose(
     bml_matrix_t * A);

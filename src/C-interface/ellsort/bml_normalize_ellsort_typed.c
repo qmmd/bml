@@ -1,13 +1,13 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_normalize.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_normalize.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
+#include "bml_add_ellsort.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_normalize_ellsort.h"
 #include "bml_scale_ellsort.h"
-#include "bml_add_ellsort.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>
@@ -32,8 +32,8 @@
 void TYPED_FUNC(
     bml_normalize_ellsort) (
     bml_matrix_ellsort_t * A,
-    const double mineval,
-    const double maxeval)
+    double mineval,
+    double maxeval)
 {
     double maxminusmin = maxeval - mineval;
     double gershfact = maxeval / maxminusmin;
@@ -55,7 +55,7 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_gershgorin_ellsort) (
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     REAL_T radius, absham, dvalue;
 
@@ -78,7 +78,7 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, M, A_nnz, A_index, A_value)         \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   shared(rad, dval)                             \
@@ -153,8 +153,8 @@ void *TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_gershgorin_partial_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const int nrows)
+    bml_matrix_ellsort_t * A,
+    int nrows)
 {
     REAL_T radius, absham, dvalue;
 
@@ -173,7 +173,7 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, M, A_nnz, A_index, A_value)         \
   shared(rad, dval)                             \
   private(absham, radius, dvalue)               \

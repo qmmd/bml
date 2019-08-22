@@ -21,15 +21,15 @@ typedef enum
 } bml_log_level_t;
 
 void bml_log(
-    const bml_log_level_t log_level,
-    const char *format,
+    bml_log_level_t log_level,
+    char *format,
     ...);
 
 void bml_log_location(
-    const bml_log_level_t log_level,
-    const char *filename,
-    const int linenumber,
-    const char *format,
+    bml_log_level_t log_level,
+    char *filename,
+    int linenumber,
+    char *format,
     ...);
 
 /** Convenience macro to write a BML_LOG_DEBUG level message. */

@@ -7,17 +7,17 @@ module bml_getters_m
   private
 
   interface bml_get_row
-     module procedure bml_get_row_single_real
-     module procedure bml_get_row_double_real
-     module procedure bml_get_row_single_complex
-     module procedure bml_get_row_double_complex
+    module procedure bml_get_row_single_real
+    module procedure bml_get_row_double_real
+    module procedure bml_get_row_single_complex
+    module procedure bml_get_row_double_complex
   end interface bml_get_row
 
   interface bml_get_diagonal
-     module procedure bml_get_diagonal_single_real
-     module procedure bml_get_diagonal_double_real
-     module procedure bml_get_diagonal_single_complex
-     module procedure bml_get_diagonal_double_complex
+    module procedure bml_get_diagonal_single_real
+    module procedure bml_get_diagonal_double_real
+    module procedure bml_get_diagonal_single_complex
+    module procedure bml_get_diagonal_double_complex
   end interface bml_get_diagonal
 
   public :: bml_get_row, bml_get_diagonal

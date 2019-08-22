@@ -8,49 +8,49 @@
 #include <complex.h>
 
 void *bml_get_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const int i,
-    const int j);
+    bml_matrix_ellsort_t * A,
+    int i,
+    int j);
 
-float *bml_get_ellsort_single_real(
-    const bml_matrix_ellsort_t * A,
-    const int i,
-    const int j);
+void *bml_get_ellsort_single_real(
+    bml_matrix_ellsort_t * A,
+    int i,
+    int j);
 
-double *bml_get_ellsort_double_real(
-    const bml_matrix_ellsort_t * A,
-    const int i,
-    const int j);
+void *bml_get_ellsort_double_real(
+    bml_matrix_ellsort_t * A,
+    int i,
+    int j);
 
-float complex *bml_get_ellsort_single_complex(
-    const bml_matrix_ellsort_t * A,
-    const int i,
-    const int j);
+void *bml_get_ellsort_single_complex(
+    bml_matrix_ellsort_t * A,
+    int i,
+    int j);
 
-double complex *bml_get_ellsort_double_complex(
-    const bml_matrix_ellsort_t * A,
-    const int i,
-    const int j);
+void *bml_get_ellsort_double_complex(
+    bml_matrix_ellsort_t * A,
+    int i,
+    int j);
 
 void *bml_get_row_ellsort(
     bml_matrix_ellsort_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_ellsort_single_real(
     bml_matrix_ellsort_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_ellsort_double_real(
     bml_matrix_ellsort_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_ellsort_single_complex(
     bml_matrix_ellsort_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
-    const int i);
+    int i);
 
 void *bml_get_diagonal_ellsort(
     bml_matrix_ellsort_t * A);

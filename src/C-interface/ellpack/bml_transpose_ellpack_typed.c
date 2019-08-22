@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_transpose.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_transpose_ellpack.h"
 #include "bml_types_ellpack.h"
@@ -26,7 +26,7 @@
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_transpose_new_ellpack) (
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     int N = A->N;
     int M = A->M;
@@ -101,7 +101,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
        int Alrmin = A_localRowMin[myRank];
        int Alrmax = A_localRowMax[myRank];
 
-       #pragma omp parallel for default(none) \
+       #pragma omp parallel for               \
        shared(N, M, B_index, B_value, B_nnz) \
        shared(A_index, A_value, A_nnz,Alrmin,Alrmax)
        //for (int i = 0; i < N; i++)
@@ -138,7 +138,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_transpose_ellpack) (
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     int N = A->N;
     int M = A->M;

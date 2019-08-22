@@ -17,9 +17,9 @@
  */
 bml_matrix_type_t
 bml_get_type(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
-    const bml_matrix_type_t *matrix_type = A;
+    bml_matrix_type_t *matrix_type = A;
     if (A != NULL)
     {
         return *matrix_type;
@@ -38,7 +38,7 @@ bml_get_type(
  */
 bml_matrix_precision_t
 bml_get_precision(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -71,7 +71,7 @@ bml_get_precision(
  */
 int
 bml_get_N(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -104,7 +104,7 @@ bml_get_N(
  */
 int
 bml_get_M(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -132,7 +132,7 @@ bml_get_M(
 
 int
 bml_get_NB(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -166,8 +166,8 @@ bml_get_NB(
  */
 int
 bml_get_row_bandwidth(
-    const bml_matrix_t * A,
-    const int i)
+    bml_matrix_t * A,
+    int i)
 {
     if (i < 0 || i >= bml_get_N(A))
     {
@@ -198,7 +198,7 @@ bml_get_row_bandwidth(
  */
 int
 bml_get_bandwidth(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -225,7 +225,7 @@ bml_get_bandwidth(
  */
 bml_distribution_mode_t
 bml_get_distribution_mode(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -253,8 +253,8 @@ bml_get_distribution_mode(
  */
 double
 bml_get_sparsity(
-    const bml_matrix_t * A,
-    const double threshold)
+    bml_matrix_t * A,
+    double threshold)
 {
     switch (bml_get_type(A))
     {

@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_allocate_dense.h"
-#include "bml_types.h"
-#include "bml_types_dense.h"
+#include "../bml_allocate.h"
 #include "../bml_logger.h"
+#include "../bml_types.h"
+#include "bml_allocate_dense.h"
+#include "bml_types_dense.h"
 #include "bml_utilities_dense.h"
 
 #ifdef BML_USE_MAGMA
@@ -54,8 +54,8 @@ void TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_zero_matrix_dense) (
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dense_t *A = NULL;
 
@@ -105,15 +105,15 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_banded_matrix_dense) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, M };
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
     REAL_T *A_dense = A->matrix;
-#pragma omp parallel for default(none) shared(A_dense)
+#pragma omp parallel for shared(A_dense)
     for (int i = 0; i < N; i++)
     {
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
@@ -142,8 +142,8 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_random_matrix_dense) (
-    const int N,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =
@@ -188,8 +188,8 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_identity_matrix_dense) (
-    const int N,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =
@@ -200,7 +200,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     REAL_T *A_dense = A->matrix;
 #endif
 
-#pragma omp parallel for default(none) shared(A_dense)
+#pragma omp parallel for shared(A_dense)
     for (int i = 0; i < N; i++)
     {
 #ifdef BML_USE_MAGMA

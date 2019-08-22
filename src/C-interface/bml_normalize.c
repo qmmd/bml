@@ -19,8 +19,8 @@
 void
 bml_normalize(
     bml_matrix_t * A,
-    const double mineval,
-    const double maxeval)
+    double mineval,
+    double maxeval)
 {
     switch (bml_get_type(A))
     {
@@ -52,7 +52,7 @@ bml_normalize(
  */
 void *
 bml_gershgorin(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -86,8 +86,8 @@ bml_gershgorin(
  */
 void *
 bml_gershgorin_partial(
-    const bml_matrix_t * A,
-    const int nrows)
+    bml_matrix_t * A,
+    int nrows)
 {
     switch (bml_get_type(A))
     {

@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_add.h"
-#include "bml_types.h"
-#include "bml_parallel.h"
-#include "bml_allocate_ellsort.h"
+#include "../bml_add.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_add_ellsort.h"
+#include "bml_allocate_ellsort.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>
@@ -31,11 +31,11 @@
  */
 void TYPED_FUNC(
     bml_add_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int N = A->N;
     int A_M = A->M;
@@ -65,14 +65,12 @@ void TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                \
-  default(none)                         \
   shared(N, A_M, B_M, myRank)           \
   shared(A_index, A_value, A_nnz)       \
   shared(A_localRowMin, A_localRowMax)  \
   shared(B_index, B_value, B_nnz)
 #else
 #pragma omp parallel for                \
-  default(none)                         \
   shared(N, A_M, B_M, myRank)           \
   shared(A_index, A_value, A_nnz)       \
   shared(A_localRowMin, A_localRowMax)  \
@@ -156,11 +154,11 @@ void TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_add_norm_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int N = A->N;
     int A_M = A->M;
@@ -194,7 +192,6 @@ double TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                \
-  default(none)                         \
   shared(N, A_M, B_M, myRank)           \
   shared(A_index, A_value, A_nnz)       \
   shared(A_localRowMin, A_localRowMax)  \
@@ -202,7 +199,6 @@ double TYPED_FUNC(
   reduction(+:trnorm)
 #else
 #pragma omp parallel for                \
-  default(none)                         \
   shared(N, A_M, B_M, myRank)           \
   shared(A_index, A_value, A_nnz)       \
   shared(A_localRowMin, A_localRowMax)  \
@@ -293,9 +289,9 @@ double TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double beta,
+    double threshold)
 {
     REAL_T alpha = (REAL_T) 1.0;
 
@@ -321,10 +317,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_add_identity_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double alpha,
+    double beta,
+    double threshold)
 {
     bml_matrix_ellsort_t *Id =
         TYPED_FUNC(bml_identity_matrix_ellsort) (A->N, A->M,

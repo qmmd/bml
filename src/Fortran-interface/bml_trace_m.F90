@@ -8,7 +8,7 @@ module bml_trace_m
   private
 
   public :: bml_trace
-  public :: bml_traceMult
+  public :: bml_trace_mult
 
 contains
 
@@ -30,13 +30,13 @@ contains
   !!
   !! \param a The matrix a.
   !! \param b The matrix b.
-  function bml_traceMult(a, b) result(tr_mult)
+  function bml_trace_mult(a, b) result(tr_mult)
 
     class(bml_matrix_t), intent(in) :: a, b
     real(C_DOUBLE) :: tr_mult
 
-    tr_mult= bml_traceMult_C(a%ptr, b%ptr)
+    tr_mult= bml_trace_mult_C(a%ptr, b%ptr)
 
-  end function bml_traceMult
+  end function bml_trace_mult
 
 end module bml_trace_m

@@ -9,14 +9,14 @@ module bml_scale_m
 
   !> Scale a matrix.
   interface bml_scale
-     module procedure scale_one_single_real
-     module procedure scale_one_double_real
-     module procedure scale_one_single_complex
-     module procedure scale_one_double_complex
-     module procedure scale_two_single_real
-     module procedure scale_two_double_real
-     module procedure scale_two_single_complex
-     module procedure scale_two_double_complex
+    module procedure scale_one_single_real
+    module procedure scale_one_double_real
+    module procedure scale_one_single_complex
+    module procedure scale_one_double_complex
+    module procedure scale_two_single_real
+    module procedure scale_two_double_real
+    module procedure scale_two_single_complex
+    module procedure scale_two_double_complex
   end interface bml_scale
 
   public :: bml_scale

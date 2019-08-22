@@ -1,8 +1,8 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_export_dense.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #ifdef BML_USE_MAGMA
@@ -21,8 +21,8 @@
  */
 void *
 bml_export_to_dense_dense(
-    const bml_matrix_dense_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_dense_t * A,
+    bml_dense_order_t order)
 {
     switch (A->matrix_precision)
     {

@@ -4,10 +4,34 @@ sudo: required
 
 cache:
   directories:
-    - /home/travis/.bundle
-    - /home/travis/.gem
-    - /home/travis/.nvm
-    - /home/travis/.rvm
+    - "/home/travis/.bundle"
+    - "/home/travis/.gem"
+    - "/home/travis/.nvm"
+    - "/home/travis/.rvm"
+
+addons:
+  apt:
+    update: true
+    sources:
+      - ubuntu-toolchain-r-test
+    coverity_scan:
+      project:
+        name: lanl/bml
+        description: Build submitted via Travis CI
+      notification_email: nicolasbock@gmail.com
+      build_command_prepend: cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=yes -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes .
+      build_command: make
+      branch_pattern: coverty_scan
+
+deploy:
+  - provider: launchpad
+    slug: "~nicolasbock/bml/+git/master"
+    oauth_token:
+      secure: jFNStG4BmWYA5tHi6WkWbLFQZXjsE3wNXpLiPGDGA2VT62tEERdeoFsZ27HWrZ51feV1J/B4UKdXW+QXlkhw86iSSoTRTSQpDC5tRMbvb760ZYm+DM/KinhWiAcry2T6/nedRXX69xLqVIQ7l6YVdYyxbFNRlEsIAPdCCzKxHShWseO4ECFQBEQ3rdL81gjY0k4kvcJ7yGBI5zSw3BsAfnmlkhY2B0GfY0VnCX9dPjxqKzgWK8//wNDM/7iZG6Y8PkckretLluys2yej4nXuaZLoPAJg4DlhzwGp2UebKLZtKf7VA+rYHU9ZpWAkm3MEWoB2aW/EYiWBmdOFi9KnyCIGLJ6GN8S7Qls9pdOi3YP2H6kzGgGg0J3eGRYDW0V5YZd2DED/XMUh2jCIaY3Rty5Y0GNzI0BsWBrOjhIcTPQHz9htpE/+KZxUYjPs67Oww6yj0hnpG2tgH8+B8Fvr+inCAOcuwvWZ5kFS3nYbDh3mlasHVCpYkkLxysD9l8dl7TK+NeAw1ahw0AgPSfaVL6eE+RsttOSGxCXfRReucoOx+WpnCpY9RVailQij+L8F0lO+4IY0AdVi4NXooJjmR/LmN5X6wBW6rrWoTLJn9pt0bkshRHLDoLlJ03HRj+fkoSBoju48Myc4m+3B16rVgItEmssbjCzWmwxzhK22+Mw=
+    oauth_token_secret:
+      secure: NzMoMuB8u1l9FDn52fSRFbDIht3Au7imkZy2cfuClqEMJTw2+WlVwD8wmCC1iKzYBzKVOrPwfSzLRCro+E/zg/yH+Vpeyzt88HKxUJj/XuR/T/jwofREGoUNfEOujNhaUMo+9Pz2vnwqVA2ZmMpu54TAqQVPj/BoKykeeFjYul5Ce/cZ9xy6Ew2+ZjEIc+8p57Q7Xe88kNwLYc51zRGr0tryyXpYelJoY4NigOZaKvpAtDGcja9kjyXLJWpHp8ABv9M8beCVXp9RKqd/8PmE0rXysQxElOwia98GG5hfacDenzw+pC9AhBjF0vBFrfp8/NVm/feBWn1DVx13F/LVK67s435HEDWJRQTBoj616mGy/gHWvEhUTDF7BliANrwkFvOoJyxq+YEIr0KEH1xqoPiJKkdCMoz6JtCg78UY2+Fsmz1sPzIbzNDpAzqDbFhFZohp/qaDdhlO1k40AQ1u6rWbIfIixivG7hMV2ClIz/xxnEJ31YPwBvvERk/SkHQPwbVG397n9H+PB3/jSMAtACiP09SK2LqoYyUvZT0roiAn0OcFNiukLLke3X/+o2wgLUlj68uCIYiYe1eC+ZmtjH465UPHx1hgtOGvNNMo8NXJbm7jrT0ZdKKPoqCd6RqCJvW8xI6Ovavbn83nRkcIAni8jsYkG9Y7W3JOKDulITg=
+    on:
+      tags: true
 
 env:
   global:
@@ -17,27 +41,33 @@ env:
     - PARALLEL_TEST_JOBS=2
     - DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev"
     # COVERTY_SCAN_TOKEN
-    - secure: "tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g="
+    - secure: tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g=
+  matrix:
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
+    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*-single_real"    BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*-double_real"    BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*-single_complex" BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R .*-double_complex" BML_VALGRIND=yes packages="valgrind"
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes BML_COMPLEX=no
 
-addons:
-  apt:
-    update: true
-    sources:
-      - ubuntu-toolchain-r-test
-    coverity_scan:
-        project:
-            name: "lanl/bml"
-            description: "Build submitted via Travis CI"
-        notification_email: nicolasbock@gmail.com
-        build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=yes -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
-        build_command: "make"
-        branch_pattern: coverty_scan
+script:
+  - ./install_packages.sh
+  - ./build.sh testing
 
 stages:
   - name: linter
     if: branch != coverty_scan
-  - name: test-full
-    if: branch != coverty_scan
+  - test
   - name: coverage
     if: branch != coverty_scan
   - name: docs
@@ -48,61 +78,35 @@ stages:
 jobs:
   include:
     - stage: linter
+      name: "Linter"
+      before_install:
+        - sudo add-apt-repository --yes ppa:kelleyk/emacs
+        - sudo apt-get update
       script:
         - bundle install
         - pip install proselint
         - bundle exec danger
-        - env packages="indent" ./install_packages.sh
-        - env BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh check_indent
+        - packages="indent emacs26" ./install_packages.sh
+        - BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
     - stage: docs
+      name: "Build Docs"
+      env:
+        - CC=gcc-9 CXX=g++-9 FC=gfortran-9 BML_OPENMP=no VERBOSE_MAKEFILE=yes packages="doxygen texlive"
       script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8 doxygen texlive" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh docs
-    - stage: test
-      script:
-        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
-        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no BML_INTERNAL_BLAS=no ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
-        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
-        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
-        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} valgrind gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=no BML_OPENMP=no BML_INTERNAL_BLAS=no ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=no BML_OPENMP=no BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=no BML_OPENMP=yes BML_INTERNAL_BLAS=no ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=no BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=no BML_INTERNAL_BLAS=no ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=no BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no ./build.sh testing
-    - script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
+        - ./install_packages.sh
+        - ./build.sh docs
     - stage: coverage
+      name: "Get test coverage"
+      env:
+        - CC=gcc-7 CXX=g++-7 FC=gfortran-7 GCOV=gcov-7 BUILD_SHARED_LIBS=yes BML_COVERAGE=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
       script:
         - pip install cpp-coveralls codecov
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
-        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
+        - ./install_packages.sh
+        - ./build.sh testing
       after_success:
         - codecov --gcov-exec ${GCOV}
         - coveralls
     - stage: coverty
+      name: "Run coverty"
       before_install:
         - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-

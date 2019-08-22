@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_transpose.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_transpose_ellsort.h"
 #include "bml_types_ellsort.h"
@@ -26,7 +26,7 @@
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_transpose_new_ellsort) (
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
     bml_matrix_ellsort_t *B =
@@ -57,7 +57,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     }
 #endif
 
-#pragma omp parallel for default(none) \
+#pragma omp parallel for               \
   shared(matrix_dimension, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
     for (int i = 0; i < matrix_dimension.N_rows; i++)
     {
@@ -90,7 +90,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
        int Alrmin = A_localRowMin[myRank];
        int Alrmax = A_localRowMax[myRank];
 
-       #pragma omp parallel for default(none) \
+       #pragma omp parallel for               \
        shared(N, M, B_index, B_value, B_nnz) \
        shared(A_index, A_value, A_nnz,Alrmin,Alrmax)
        //for (int i = 0; i < N; i++)
@@ -127,7 +127,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_transpose_ellsort) (
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     int N = A->N;
     int M = A->M;
@@ -136,7 +136,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
+#pragma omp parallel for shared(N, M, A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = A_nnz[i] - 1; j >= 0; j--)

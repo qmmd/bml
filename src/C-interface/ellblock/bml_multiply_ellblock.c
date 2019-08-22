@@ -1,9 +1,9 @@
-#include "bml_add.h"
+#include "../bml_add.h"
+#include "../bml_logger.h"
+#include "../bml_multiply.h"
+#include "../bml_types.h"
 #include "bml_add_ellblock.h"
-#include "bml_logger.h"
-#include "bml_multiply.h"
 #include "bml_multiply_ellblock.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <stdio.h>
@@ -25,12 +25,12 @@
  */
 void
 bml_multiply_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
     bml_matrix_ellblock_t * C,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -68,9 +68,9 @@ bml_multiply_ellblock(
  */
 void *
 bml_multiply_x2_ellblock(
-    const bml_matrix_ellblock_t * X,
+    bml_matrix_ellblock_t * X,
     bml_matrix_ellblock_t * X2,
-    const double threshold)
+    double threshold)
 {
     switch (X->matrix_precision)
     {
@@ -106,10 +106,10 @@ bml_multiply_x2_ellblock(
  */
 void
 bml_multiply_AB_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
     bml_matrix_ellblock_t * C,
-    const double threshold)
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -144,10 +144,10 @@ bml_multiply_AB_ellblock(
  */
 void
 bml_multiply_adjust_AB_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
     bml_matrix_ellblock_t * C,
-    const double threshold)
+    double threshold)
 {
     switch (A->matrix_precision)
     {

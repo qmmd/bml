@@ -2,8 +2,8 @@
 #include "../../typed.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_adjungate_triangle_ellsort.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdio.h>
@@ -19,9 +19,10 @@
  *
  *  \ingroup adjungate_triangle_group
  *
- *  \param A  The matrix for which the triangle should be adjungated
- *  \param triangle  Which triangle to adjungate ('u': upper, 'l': lower)
- *  WARNING: Please verify race conditions and parallel performances ....
+ *  \param A[in,out]  The matrix for which the triangle should be adjungated
+ *  \param triangle[in]  Which triangle to adjungate ('u': upper, 'l': lower)
+ *
+ *  WARNING: Please verify race conditions and parallel performances.
  */
 void TYPED_FUNC(
     bml_adjungate_triangle_ellsort) (
@@ -47,7 +48,7 @@ void TYPED_FUNC(
                 omp_init_lock(&(lock[i]));
 #endif
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(A_N,A_M,A_index,A_nnz,A_value,lock)    \
   private(l,ll)
             //    WARNING: Please, check for race conditions ...
@@ -90,7 +91,7 @@ void TYPED_FUNC(
                 omp_init_lock(&(lock[i]));
 #endif
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(lock,A_N,A_M,A_index,A_nnz,A_value)    \
   private(l,ll)
             //    WARNING: Please, check for race conditions and parallel performances ...

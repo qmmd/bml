@@ -8,14 +8,14 @@ module multiply_matrix_m
   private
 
   type, public, extends(test_t) :: multiply_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type multiply_matrix_t
 
 contains
 
   function test_function(matrix_type, element_type, element_precision, n, m) &
-      & result(test_result)
+       & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
@@ -52,11 +52,11 @@ contains
     double precision :: abs_tol = 1d-12
 #endif
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-        & a)
+         & a)
     call bml_identity_matrix(matrix_type, element_type, element_precision, n, &
-        & m, b)
+         & m, b)
     call bml_identity_matrix(matrix_type, element_type, element_precision, n, &
-        & m, c)
+         & m, c)
     call bml_copy(c, d)
 
     call bml_multiply(a, b, d, alpha, beta, threshold)
@@ -81,9 +81,9 @@ contains
     allocate(e_dense(n, n))
     e_dense = alpha * matmul(a_dense, b_dense) + beta * c_dense
     if(maxval(abs(e_dense - d_dense)) > abs_tol) then
-       test_result = .false.
-       print *, "incorrect matrix product"
-       print *, "max abs diff = ", maxval(abs(e_dense - d_dense))
+      test_result = .false.
+      print *, "incorrect matrix product"
+      print *, "max abs diff = ", maxval(abs(e_dense - d_dense))
     endif
 
     call bml_export_to_dense(f, f_dense)
@@ -91,9 +91,9 @@ contains
     call bml_print_matrix("F", f_dense, 1, n, 1, n)
     call bml_print_matrix("G", g_dense, 1, n, 1, n)
     if(maxval(abs(f_dense - g_dense)) > abs_tol) then
-       test_result = .false.
-       print *, "incorrect matrix product"
-       print *, "max abs diff = ", maxval(abs(f_dense - g_dense))
+      test_result = .false.
+      print *, "incorrect matrix product"
+      print *, "max abs diff = ", maxval(abs(f_dense - g_dense))
     endif
 
     call bml_deallocate(a)

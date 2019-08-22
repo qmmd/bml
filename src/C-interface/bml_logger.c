@@ -92,8 +92,8 @@ print_backtrace(
  */
 void
 bml_log_real(
-    const bml_log_level_t log_level,
-    const char *format,
+    bml_log_level_t log_level,
+    char *format,
     va_list ap)
 {
     char new_format[FMT_LENGTH];
@@ -125,8 +125,8 @@ bml_log_real(
  */
 void
 bml_log(
-    const bml_log_level_t log_level,
-    const char *format,
+    bml_log_level_t log_level,
+    char *format,
     ...)
 {
     va_list ap;
@@ -145,10 +145,10 @@ bml_log(
  */
 void
 bml_log_location(
-    const bml_log_level_t log_level,
-    const char *filename,
-    const int linenumber,
-    const char *format,
+    bml_log_level_t log_level,
+    char *filename,
+    int linenumber,
+    char *format,
     ...)
 {
     va_list ap;

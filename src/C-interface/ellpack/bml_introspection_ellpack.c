@@ -1,10 +1,10 @@
-#include "bml_introspection_ellpack.h"
-#include "bml_types_ellpack.h"
-#include "bml_logger.h"
 #include "../../macros.h"
-#include "../bml_types.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
+#include "bml_introspection_ellpack.h"
+#include "bml_types_ellpack.h"
 
 #include <complex.h>
 #include <math.h>
@@ -18,7 +18,7 @@
  */
 bml_matrix_precision_t
 bml_get_precision_ellpack(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -37,7 +37,7 @@ bml_get_precision_ellpack(
  */
 bml_distribution_mode_t
 bml_get_distribution_mode_ellpack(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -56,7 +56,7 @@ bml_get_distribution_mode_ellpack(
  */
 int
 bml_get_N_ellpack(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -75,7 +75,7 @@ bml_get_N_ellpack(
  */
 int
 bml_get_M_ellpack(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -95,8 +95,8 @@ bml_get_M_ellpack(
  */
 int
 bml_get_row_bandwidth_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const int i)
+    bml_matrix_ellpack_t * A,
+    int i)
 {
     return A->nnz[i];
 }
@@ -108,7 +108,7 @@ bml_get_row_bandwidth_ellpack(
  */
 int
 bml_get_bandwidth_ellpack(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     int max_bandwidth = 0;
     for (int i = 0; i < A->N; i++)
@@ -134,8 +134,8 @@ bml_get_bandwidth_ellpack(
  */
 double
 bml_get_sparsity_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double threshold)
 {
     switch (bml_get_precision_ellpack(A))
     {

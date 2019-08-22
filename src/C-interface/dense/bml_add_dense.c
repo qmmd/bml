@@ -1,7 +1,7 @@
-#include "bml_add.h"
+#include "../bml_add.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_add_dense.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
@@ -21,9 +21,9 @@
 void
 bml_add_dense(
     bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     switch (A->matrix_precision)
     {
@@ -59,9 +59,9 @@ bml_add_dense(
 double
 bml_add_norm_dense(
     bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     double trnorm = 0.0;
 
@@ -98,7 +98,7 @@ bml_add_norm_dense(
 void
 bml_add_identity_dense(
     bml_matrix_dense_t * A,
-    const double beta)
+    double beta)
 {
     switch (A->matrix_precision)
     {
@@ -133,8 +133,8 @@ bml_add_identity_dense(
 void
 bml_scale_add_identity_dense(
     bml_matrix_dense_t * A,
-    const double alpha,
-    const double beta)
+    double alpha,
+    double beta)
 {
     switch (A->matrix_precision)
     {

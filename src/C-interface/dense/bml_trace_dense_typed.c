@@ -3,14 +3,14 @@
 #endif
 
 #include "../../macros.h"
-#include "../blas.h"
 #include "../../typed.h"
-#include "bml_trace.h"
+#include "../blas.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_trace.h"
+#include "../bml_types.h"
 #include "bml_trace_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -29,7 +29,7 @@
  */
 double TYPED_FUNC(
     bml_trace_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     int N = A->N;
 
@@ -64,7 +64,7 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   reduction(+:trace)
@@ -77,8 +77,8 @@ double TYPED_FUNC(
     return (double) REAL_PART(trace);
 }
 
-/** Calculate the trace of a matrix multiplication.
- * The matrices must be of the same size.
+/** Calculate the trace of a matrix multiplication. The matrices must
+ * be of the same size and symmetric.
  *
  *  \ingroup trace_group
  *
@@ -87,9 +87,9 @@ double TYPED_FUNC(
  *  \return The trace of A*B
  */
 double TYPED_FUNC(
-    bml_traceMult_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B)
+    bml_trace_mult_dense) (
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B)
 {
     int N = A->N;
 
@@ -105,14 +105,13 @@ double TYPED_FUNC(
     if (N != B->N)
     {
         LOG_ERROR
-            ("bml_traceMult_dense: Matrices A and B are different sizes.");
+            ("bml_trace_mult_dense: Matrices A and B are different sizes.");
     }
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   reduction(+:trace)
-    //for (int i = 0; i < N*N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
     {

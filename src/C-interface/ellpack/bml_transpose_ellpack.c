@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_transpose.h"
+#include "../bml_logger.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_transpose_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
@@ -14,8 +14,9 @@
  *  \param A The matrix to be transposeed
  *  \return the transposeed A
  */
-bml_matrix_ellpack_t
-    * bml_transpose_new_ellpack(const bml_matrix_ellpack_t * A)
+bml_matrix_ellpack_t *
+bml_transpose_new_ellpack(
+    bml_matrix_ellpack_t * A)
 {
     bml_matrix_ellpack_t *B = NULL;
 
@@ -49,7 +50,7 @@ bml_matrix_ellpack_t
  */
 void
 bml_transpose_ellpack(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
 
     switch (A->matrix_precision)

@@ -1,9 +1,9 @@
 #include "../../macros.h"
+#include "../bml_logger.h"
+#include "../bml_submatrix.h"
+#include "../bml_types.h"
 #include "../dense/bml_types_dense.h"
-#include "bml_logger.h"
-#include "bml_submatrix.h"
 #include "bml_submatrix_ellsort.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdio.h>
@@ -28,13 +28,13 @@
  */
 void
 bml_matrix2submatrix_index_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     switch (A->matrix_precision)
     {
@@ -85,12 +85,12 @@ bml_matrix2submatrix_index_ellsort(
  */
 void
 bml_matrix2submatrix_index_graph_ellsort(
-    const bml_matrix_ellsort_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellsort_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     switch (B->matrix_precision)
     {
@@ -141,10 +141,10 @@ bml_matrix2submatrix_index_graph_ellsort(
  */
 void
 bml_matrix2submatrix_ellsort(
-    const bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * A,
     bml_matrix_dense_t * B,
-    const int *core_halo_index,
-    const int lsize)
+    int *core_halo_index,
+    int lsize)
 {
     switch (A->matrix_precision)
     {
@@ -183,12 +183,12 @@ bml_matrix2submatrix_ellsort(
  */
 void
 bml_submatrix2matrix_ellsort(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     bml_matrix_ellsort_t * B,
-    const int *core_halo_index,
-    const int lsize,
-    const int llsize,
-    const double threshold)
+    int *core_halo_index,
+    int lsize,
+    int llsize,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -230,10 +230,10 @@ bml_submatrix2matrix_ellsort(
  */
 void *
 bml_getVector_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const int *jj,
-    const int irow,
-    const int colCnt)
+    bml_matrix_ellsort_t * A,
+    int *jj,
+    int irow,
+    int colCnt)
 {
     switch (A->matrix_precision)
     {
@@ -267,10 +267,10 @@ bml_getVector_ellsort(
  */
 bml_matrix_ellsort_t *
 bml_group_matrix_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const int *hindex,
-    const int ngroups,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    int *hindex,
+    int ngroups,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -308,10 +308,10 @@ bml_group_matrix_ellsort(
  */
 void
 bml_adjacency_ellsort(
-    const bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * A,
     int *xadj,
     int *adjncy,
-    const int base_flag)
+    int base_flag)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -325,7 +325,7 @@ bml_adjacency_ellsort(
         xadj[i] = xadj[i - 1] + A_nnz[i - 1];
     }
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(A_N, A_M, A_index, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
@@ -338,13 +338,13 @@ bml_adjacency_ellsort(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N, adjncy)
         for (int i = 0; i <= xadj[A_N]; i++)
         {
             adjncy[i] += 1;
         }
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N)
         for (int i = 0; i < A_N + 1; i++)
         {
@@ -366,12 +366,12 @@ bml_adjacency_ellsort(
  */
 void
 bml_adjacency_group_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const int *hindex,
-    const int nnodes,
+    bml_matrix_ellsort_t * A,
+    int *hindex,
+    int nnodes,
     int *xadj,
     int *adjncy,
-    const int base_flag)
+    int base_flag)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -406,7 +406,7 @@ bml_adjacency_group_ellsort(
     }
 
     // Fill in adjacent atoms
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(A_N, A_M, A_index, A_nnz)              \
   shared(xadj, adjncy, hnode)
     for (int i = 0; i < nnodes; i++)
@@ -431,13 +431,13 @@ bml_adjacency_group_ellsort(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N, adjncy)
         for (int i = 0; i <= xadj[nnodes]; i++)
         {
             adjncy[i] += 1;
         }
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N)
         for (int i = 0; i < nnodes + 1; i++)
         {

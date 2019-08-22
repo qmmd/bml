@@ -1,5 +1,3 @@
-include_directories(..)
-
 set(HEADERS-ELLBLOCK
   bml_add_ellblock.h
   bml_allocate_ellblock.h

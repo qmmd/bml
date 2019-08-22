@@ -1,8 +1,8 @@
-#include "bml_copy.h"
+#include "../bml_copy.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_copy_ellsort.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdlib.h>
@@ -18,7 +18,7 @@
  */
 bml_matrix_ellsort_t *
 bml_copy_ellsort_new(
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     bml_matrix_ellsort_t *B = NULL;
 
@@ -52,8 +52,8 @@ bml_copy_ellsort_new(
  */
 void
 bml_copy_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B)
 {
 
     switch (A->matrix_precision)

@@ -4,39 +4,39 @@
 #include "bml_types_ellsort.h"
 
 bml_matrix_ellsort_t *bml_copy_ellsort_new(
-    const bml_matrix_ellsort_t * A);
+    bml_matrix_ellsort_t * A);
 
 bml_matrix_ellsort_t *bml_copy_ellsort_new_single_real(
-    const bml_matrix_ellsort_t * A);
+    bml_matrix_ellsort_t * A);
 
 bml_matrix_ellsort_t *bml_copy_ellsort_new_double_real(
-    const bml_matrix_ellsort_t * A);
+    bml_matrix_ellsort_t * A);
 
 bml_matrix_ellsort_t *bml_copy_ellsort_new_single_complex(
-    const bml_matrix_ellsort_t * A);
+    bml_matrix_ellsort_t * A);
 
 bml_matrix_ellsort_t *bml_copy_ellsort_new_double_complex(
-    const bml_matrix_ellsort_t * A);
+    bml_matrix_ellsort_t * A);
 
 void bml_copy_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B);
 
 void bml_copy_ellsort_single_real(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B);
 
 void bml_copy_ellsort_double_real(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B);
 
 void bml_copy_ellsort_single_complex(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B);
 
 void bml_copy_ellsort_double_complex(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B);
 
 void bml_reorder_ellsort(
     bml_matrix_ellsort_t * A,

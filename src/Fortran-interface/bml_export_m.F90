@@ -9,10 +9,10 @@ module bml_export_m
   private
 
   interface bml_export_to_dense
-     module procedure bml_export_to_dense_single
-     module procedure bml_export_to_dense_double
-     module procedure bml_export_to_dense_single_complex
-     module procedure bml_export_to_dense_double_complex
+    module procedure bml_export_to_dense_single
+    module procedure bml_export_to_dense_double
+    module procedure bml_export_to_dense_single_complex
+    module procedure bml_export_to_dense_double_complex
   end interface bml_export_to_dense
 
   public :: bml_export_to_dense

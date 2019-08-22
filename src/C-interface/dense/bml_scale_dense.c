@@ -1,10 +1,10 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_scale.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
-#include "bml_logger.h"
-#include "bml_scale.h"
 #include "bml_scale_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <assert.h>
@@ -20,8 +20,8 @@
  */
 bml_matrix_dense_t *
 bml_scale_dense_new(
-    const void *scale_factor,
-    const bml_matrix_dense_t * A)
+    void *scale_factor,
+    bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = NULL;
 
@@ -57,8 +57,8 @@ bml_scale_dense_new(
  */
 void
 bml_scale_dense(
-    const void *scale_factor,
-    const bml_matrix_dense_t * A,
+    void *scale_factor,
+    bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
     assert(A != NULL);
@@ -85,7 +85,7 @@ bml_scale_dense(
 
 void
 bml_scale_inplace_dense(
-    const void *scale_factor,
+    void *scale_factor,
     bml_matrix_dense_t * A)
 {
     switch (A->matrix_precision)

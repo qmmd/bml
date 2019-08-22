@@ -14,9 +14,9 @@
  */
 float
 bml_get_dense_single_real(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j)
+    bml_matrix_dense_t * A,
+    int i,
+    int j)
 {
     if (i < 0 || i >= A->N)
     {
@@ -40,9 +40,9 @@ bml_get_dense_single_real(
  */
 double
 bml_get_dense_double_real(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j)
+    bml_matrix_dense_t * A,
+    int i,
+    int j)
 {
     if (i < 0 || i >= A->N)
     {
@@ -66,9 +66,9 @@ bml_get_dense_double_real(
  */
 float complex
 bml_get_dense_single_complex(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j)
+    bml_matrix_dense_t * A,
+    int i,
+    int j)
 {
     if (i < 0 || i >= A->N)
     {
@@ -92,9 +92,9 @@ bml_get_dense_single_complex(
  */
 double complex
 bml_get_dense_double_complex(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j)
+    bml_matrix_dense_t * A,
+    int i,
+    int j)
 {
     if (i < 0 || i >= A->N)
     {

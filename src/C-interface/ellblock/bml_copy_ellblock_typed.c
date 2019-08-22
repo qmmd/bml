@@ -1,8 +1,8 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_copy.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_copy.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_copy_ellblock.h"
 #include "bml_types_ellblock.h"
@@ -21,7 +21,7 @@
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_copy_ellblock_new) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     bml_matrix_ellblock_t *B =
         TYPED_FUNC(bml_block_matrix_ellblock) (A->NB, A->MB, A->bsize,
@@ -69,8 +69,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_copy_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
     assert(A->NB == B->NB);
 

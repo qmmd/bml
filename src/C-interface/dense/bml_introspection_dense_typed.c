@@ -1,8 +1,8 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_introspection_dense.h"
+#include "../bml_export.h"
 #include "bml_export_dense.h"
-#include "bml_export.h"
+#include "bml_introspection_dense.h"
 
 #include <assert.h>
 #include <complex.h>
@@ -17,8 +17,8 @@
  */
 int TYPED_FUNC(
     bml_get_row_bandwidth_dense) (
-    const bml_matrix_dense_t * A,
-    const int i)
+    bml_matrix_dense_t * A,
+    int i)
 {
     assert(A != NULL);
 
@@ -42,7 +42,7 @@ int TYPED_FUNC(
  */
 int TYPED_FUNC(
     bml_get_bandwidth_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     assert(A != NULL);
 
@@ -76,8 +76,8 @@ int TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_get_sparsity_dense) (
-    const bml_matrix_dense_t * A,
-    const double threshold)
+    bml_matrix_dense_t * A,
+    double threshold)
 {
 
 #ifdef BML_USE_MAGMA

@@ -6,9 +6,9 @@
 void
 bml_set_element_dense(
     bml_matrix_dense_t * A,
-    const int i,
-    const int j,
-    const void *value)
+    int i,
+    int j,
+    void *value)
 {
     switch (bml_get_precision(A))
     {
@@ -33,8 +33,8 @@ bml_set_element_dense(
 void
 bml_set_row_dense(
     bml_matrix_dense_t * A,
-    const int i,
-    const void *row)
+    int i,
+    void *row)
 {
     switch (bml_get_precision(A))
     {
@@ -64,7 +64,7 @@ bml_set_row_dense(
 void
 bml_set_diagonal_dense(
     bml_matrix_dense_t * A,
-    const void *diagonal)
+    void *diagonal)
 {
     switch (bml_get_precision(A))
     {

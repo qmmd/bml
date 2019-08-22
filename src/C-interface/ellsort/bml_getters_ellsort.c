@@ -5,9 +5,9 @@
 
 void *
 bml_get_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const int i,
-    const int j)
+    bml_matrix_ellsort_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_precision(A))
     {
@@ -33,7 +33,7 @@ bml_get_ellsort(
 void *
 bml_get_row_ellsort(
     bml_matrix_ellsort_t * A,
-    const int i)
+    int i)
 {
     switch (bml_get_precision(A))
     {

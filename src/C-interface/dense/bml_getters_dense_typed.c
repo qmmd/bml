@@ -4,21 +4,21 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_export.h"
 #include "../bml_introspection.h"
-#include "bml_getters_dense.h"
-#include "bml_logger.h"
-#include "bml_types_dense.h"
+#include "../bml_logger.h"
 #include "bml_export_dense.h"
-#include "bml_export.h"
+#include "bml_getters_dense.h"
+#include "bml_types_dense.h"
 
 #include <complex.h>
 #include <stdlib.h>
 
-REAL_T *TYPED_FUNC(
+void *TYPED_FUNC(
     bml_get_dense) (
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j)
+    bml_matrix_dense_t * A,
+    int i,
+    int j)
 {
     int N = bml_get_N(A);
 
@@ -44,7 +44,7 @@ REAL_T *TYPED_FUNC(
 void *TYPED_FUNC(
     bml_get_row_dense) (
     bml_matrix_dense_t * A,
-    const int i)
+    int i)
 {
     int N = bml_get_N(A);
 

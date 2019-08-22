@@ -4,13 +4,13 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_submatrix.h"
+#include "../bml_types.h"
 #include "../dense/bml_allocate_dense.h"
-#include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
-#include "bml_logger.h"
-#include "bml_submatrix.h"
 #include "bml_submatrix_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
@@ -37,13 +37,13 @@
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_index_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     int l, ll, ii, ls, k;
     int A_N = A->N;
@@ -152,12 +152,12 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_index_graph_ellpack) (
-    const bml_matrix_ellpack_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellpack_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     int l, ll, ii, ls, k;
     int B_N = B->N;
@@ -239,10 +239,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_ellpack) (
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     bml_matrix_dense_t * B,
-    const int *core_halo_index,
-    const int lsize)
+    int *core_halo_index,
+    int lsize)
 {
     REAL_T *rvalue;
 
@@ -261,7 +261,6 @@ void TYPED_FUNC(
 #pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M])
 
 #pragma omp parallel for     \
-    default(none)            \
     private(rvalue)          \
     shared(core_halo_index)  \
     shared(A, B_matrix, B_N)
@@ -296,12 +295,12 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_submatrix2matrix_ellpack) (
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     bml_matrix_ellpack_t * B,
-    const int *core_halo_index,
-    const int lsize,
-    const int llsize,
-    const double threshold)
+    int *core_halo_index,
+    int lsize,
+    int llsize,
+    double threshold)
 {
     int A_N = A->N;
 #ifdef BML_USE_MAGMA
@@ -323,7 +322,6 @@ void TYPED_FUNC(
 #pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 
 #pragma omp parallel for                      \
-    default(none)                             \
     private(ii, icol)                         \
     shared(core_halo_index)                   \
     shared(A_N, A_matrix)                     \
@@ -359,19 +357,19 @@ void TYPED_FUNC(
 // Get matching vector of values
 void *TYPED_FUNC(
     bml_getVector_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const int *jj,
-    const int irow,
-    const int colCnt)
+    bml_matrix_ellpack_t * A,
+    int *jj,
+    int irow,
+    int colCnt)
 {
-    const REAL_T ZERO = 0.0;
+    REAL_T ZERO = 0.0;
 
     int A_N = A->N;
     int A_M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     REAL_T *A_value = A->value;
-    REAL_T *rvalue = malloc(colCnt * sizeof(REAL_T));
+    REAL_T *rvalue = bml_noinit_allocate_memory(colCnt * sizeof(REAL_T));
 
     for (int i = 0; i < colCnt; i++)
     {
@@ -399,10 +397,10 @@ void *TYPED_FUNC(
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_group_matrix_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const int *hindex,
-    const int ngroups,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    int *hindex,
+    int ngroups,
+    double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -432,7 +430,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
-#pragma omp parallel for default(none) \
+#pragma omp parallel for               \
     private(hend)                      \
     shared(hindex, hnode, A_N)
     for (int i = 0; i < ngroups; i++)
@@ -449,14 +447,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
 #if defined(__IBMC_) || defined(__ibmxl__)
 #pragma omp parallel for                       \
-    default(none)                              \
     private(hend)                              \
     shared(hindex, hnode)                      \
     shared(A_nnz, A_index, A_value, A_N, A_M)  \
     shared(B_nnz, B_index, B_value, B_N, B_M)
 #else
 #pragma omp parallel for                       \
-    default(none)                              \
     private(hend)                              \
     shared(hindex, hnode)                      \
     shared(A_nnz, A_index, A_value, A_N, A_M)  \

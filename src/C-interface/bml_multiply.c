@@ -23,12 +23,12 @@
  */
 void
 bml_multiply(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B,
+    bml_matrix_t * A,
+    bml_matrix_t * B,
     bml_matrix_t * C,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -62,9 +62,9 @@ bml_multiply(
  */
 void *
 bml_multiply_x2(
-    const bml_matrix_t * X,
+    bml_matrix_t * X,
     bml_matrix_t * X2,
-    const double threshold)
+    double threshold)
 {
     switch (bml_get_type(X))
     {
@@ -100,10 +100,10 @@ bml_multiply_x2(
  */
 void
 bml_multiply_AB(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B,
+    bml_matrix_t * A,
+    bml_matrix_t * B,
     bml_matrix_t * C,
-    const double threshold)
+    double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -138,10 +138,10 @@ bml_multiply_AB(
  */
 void
 bml_multiply_adjust_AB(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B,
+    bml_matrix_t * A,
+    bml_matrix_t * B,
     bml_matrix_t * C,
-    const double threshold)
+    double threshold)
 {
     switch (bml_get_type(A))
     {

@@ -8,16 +8,16 @@
 // Normalize
 void bml_normalize(
     bml_matrix_t * A,
-    const double mineval,
-    const double maxeval);
+    double mineval,
+    double maxeval);
 
 // Calculate Gershgorin bounds
 void *bml_gershgorin(
-    const bml_matrix_t * A);
+    bml_matrix_t * A);
 
 // Calcualte Gershgorin bounds for partial matrix
 void *bml_gershgorin_partial(
-    const bml_matrix_t * A,
-    const int nrows);
+    bml_matrix_t * A,
+    int nrows);
 
 #endif

@@ -5,9 +5,9 @@
 
 void *
 bml_get_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const int i,
-    const int j)
+    bml_matrix_ellpack_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_precision(A))
     {
@@ -33,7 +33,7 @@ bml_get_ellpack(
 void *
 bml_get_row_ellpack(
     bml_matrix_ellpack_t * A,
-    const int i)
+    int i)
 {
     switch (bml_get_precision(A))
     {

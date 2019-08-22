@@ -21,7 +21,7 @@
  */
 bml_matrix_t *
 bml_copy_new(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     bml_matrix_t *B = NULL;
 
@@ -53,7 +53,7 @@ bml_copy_new(
  */
 void
 bml_copy(
-    const bml_matrix_t * A,
+    bml_matrix_t * A,
     bml_matrix_t * B)
 {
     assert(A != NULL);
@@ -134,7 +134,7 @@ bml_reorder(
  */
 void
 bml_copy_domain(
-    const bml_domain_t * A,
+    bml_domain_t * A,
     bml_domain_t * B)
 {
     int nRanks = bml_getNRanks();

@@ -1,13 +1,13 @@
 #include "../../macros.h"
 #include "../../typed.h"
 #include "../bml_introspection.h"
+#include "../bml_types.h"
 #include "bml_setters_ellpack.h"
 #include "bml_types_ellpack.h"
-#include "bml_types.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include <complex.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 /** Set element i,j asuming there's no resetting of any element of A.
@@ -26,9 +26,9 @@
 void TYPED_FUNC(
     bml_set_element_new_ellpack) (
     bml_matrix_ellpack_t * A,
-    const int i,
-    const int j,
-    const void *element)
+    int i,
+    int j,
+    void *element)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -63,9 +63,9 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_element_ellpack) (
     bml_matrix_ellpack_t * A,
-    const int i,
-    const int j,
-    const void *element)
+    int i,
+    int j,
+    void *element)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -118,10 +118,11 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_row_ellpack) (
     bml_matrix_ellpack_t * A,
-    const int i,
-    const REAL_T * row,
-    const double threshold)
+    int i,
+    void *_row,
+    double threshold)
 {
+    REAL_T *row = _row;
     int A_N = A->N;
     int A_M = A->M;
 
@@ -160,9 +161,10 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_diagonal_ellpack) (
     bml_matrix_ellpack_t * A,
-    const REAL_T * diagonal,
-    const double threshold)
+    void *_diagonal,
+    double threshold)
 {
+    REAL_T *diagonal = _diagonal;
     int A_N = A->N;
     int A_M = A->M;
 

@@ -25,7 +25,7 @@
 
 void
 bml_diagonalize_dense_single_real(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
@@ -114,7 +114,7 @@ bml_diagonalize_dense_single_real(
 
 void
 bml_diagonalize_dense_double_real(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
@@ -199,7 +199,7 @@ bml_diagonalize_dense_double_real(
 
 void
 bml_diagonalize_dense_single_complex(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
@@ -291,7 +291,7 @@ bml_diagonalize_dense_single_complex(
 
 void
 bml_diagonalize_dense_double_complex(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
@@ -382,7 +382,7 @@ bml_diagonalize_dense_double_complex(
 
 void
 bml_diagonalize_dense(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     void *eigenvalues,
     bml_matrix_t * eigenvectors)
 {

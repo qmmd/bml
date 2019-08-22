@@ -7,10 +7,10 @@ module bml_elemental_m
   private
 
   interface bml_get
-     module procedure bml_get_single_real
-     module procedure bml_get_double_real
-     module procedure bml_get_single_complex
-     module procedure bml_get_double_complex
+    module procedure bml_get_single_real
+    module procedure bml_get_double_real
+    module procedure bml_get_single_complex
+    module procedure bml_get_double_complex
   end interface bml_get
 
   public :: bml_get

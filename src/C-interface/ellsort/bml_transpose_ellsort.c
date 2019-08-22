@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_transpose.h"
+#include "../bml_logger.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_transpose_ellsort.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdlib.h>
@@ -14,8 +14,9 @@
  *  \param A The matrix to be transposeed
  *  \return the transposeed A
  */
-bml_matrix_ellsort_t
-    * bml_transpose_new_ellsort(const bml_matrix_ellsort_t * A)
+bml_matrix_ellsort_t *
+bml_transpose_new_ellsort(
+    bml_matrix_ellsort_t * A)
 {
     bml_matrix_ellsort_t *B = NULL;
 
@@ -49,7 +50,7 @@ bml_matrix_ellsort_t
  */
 void
 bml_transpose_ellsort(
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
 
     switch (A->matrix_precision)

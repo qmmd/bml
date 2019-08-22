@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "../bml_introspection.h"
 #include "../bml_allocate.h"
+#include "../bml_introspection.h"
+#include "../bml_types.h"
 #include "bml_setters_ellblock.h"
 #include "bml_types_ellblock.h"
 #include "bml_utilities_ellblock.h"
-#include "bml_types.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,10 +30,11 @@
 void TYPED_FUNC(
     bml_set_element_new_ellblock) (
     bml_matrix_ellblock_t * A,
-    const int i,
-    const int j,
-    const void *element)
+    int i,
+    int j,
+    void *_element)
 {
+    REAL_T *element = _element;
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     int *A_indexb = A->indexb;
     int *A_nnzb = A->nnzb;
@@ -94,9 +95,9 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_element_ellblock) (
     bml_matrix_ellblock_t * A,
-    const int i,
-    const int j,
-    const void *element)
+    int i,
+    int j,
+    void *element)
 {
     TYPED_FUNC(bml_set_element_new_ellblock) (A, i, j, element);
 }
@@ -114,10 +115,11 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_row_ellblock) (
     bml_matrix_ellblock_t * A,
-    const int i,
-    const REAL_T * row,
-    const double threshold)
+    int i,
+    void *_row,
+    double threshold)
 {
+    REAL_T *row = _row;
     int A_N = A->N;
 
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
@@ -189,9 +191,10 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_diagonal_ellblock) (
     bml_matrix_ellblock_t * A,
-    const REAL_T * diagonal,
-    const double threshold)
+    void *_diagonal,
+    double threshold)
 {
+    REAL_T *diagonal = _diagonal;
     int A_NB = A->NB;
     int A_MB = A->MB;
 
@@ -265,12 +268,14 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_block_ellblock) (
     bml_matrix_ellblock_t * A,
-    const int ib,
-    const int jb,
-    const REAL_T * elements)
+    int ib,
+    int jb,
+    void *_elements)
 {
     assert(ib < A->NB);
     assert(jb < A->NB);
+
+    REAL_T *elements = _elements;
 
     int data_copied = 0;
     for (int jp = 0; jp < A->nnzb[ib]; jp++)

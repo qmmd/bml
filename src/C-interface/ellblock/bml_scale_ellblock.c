@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_scale.h"
+#include "../bml_logger.h"
+#include "../bml_scale.h"
+#include "../bml_types.h"
 #include "bml_scale_ellblock.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>
@@ -16,8 +16,8 @@
  */
 bml_matrix_ellblock_t *
 bml_scale_ellblock_new(
-    const void *scale_factor,
-    const bml_matrix_ellblock_t * A)
+    void *scale_factor,
+    bml_matrix_ellblock_t * A)
 {
     bml_matrix_ellblock_t *B = NULL;
 
@@ -51,9 +51,9 @@ bml_scale_ellblock_new(
  */
 void
 bml_scale_ellblock(
-    const void *scale_factor,
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    void *scale_factor,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
     switch (A->matrix_precision)
     {
@@ -77,7 +77,7 @@ bml_scale_ellblock(
 
 void
 bml_scale_inplace_ellblock(
-    const void *scale_factor,
+    void *scale_factor,
     bml_matrix_ellblock_t * A)
 {
     switch (A->matrix_precision)

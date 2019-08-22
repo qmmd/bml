@@ -1,7 +1,7 @@
 #ifndef __BML_TYPES_ELLPACK_H
 #define __BML_TYPES_ELLPACK_H
 
-#include "bml_types.h"
+#include "../bml_types.h"
 
 /** ELLPACK matrix type. */
 struct bml_matrix_ellpack_t

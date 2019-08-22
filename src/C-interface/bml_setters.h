@@ -7,25 +7,25 @@
 
 void bml_set_element_new(
     bml_matrix_t * A,
-    const int i,
-    const int j,
-    const void *value);
+    int i,
+    int j,
+    void *value);
 
 void bml_set_element(
     bml_matrix_t * A,
-    const int i,
-    const int j,
-    const void *value);
+    int i,
+    int j,
+    void *value);
 
 void bml_set_row(
     bml_matrix_t * A,
-    const int i,
-    const void *row,
-    const double threshold);
+    int i,
+    void *row,
+    double threshold);
 
 void bml_set_diagonal(
     bml_matrix_t * A,
-    const void *diagonal,
-    const double threshold);
+    void *diagonal,
+    double threshold);
 
 #endif

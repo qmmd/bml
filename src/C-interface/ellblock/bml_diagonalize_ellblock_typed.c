@@ -35,7 +35,7 @@
  */
 void TYPED_FUNC(
     bml_diagonalize_ellblock) (
-    const bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * A,
     void *eigenvalues,
     bml_matrix_ellblock_t * eigenvectors)
 {

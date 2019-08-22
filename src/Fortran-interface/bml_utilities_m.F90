@@ -13,11 +13,11 @@ module bml_utilities_m
   private
 
   interface bml_print_vector
-     module procedure bml_print_bml_vector
+    module procedure bml_print_bml_vector
   end interface bml_print_vector
 
   interface bml_print_matrix
-     module procedure bml_print_bml_matrix
+    module procedure bml_print_bml_matrix
   end interface bml_print_matrix
 
   public :: bml_print_vector

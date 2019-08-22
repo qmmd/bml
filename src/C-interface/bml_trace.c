@@ -7,7 +7,6 @@
 #include "ellblock/bml_trace_ellblock.h"
 
 #include <stdlib.h>
-
 /** Calculate trace of a matrix.
  *
  * \ingroup trace_group_C
@@ -17,7 +16,7 @@
  */
 double
 bml_trace(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -49,23 +48,23 @@ bml_trace(
  * \return  Trace of A*B
  */
 double
-bml_traceMult(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B)
+bml_trace_mult(
+    bml_matrix_t * A,
+    bml_matrix_t * B)
 {
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_traceMult_dense(A, B);
+            return bml_trace_mult_dense(A, B);
             break;
         case ellpack:
-            return bml_traceMult_ellpack(A, B);
+            return bml_trace_mult_ellpack(A, B);
             break;
         case ellsort:
-            return bml_traceMult_ellsort(A, B);
+            return bml_trace_mult_ellsort(A, B);
             break;
         case ellblock:
-            return bml_traceMult_ellblock(A, B);
+            return bml_trace_mult_ellblock(A, B);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

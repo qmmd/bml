@@ -103,12 +103,12 @@ contains
     case(BML_MATRIX_DENSE)
       id = bml_matrix_type_dense_enum_id
     case(BML_MATRIX_ELLPACK)
-       id = bml_matrix_type_ellpack_enum_id
+      id = bml_matrix_type_ellpack_enum_id
     case(BML_MATRIX_ELLBLOCK)
-       id = bml_matrix_type_ellblock_enum_id
+      id = bml_matrix_type_ellblock_enum_id
     case default
-       print *, "unknown matrix type"//trim(type_string)
-       error stop
+      print *, "unknown matrix type"//trim(type_string)
+      error stop
     end select
 
   end function get_matrix_id
@@ -163,12 +163,12 @@ contains
     case(BML_DMODE_SEQUENTIAL)
       id = bml_distribution_mode_sequential_enum_id
     case(BML_DMODE_DISTRIBUTED)
-       id = bml_distribution_mode_distributed_enum_id
+      id = bml_distribution_mode_distributed_enum_id
     case(BML_DMODE_GRAPH_DISTRIBUTED)
-       id = bml_distribution_mode_graph_distributed_enum_id
+      id = bml_distribution_mode_graph_distributed_enum_id
     case default
-       print *, "unknown distribution mode"//trim(dmode_string)
-       error stop
+      print *, "unknown distribution mode"//trim(dmode_string)
+      error stop
     end select
 
   end function get_dmode_id

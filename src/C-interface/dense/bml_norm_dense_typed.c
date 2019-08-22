@@ -1,16 +1,16 @@
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
 #endif
 
 #include "../../macros.h"
-#include "../blas.h"
 #include "../../typed.h"
-#include "bml_norm.h"
+#include "../blas.h"
+#include "../bml_norm.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_norm_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
-#include "bml_parallel.h"
 
 #include <complex.h>
 #include <math.h>
@@ -30,7 +30,7 @@
  */
 double TYPED_FUNC(
     bml_sum_squares_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     int N = A->N;
     REAL_T sum = 0.0;
@@ -66,7 +66,7 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   reduction(+:sum)
@@ -90,15 +90,40 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_sum_squares_submatrix_dense) (
-    const bml_matrix_dense_t * A,
-    const int core_size)
+    bml_matrix_dense_t * A,
+    int core_size)
 {
     int N = A->N;
 
     REAL_T sum = 0.0;
+
+#ifdef BML_USE_MAGMA
+#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    MAGMA_T tsum = MAGMACOMPLEX(MAKE) (0., 0.);
+    for (int i = 0; i < core_size; i++)
+    {
+        tsum =
+            MAGMACOMPLEX(ADD) (tsum,
+                               MAGMA(dotu) (N,
+                                            (MAGMA_T *) A->matrix + i * A->ld,
+                                            1,
+                                            (MAGMA_T *) A->matrix + i * A->ld,
+                                            1, A->queue));
+    }
+    sum = MAGMACOMPLEX(REAL) (tsum) + I * MAGMACOMPLEX(IMAG) (tsum);
+#else
+    for (int i = 0; i < core_size; i++)
+    {
+        sum += MAGMA(dot) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
+                           (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
+    }
+#endif
+
+#else
+
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   reduction(+:sum)
     for (int i = 0; i < core_size * N; i++)
@@ -117,6 +142,7 @@ double TYPED_FUNC(
         }
     }
 */
+#endif
 
     return (double) REAL_PART(sum);
 }
@@ -134,11 +160,11 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_sum_squares2_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int N = A->N;
 
@@ -168,7 +194,6 @@ double TYPED_FUNC(
     int myRank = bml_getMyRank();
 
 #pragma omp parallel for                        \
-  default(none)                                 \
   shared(alpha_, beta_)                         \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)  \
@@ -205,7 +230,7 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_fnorm_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     double sum = 0.0;
 //#ifdef BML_USE_MAGMA
@@ -238,8 +263,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_fnorm2_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B)
 {
     int N = A->N;
 
@@ -255,7 +280,6 @@ double TYPED_FUNC(
     int myRank = bml_getMyRank();
 
 #pragma omp parallel for                        \
-  default(none)                                 \
   shared(temp)                                  \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)  \

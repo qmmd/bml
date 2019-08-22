@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_export_dense.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #ifdef BML_USE_MAGMA
@@ -24,8 +24,8 @@
  */
 void *TYPED_FUNC(
     bml_export_to_dense_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_dense_t * A,
+    bml_dense_order_t order)
 {
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
 
@@ -47,6 +47,7 @@ void *TYPED_FUNC(
             MAGMA(getmatrix) (A->N, A->N,
                               A->matrix, A->ld,
                               (MAGMA_T *) A_dense, A->N, A->queue);
+            MAGMABLAS(transpose_inplace) (A->N, A->matrix, A->ld, A->queue);
 #else
             REAL_T *B_ptr = (REAL_T *) A->matrix;
             for (int i = 0; i < A->N; i++)

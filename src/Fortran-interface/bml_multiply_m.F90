@@ -40,19 +40,19 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if(present(alpha)) then
-       alpha_ = alpha
+      alpha_ = alpha
     else
-       alpha_ = 1
+      alpha_ = 1
     end if
     if(present(beta)) then
-       beta_ = beta
+      beta_ = beta
     else
-       beta_ = 0
+      beta_ = 0
     end if
     if(present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
     call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha_, beta_, threshold_)
 
@@ -83,9 +83,9 @@ contains
     double precision, pointer :: a_trace_ptr(:)
 
     if(present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     trace_ptr = bml_multiply_x2_c(a%ptr, b%ptr, threshold_)

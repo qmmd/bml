@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_trace.h"
+#include "../bml_logger.h"
+#include "../bml_trace.h"
+#include "../bml_types.h"
 #include "bml_norm_ellsort.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdlib.h>
@@ -16,7 +16,7 @@
  */
 double
 bml_sum_squares_ellsort(
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
 
     switch (A->matrix_precision)
@@ -51,8 +51,8 @@ bml_sum_squares_ellsort(
  */
 double
 bml_sum_squares_submatrix_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const int core_size)
+    bml_matrix_ellsort_t * A,
+    int core_size)
 {
     switch (A->matrix_precision)
     {
@@ -92,11 +92,11 @@ bml_sum_squares_submatrix_ellsort(
  */
 double
 bml_sum_squares2_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
 
     switch (A->matrix_precision)
@@ -133,7 +133,7 @@ bml_sum_squares2_ellsort(
  */
 double
 bml_fnorm_ellsort(
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
 
     switch (A->matrix_precision)
@@ -167,8 +167,8 @@ bml_fnorm_ellsort(
  */
 double
 bml_fnorm2_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B)
 {
 
     switch (A->matrix_precision)

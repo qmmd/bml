@@ -9,43 +9,43 @@
 #include <stdlib.h>
 
 void bml_read_bml_matrix_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_read_bml_matrix_ellpack_single_real(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_read_bml_matrix_ellpack_double_real(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_read_bml_matrix_ellpack_single_complex(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_read_bml_matrix_ellpack_double_complex(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_write_bml_matrix_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_write_bml_matrix_ellpack_single_real(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_write_bml_matrix_ellpack_double_real(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_write_bml_matrix_ellpack_single_complex(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 void bml_write_bml_matrix_ellpack_double_complex(
-    const bml_matrix_ellpack_t * A,
-    const char *filename);
+    bml_matrix_ellpack_t * A,
+    char *filename);
 
 #endif

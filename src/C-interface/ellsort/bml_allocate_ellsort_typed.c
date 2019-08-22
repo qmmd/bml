@@ -1,8 +1,8 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellsort.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>
@@ -47,8 +47,8 @@ void TYPED_FUNC(
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_noinit_matrix_ellsort) (
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellsort_t *A =
         bml_noinit_allocate_memory(sizeof(bml_matrix_ellsort_t));
@@ -83,9 +83,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_zero_matrix_ellsort) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellsort_t *A =
         bml_allocate_memory(sizeof(bml_matrix_ellsort_t));
@@ -120,9 +120,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_banded_matrix_ellsort) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellsort_t *A =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, distrib_mode);
@@ -131,7 +131,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
+#pragma omp parallel for               shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
         int jind = 0;
@@ -167,9 +167,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_random_matrix_ellsort) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellsort_t *A =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, distrib_mode);
@@ -209,9 +209,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_identity_matrix_ellsort) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellsort_t *A =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, distrib_mode);
@@ -220,7 +220,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
+#pragma omp parallel for               shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
         A_value[ROWMAJOR(i, 0, N, M)] = (REAL_T) 1.0;

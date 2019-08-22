@@ -7,9 +7,9 @@
 void
 bml_set_element_new_ellsort(
     bml_matrix_ellsort_t * A,
-    const int i,
-    const int j,
-    const void *value)
+    int i,
+    int j,
+    void *value)
 {
     switch (bml_get_precision(A))
     {
@@ -35,9 +35,9 @@ bml_set_element_new_ellsort(
 void
 bml_set_element_ellsort(
     bml_matrix_ellsort_t * A,
-    const int i,
-    const int j,
-    const void *value)
+    int i,
+    int j,
+    void *value)
 {
     switch (bml_get_precision(A))
     {
@@ -62,9 +62,9 @@ bml_set_element_ellsort(
 void
 bml_set_row_ellsort(
     bml_matrix_ellsort_t * A,
-    const int i,
-    const void *row,
-    const double threshold)
+    int i,
+    void *row,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -89,8 +89,8 @@ bml_set_row_ellsort(
 void
 bml_set_diagonal_ellsort(
     bml_matrix_ellsort_t * A,
-    const void *diagonal,
-    const double threshold)
+    void *diagonal,
+    double threshold)
 {
     switch (A->matrix_precision)
     {

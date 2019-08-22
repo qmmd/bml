@@ -21,12 +21,12 @@
  *
  * \ingroup allocate_group_C
  *
- * \param A Matrix
- * \return >0 if allocated, else -1
+ * \param A[in,out] Matrix
+ * \return \f$ > 0 \f$ if allocated, else -1
  */
 int
 bml_allocated(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     return bml_get_N(A);
 }
@@ -40,7 +40,7 @@ bml_allocated(
  */
 void *
 bml_allocate_memory(
-    const size_t size)
+    size_t size)
 {
     void *ptr = calloc(1, size);
     if (ptr == NULL)
@@ -60,7 +60,7 @@ bml_allocate_memory(
  */
 void *
 bml_noinit_allocate_memory(
-    const size_t size)
+    size_t size)
 {
     void *ptr = malloc(size);
     if (ptr == NULL)
@@ -101,7 +101,7 @@ bml_free_ptr(
  *
  * \ingroup allocate_group_C
  *
- * \param A The matrix.
+ * \param A[in,out] The matrix.
  */
 void
 bml_deallocate(
@@ -144,7 +144,7 @@ bml_deallocate(
  *
  * \ingroup allocate_group_C
  *
- * \param D The domain.
+ * \param D[in,out] The domain.
  */
 void
 bml_deallocate_domain(
@@ -162,7 +162,7 @@ bml_deallocate_domain(
  *
  * \ingroup allocate_group_C
  *
- * \param A The matrix.
+ * \param A[in,out] The matrix.
  */
 void
 bml_clear(
@@ -203,10 +203,10 @@ bml_clear(
  */
 bml_matrix_t *
 bml_noinit_rectangular_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("noinit matrix of size %d (or zero matrix for dense)\n",
               matrix_dimension.N_rows);
@@ -247,12 +247,12 @@ bml_noinit_rectangular_matrix(
  */
 bml_matrix_t *
 bml_block_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int NB,
-    const int MB,
-    const int *bsizes,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int NB,
+    int MB,
+    int *bsizes,
+    bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("block matrix with %d blocks\n", NB);
     switch (matrix_type)
@@ -288,11 +288,11 @@ bml_block_matrix(
  */
 bml_matrix_t *
 bml_noinit_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, M };
     return bml_noinit_rectangular_matrix(matrix_type, matrix_precision,
@@ -315,11 +315,11 @@ bml_noinit_matrix(
  */
 bml_matrix_t *
 bml_zero_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("zero matrix of size %d\n", N);
     bml_matrix_dimension_t matrix_dimension = { N, N, M };
@@ -364,13 +364,12 @@ bml_zero_matrix(
  */
 bml_matrix_t *
 bml_random_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
-    LOG_DEBUG("random matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
@@ -411,11 +410,11 @@ bml_random_matrix(
  */
 bml_matrix_t *
 bml_banded_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("banded matrix of size %d\n", N);
     switch (matrix_type)
@@ -455,11 +454,11 @@ bml_banded_matrix(
  */
 bml_matrix_t *
 bml_identity_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("identity matrix of size %d\n", N);
     switch (matrix_type)
@@ -498,9 +497,9 @@ bml_identity_matrix(
  */
 bml_domain_t *
 bml_default_domain(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     int avgExtent, nleft;
     int nRanks = bml_getNRanks();

@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_threshold.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_threshold.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_threshold_ellpack.h"
 #include "bml_types_ellpack.h"
@@ -27,8 +27,8 @@
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_threshold_new_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;
@@ -82,8 +82,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;
@@ -99,6 +99,7 @@ void TYPED_FUNC(
     int rowMax = A_localRowMax[myRank];
 
     int rlen;
+
 #pragma omp target parallel for default(none) \
     private(rlen) \
     shared(N,M, rowMin, rowMax) \

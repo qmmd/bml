@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_threshold.h"
+#include "../bml_logger.h"
+#include "../bml_threshold.h"
+#include "../bml_types.h"
 #include "bml_threshold_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
@@ -21,8 +21,8 @@
  */
 bml_matrix_dense_t *
 bml_threshold_new_dense(
-    const bml_matrix_dense_t * A,
-    const double threshold)
+    bml_matrix_dense_t * A,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -56,7 +56,7 @@ bml_threshold_new_dense(
 void
 bml_threshold_dense(
     bml_matrix_dense_t * A,
-    const double threshold)
+    double threshold)
 {
     switch (A->matrix_precision)
     {

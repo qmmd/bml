@@ -7,7 +7,7 @@ for i in $(seq 5); do
     if ! sudo apt-get update; then
         continue
     fi
-    if sudo apt-get install ${packages}; then
+    if sudo apt-get install --no-install-recommends ${DEVEL_PACKAGES} ${CC} ${CXX} ${FC} ${packages}; then
         exit 0
     fi
 done

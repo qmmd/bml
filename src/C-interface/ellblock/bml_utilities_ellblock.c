@@ -5,8 +5,8 @@
 
 void
 bml_read_bml_matrix_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const char *filename)
+    bml_matrix_ellblock_t * A,
+    char *filename)
 {
     switch (A->matrix_precision)
     {
@@ -30,8 +30,8 @@ bml_read_bml_matrix_ellblock(
 
 void
 bml_write_bml_matrix_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const char *filename)
+    bml_matrix_ellblock_t * A,
+    char *filename)
 {
     switch (A->matrix_precision)
     {

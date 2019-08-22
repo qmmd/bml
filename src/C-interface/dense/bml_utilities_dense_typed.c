@@ -6,6 +6,7 @@
 #include "../../macros.h"
 #include "../bml_logger.h"
 #include "../bml_utilities.h"
+#include "../bml_allocate.h"
 #include "bml_types_dense.h"
 #include "bml_utilities_dense.h"
 #include "bml_export_dense.h"
@@ -24,8 +25,8 @@
  */
 void TYPED_FUNC(
     bml_read_bml_matrix_dense) (
-    const bml_matrix_dense_t * A,
-    const char *filename)
+    bml_matrix_dense_t * A,
+    char *filename)
 {
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
@@ -95,8 +96,8 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_write_bml_matrix_dense) (
-    const bml_matrix_dense_t * A,
-    const char *filename)
+    bml_matrix_dense_t * A,
+    char *filename)
 {
     FILE *mFile;
 
@@ -128,16 +129,27 @@ void TYPED_FUNC(
 
 void TYPED_FUNC(
     bml_print_bml_matrix_dense) (
-    const bml_matrix_dense_t * A,
-    const int i_l,
-    const int i_u,
-    const int j_l,
-    const int j_u)
+    bml_matrix_dense_t * A,
+    int i_l,
+    int i_u,
+    int j_l,
+    int j_u)
 {
 #ifdef BML_USE_MAGMA
-    MAGMAGPU(print) (A->N, A->N, A->matrix, A->ld, A->queue);
+    //copy matrix data from GPU to CPU so that we can use
+    //bml_print_dense_matrix function with lower/upper row/column
+    //index
+    REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N,
+                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
 #else
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+#endif
+
     bml_print_dense_matrix(A->N, A->matrix_precision, dense_row_major,
-                           A->matrix, i_l, i_u, j_l, j_u);
+                           A_matrix, i_l, i_u, j_l, j_u);
+
+#ifdef BML_USE_MAGMA
+    bml_free_memory(A_matrix);
 #endif
 }

@@ -21,13 +21,13 @@
  */
 void
 bml_matrix2submatrix_index(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_t * A,
+    bml_matrix_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     switch (bml_get_type(A))
     {
@@ -68,12 +68,12 @@ bml_matrix2submatrix_index(
  */
 void
 bml_matrix2submatrix_index_graph(
-    const bml_matrix_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     switch (bml_get_type(B))
     {
@@ -112,10 +112,10 @@ bml_matrix2submatrix_index_graph(
  */
 bml_matrix_t *
 bml_group_matrix(
-    const bml_matrix_t * A,
-    const int *hindex,
-    const int ngroups,
-    const double threshold)
+    bml_matrix_t * A,
+    int *hindex,
+    int ngroups,
+    double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -150,10 +150,10 @@ bml_group_matrix(
  */
 void
 bml_matrix2submatrix(
-    const bml_matrix_t * A,
+    bml_matrix_t * A,
     bml_matrix_t * B,
-    const int *core_halo_index,
-    const int lsize)
+    int *core_halo_index,
+    int lsize)
 {
     switch (bml_get_type(A))
     {
@@ -188,12 +188,12 @@ bml_matrix2submatrix(
  */
 void
 bml_submatrix2matrix(
-    const bml_matrix_t * A,
+    bml_matrix_t * A,
     bml_matrix_t * B,
-    const int *core_halo_index,
-    const int lsize,
-    const int llsize,
-    const double threshold)
+    int *core_halo_index,
+    int lsize,
+    int llsize,
+    double threshold)
 {
     switch (bml_get_type(B))
     {
@@ -230,10 +230,10 @@ bml_submatrix2matrix(
 */
 void
 bml_adjacency(
-    const bml_matrix_t * A,
+    bml_matrix_t * A,
     int *xadj,
     int *adjncy,
-    const int base_flag)
+    int base_flag)
 {
 
     switch (bml_get_type(A))
@@ -270,12 +270,12 @@ bml_adjacency(
  */
 void
 bml_adjacency_group(
-    const bml_matrix_t * A,
-    const int *hindex,
-    const int nnodes,
+    bml_matrix_t * A,
+    int *hindex,
+    int nnodes,
     int *xadj,
     int *adjncy,
-    const int base_flag)
+    int base_flag)
 {
 
     switch (bml_get_type(A))

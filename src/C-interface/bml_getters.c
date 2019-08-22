@@ -17,9 +17,9 @@
  */
 void *
 bml_get(
-    const bml_matrix_t * A,
-    const int i,
-    const int j)
+    bml_matrix_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_type(A))
     {
@@ -51,7 +51,7 @@ bml_get(
 void *
 bml_get_row(
     bml_matrix_t * A,
-    const int i)
+    int i)
 {
     switch (bml_get_type(A))
     {

@@ -17,7 +17,7 @@
  */
 double
 bml_sum_squares(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -51,8 +51,8 @@ bml_sum_squares(
  */
 double
 bml_sum_squares_submatrix(
-    const bml_matrix_t * A,
-    const int core_size)
+    bml_matrix_t * A,
+    int core_size)
 {
     switch (bml_get_type(A))
     {
@@ -85,11 +85,11 @@ bml_sum_squares_submatrix(
  */
 double
 bml_sum_squares2(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_t * A,
+    bml_matrix_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -121,7 +121,7 @@ bml_sum_squares2(
  */
 double
 bml_fnorm(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -154,8 +154,8 @@ bml_fnorm(
  */
 double
 bml_fnorm2(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B)
+    bml_matrix_t * A,
+    bml_matrix_t * B)
 {
     switch (bml_get_type(A))
     {

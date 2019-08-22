@@ -16,37 +16,37 @@ module bml_setters_m
   !! no elements are replaced.
   !! The dense version remains the same as set_element.
   interface bml_set_element_new
-     module procedure bml_set_element_new_single_real
-     module procedure bml_set_element_new_double_real
-     module procedure bml_set_element_new_single_complex
-     module procedure bml_set_element_new_double_complex
+    module procedure bml_set_element_new_single_real
+    module procedure bml_set_element_new_double_real
+    module procedure bml_set_element_new_single_complex
+    module procedure bml_set_element_new_double_complex
   end interface bml_set_element_new
 
   !> Routine to set elements.
   !!
   interface bml_set_element
-     module procedure bml_set_element_single_real
-     module procedure bml_set_element_double_real
-     module procedure bml_set_element_single_complex
-     module procedure bml_set_element_double_complex
+    module procedure bml_set_element_single_real
+    module procedure bml_set_element_double_real
+    module procedure bml_set_element_single_complex
+    module procedure bml_set_element_double_complex
   end interface bml_set_element
 
   !> Routine to set rows.
   !!
   interface bml_set_row
-     module procedure bml_set_row_single_real
-     module procedure bml_set_row_double_real
-     module procedure bml_set_row_single_complex
-     module procedure bml_set_row_double_complex
+    module procedure bml_set_row_single_real
+    module procedure bml_set_row_double_real
+    module procedure bml_set_row_single_complex
+    module procedure bml_set_row_double_complex
   end interface bml_set_row
 
   !> Routine to set diagonal.
   !!
   interface bml_set_diagonal
-     module procedure bml_set_diagonal_single_real
-     module procedure bml_set_diagonal_double_real
-     module procedure bml_set_diagonal_single_complex
-     module procedure bml_set_diagonal_double_complex
+    module procedure bml_set_diagonal_single_real
+    module procedure bml_set_diagonal_double_real
+    module procedure bml_set_diagonal_single_complex
+    module procedure bml_set_diagonal_double_complex
   end interface bml_set_diagonal
 
   public :: bml_set_row

@@ -1,10 +1,8 @@
 #!/bin/bash
 
 basedir=$(dirname $0)
-files=$(git ls-tree --full-tree -r HEAD \
-    | grep '.\(c\|h\|F90\)$' \
-    | awk '{print $4}')
+readarray -t files < <(git ls-files '*.c' '*.h' '*.F90')
 pushd "${basedir}" || exit
-ctags --recurse --C-kinds=+lxzLp --Fortran-kinds=+LP ${files}
-etags ${files}
+ctags "${files[@]}"
+etags "${files[@]}"
 popd || exit

@@ -4,14 +4,14 @@
 
 #include "../../typed.h"
 #include "../blas.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_scale.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_scale.h"
 #include "bml_scale_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -31,10 +31,11 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_scale_dense_new) (
-    const REAL_T * scale_factor,
-    const bml_matrix_dense_t * A)
+    void *_scale_factor,
+    bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = TYPED_FUNC(bml_copy_dense_new) (A);
+    REAL_T *scale_factor = _scale_factor;
     REAL_T *B_matrix = B->matrix;
     int myRank = bml_getMyRank();
     int nElems = B->domain->localRowExtent[myRank] * B->ld;
@@ -64,13 +65,16 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_dense) (
-    const REAL_T * scale_factor,
-    const bml_matrix_dense_t * A,
+    void *_scale_factor,
+    bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
     if (A != B)
+    {
         TYPED_FUNC(bml_copy_dense) (A, B);
+    }
 
+    REAL_T *scale_factor = _scale_factor;
     REAL_T *B_matrix = B->matrix;
     int myRank = bml_getMyRank();
     int nElems = B->domain->localRowExtent[myRank] * B->ld;
@@ -92,10 +96,11 @@ void TYPED_FUNC(
 
 void TYPED_FUNC(
     bml_scale_inplace_dense) (
-    const REAL_T * scale_factor,
+    void *_scale_factor,
     bml_matrix_dense_t * A)
 {
     REAL_T *A_matrix = A->matrix;
+    REAL_T *scale_factor = _scale_factor;
     int myRank = bml_getMyRank();
     int number_elements = A->domain->localRowExtent[myRank] * A->ld;
     int startIndex = A->domain->localDispl[myRank];

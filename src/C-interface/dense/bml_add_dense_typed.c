@@ -1,4 +1,4 @@
-/*needs to be included before #include <complex.h>*/
+/* Needs to be included before #include <complex.h>. */
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
 #endif
@@ -6,17 +6,17 @@
 #include "../../macros.h"
 #include "../../typed.h"
 #include "../blas.h"
+#include "../bml_add.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_scale.h"
+#include "../bml_types.h"
 #include "bml_add_dense.h"
-#include "bml_add.h"
 #include "bml_allocate_dense.h"
-#include "bml_allocate.h"
 #include "bml_copy_dense.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
 #include "bml_scale_dense.h"
-#include "bml_scale.h"
 #include "bml_types_dense.h"
-#include "bml_types.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -40,9 +40,9 @@
 void TYPED_FUNC(
     bml_add_dense) (
     bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     int myRank = bml_getMyRank();
 
@@ -86,9 +86,9 @@ void TYPED_FUNC(
 double TYPED_FUNC(
     bml_add_norm_dense) (
     bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     double trnorm = 0.0;
     REAL_T *B_matrix = (REAL_T *) B->matrix;
@@ -99,7 +99,6 @@ double TYPED_FUNC(
     int *A_localRowMax = A->domain->localRowMax;
 
 #pragma omp parallel for                                \
-  default(none)                                         \
   shared(B_matrix, A_localRowMin, A_localRowMax)        \
   shared(N, myRank)                                     \
   reduction(+:trnorm)
@@ -127,7 +126,7 @@ double TYPED_FUNC(
 void TYPED_FUNC(
     bml_add_identity_dense) (
     bml_matrix_dense_t * A,
-    const double beta)
+    double beta)
 {
     int N = A->N;
 #if BML_USE_MAGMA
@@ -146,7 +145,6 @@ void TYPED_FUNC(
     int myRank = bml_getMyRank();
 
 #pragma omp parallel for                                \
-  default(none)                                         \
   shared(A_matrix, A_localRowMin, A_localRowMax)        \
   shared(N, myRank, beta_)
     //for (int i = 0; i < N; i++)
@@ -170,8 +168,8 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_scale_add_identity_dense) (
     bml_matrix_dense_t * A,
-    const double alpha,
-    const double beta)
+    double alpha,
+    double beta)
 {
     REAL_T _alpha = (REAL_T) alpha;
 

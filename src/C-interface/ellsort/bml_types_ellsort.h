@@ -1,7 +1,7 @@
 #ifndef __BML_TYPES_ELLSORT_H
 #define __BML_TYPES_ELLSORT_H
 
-#include "bml_types.h"
+#include "../bml_types.h"
 
 /** ELLSORT matrix type. */
 struct bml_matrix_ellsort_t

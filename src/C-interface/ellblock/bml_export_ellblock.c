@@ -1,7 +1,7 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_export_ellblock.h"
-#include "bml_logger.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>
@@ -17,8 +17,8 @@
  */
 void *
 bml_export_to_dense_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_ellblock_t * A,
+    bml_dense_order_t order)
 {
     switch (A->matrix_precision)
     {

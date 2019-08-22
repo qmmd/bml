@@ -1,18 +1,18 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_export_ellblock.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
+#include <assert.h>
 #include <complex.h>
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
-#include <stdio.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -27,8 +27,8 @@
  */
 void *TYPED_FUNC(
     bml_export_to_dense_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_ellblock_t * A,
+    bml_dense_order_t order)
 {
     assert(A->N > 0);
 

@@ -1,8 +1,8 @@
-#include "bml_copy.h"
+#include "../bml_copy.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_copy_ellblock.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>
@@ -18,7 +18,7 @@
  */
 bml_matrix_ellblock_t *
 bml_copy_ellblock_new(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     bml_matrix_ellblock_t *B = NULL;
 
@@ -52,8 +52,8 @@ bml_copy_ellblock_new(
  */
 void
 bml_copy_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
 
     switch (A->matrix_precision)

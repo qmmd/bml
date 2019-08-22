@@ -1,9 +1,9 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_normalize.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_logger.h"
-#include "bml_normalize.h"
 #include "bml_normalize_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <assert.h>
@@ -21,8 +21,8 @@
 void
 bml_normalize_dense(
     bml_matrix_dense_t * A,
-    const double mineval,
-    const double maxeval)
+    double mineval,
+    double maxeval)
 {
     assert(A != NULL);
 
@@ -56,7 +56,7 @@ bml_normalize_dense(
  */
 void *
 bml_gershgorin_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     assert(A != NULL);
 
@@ -92,8 +92,8 @@ bml_gershgorin_dense(
  */
 void *
 bml_gershgorin_partial_dense(
-    const bml_matrix_dense_t * A,
-    const int nrows)
+    bml_matrix_dense_t * A,
+    int nrows)
 {
     assert(A != NULL);
 

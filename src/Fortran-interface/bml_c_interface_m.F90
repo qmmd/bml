@@ -21,7 +21,7 @@ module bml_c_interface_m
 
   interface
 
-     subroutine bml_add_C(a, b, alpha, beta, threshold) bind(C, name="bml_add")
+    subroutine bml_add_C(a, b, alpha, beta, threshold) bind(C, name="bml_add")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -31,7 +31,7 @@ module bml_c_interface_m
     end subroutine bml_add_C
 
     function bml_add_norm_C(a, b, alpha, beta, threshold) &
-        & bind(C, name="bml_add_norm")
+         & bind(C, name="bml_add_norm")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -42,14 +42,14 @@ module bml_c_interface_m
     end function bml_add_norm_C
 
     function bml_allocated_C(a) &
-        & bind(C, name="bml_allocated")
+         & bind(C, name="bml_allocated")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       integer(C_INT) :: bml_allocated_C
     end function bml_allocated_C
 
     subroutine bml_add_identity_C(a, beta, threshold) &
-        & bind(C, name="bml_add_identity")
+         & bind(C, name="bml_add_identity")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value :: a
       real(C_DOUBLE), value, intent(in) :: beta
@@ -57,7 +57,7 @@ module bml_c_interface_m
     end subroutine bml_add_identity_C
 
     subroutine bml_scale_add_identity_C(a, alpha, beta, threshold) &
-        & bind(C, name="bml_scale_add_identity")
+         & bind(C, name="bml_scale_add_identity")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value :: a
       real(C_DOUBLE), value, intent(in) :: alpha
@@ -66,27 +66,27 @@ module bml_c_interface_m
     end subroutine bml_scale_add_identity_C
 
     subroutine bml_allGatherVParallel_C(a) &
-        & bind(C, name="bml_allGatherVParallel")
+         & bind(C, name="bml_allGatherVParallel")
       import :: C_PTR
       type(C_PTR), value, intent(in) :: a
     end subroutine bml_allGatherVParallel_C
 
     subroutine bml_adjungate_triangle_C(a, triangle) &
-        & bind(C, name="bml_adjungate_triangle")
+         & bind(C, name="bml_adjungate_triangle")
       import :: C_PTR, C_CHAR
       type(C_PTR), value :: a
       character(C_CHAR), intent(in) :: triangle(*)
     end subroutine bml_adjungate_triangle_C
 
     subroutine bml_transpose_triangle_C(a, triangle) &
-        & bind(C, name="bml_transpose_triangle")
+         & bind(C, name="bml_transpose_triangle")
       import :: C_PTR, C_CHAR
       type(C_PTR), value :: a
       character(C_CHAR), value, intent(in) :: triangle
     end subroutine bml_transpose_triangle_C
 
     function bml_banded_matrix_C(matrix_type, matrix_precision, n, m, &
-        & distrib_mode) bind(C, name="bml_banded_matrix")
+         & distrib_mode) bind(C, name="bml_banded_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -97,8 +97,8 @@ module bml_c_interface_m
     end function bml_banded_matrix_C
 
     function bml_import_from_dense_C(matrix_type, matrix_precision, order, &
-        & n, m, a, threshold, distrib_mode) &
-        bind(C, name="bml_import_from_dense")
+         & n, m, a, threshold, distrib_mode) &
+         bind(C, name="bml_import_from_dense")
       import :: C_INT, C_PTR, C_DOUBLE
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -111,7 +111,7 @@ module bml_c_interface_m
     end function bml_import_from_dense_C
 
     function bml_export_to_dense_C(a, order) &
-        & bind(C, name="bml_export_to_dense")
+         & bind(C, name="bml_export_to_dense")
       import :: C_INT, C_PTR
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: order
@@ -147,7 +147,7 @@ module bml_c_interface_m
     end subroutine bml_restore_domain_C
 
     subroutine bml_update_domain_C(a, globalPartMin, globalPartMax, &
-        nnodesInPart) bind(C, name="bml_update_domain")
+         nnodesInPart) bind(C, name="bml_update_domain")
       import :: C_PTR
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: globalPartMin
@@ -156,7 +156,7 @@ module bml_c_interface_m
     end subroutine bml_update_domain_C
 
     subroutine bml_diagonalize_C(a, eigenvalues, eigenvectors) &
-        & bind(C, name="bml_diagonalize")
+         & bind(C, name="bml_diagonalize")
       import :: C_PTR
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value :: eigenvalues
@@ -211,7 +211,7 @@ module bml_c_interface_m
     end function bml_get_precision_C
 
     function bml_get_distribution_mode_C(a) &
-        & bind(C, name="bml_get_distribution_mode")
+         & bind(C, name="bml_get_distribution_mode")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       integer(C_INT) :: bml_get_distribution_mode_C
@@ -245,7 +245,7 @@ module bml_c_interface_m
     end function bml_sum_squares_C
 
     function bml_sum_squares_submatrix_C(a, core_size) &
-      bind(C, name="bml_sum_squares_submatrix")
+         bind(C, name="bml_sum_squares_submatrix")
       import :: C_PTR, C_DOUBLE, C_INT
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: core_size
@@ -253,7 +253,7 @@ module bml_c_interface_m
     end function bml_sum_squares_submatrix_C
 
     function bml_sum_squares2_C(a, b, alpha, beta, threshold) &
-      bind(C, name="bml_sum_squares2")
+         bind(C, name="bml_sum_squares2")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -277,7 +277,7 @@ module bml_c_interface_m
     end function bml_fnorm2_C
 
     subroutine bml_normalize_C(a, mineval, maxeval) &
-      bind(C, name="bml_normalize")
+         bind(C, name="bml_normalize")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value :: a
       real(C_DOUBLE), value, intent(in) :: mineval
@@ -298,7 +298,7 @@ module bml_c_interface_m
     end function bml_gershgorin_partial_C
 
     function bml_get_row_bandwidth_C(a, i) &
-        & bind(C, name="bml_get_row_bandwidth")
+         & bind(C, name="bml_get_row_bandwidth")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i
@@ -319,7 +319,7 @@ module bml_c_interface_m
     end function bml_get_sparsity_C
 
     function bml_identity_matrix_C(matrix_type, matrix_precision, n, m, &
-        & distrib_mode) bind(C, name="bml_identity_matrix")
+         & distrib_mode) bind(C, name="bml_identity_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -336,7 +336,7 @@ module bml_c_interface_m
     end function bml_inverse_C
 
     subroutine bml_multiply_C(a, b, c, alpha, beta, threshold) &
-        & bind(C, name="bml_multiply")
+         & bind(C, name="bml_multiply")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -347,7 +347,7 @@ module bml_c_interface_m
     end subroutine bml_multiply_C
 
     function bml_multiply_x2_C(x, x2, threshold) &
-        & bind(C, name="bml_multiply_x2")
+         & bind(C, name="bml_multiply_x2")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: x
       type(C_PTR), value, intent(in) :: x2
@@ -356,7 +356,7 @@ module bml_c_interface_m
     end function bml_multiply_x2_C
 
     function bml_random_matrix_C(matrix_type, matrix_precision, n, m, &
-        & distrib_mode) bind(C, name="bml_random_matrix")
+         & distrib_mode) bind(C, name="bml_random_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -412,7 +412,7 @@ module bml_c_interface_m
     end subroutine bml_set_diagonal_C
 
     subroutine bml_matrix2submatrix_index_C(a, b, nodelist, nsize, &
-      chlist, vsize, dj_flag) bind(C, name="bml_matrix2submatrix_index")
+         chlist, vsize, dj_flag) bind(C, name="bml_matrix2submatrix_index")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -424,7 +424,7 @@ module bml_c_interface_m
     end subroutine bml_matrix2submatrix_index_C
 
     subroutine bml_matrix2submatrix_index_graph_C(b, nodelist, nsize, &
-      chlist, vsize, dj_flag) bind(C, name="bml_matrix2submatrix_index_graph")
+         chlist, vsize, dj_flag) bind(C, name="bml_matrix2submatrix_index_graph")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: b
       type(C_PTR), value, intent(in) :: nodelist
@@ -435,7 +435,7 @@ module bml_c_interface_m
     end subroutine bml_matrix2submatrix_index_graph_C
 
     subroutine bml_matrix2submatrix_C(a, b, chlist, lsize) &
-      bind(C, name="bml_matrix2submatrix")
+         bind(C, name="bml_matrix2submatrix")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -444,7 +444,7 @@ module bml_c_interface_m
     end subroutine bml_matrix2submatrix_C
 
     subroutine bml_submatrix2matrix_C(a, b, chlist, lsize, llsize, &
-      threshold) bind(C, name="bml_submatrix2matrix")
+         threshold) bind(C, name="bml_submatrix2matrix")
       import :: C_PTR, C_INT, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -455,7 +455,7 @@ module bml_c_interface_m
     end subroutine bml_submatrix2matrix_C
 
     subroutine bml_adjacency_C(a, xadj, adjncy, base_flag) &
-      bind(C, name="bml_adjacency")
+         bind(C, name="bml_adjacency")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: xadj
@@ -464,7 +464,7 @@ module bml_c_interface_m
     end subroutine bml_adjacency_C
 
     subroutine bml_adjacency_group_C(a, hindex, nnodes, xadj, adjncy, base_flag) &
-      bind(C, name="bml_adjacency_group")
+         bind(C, name="bml_adjacency_group")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: hindex
@@ -475,7 +475,7 @@ module bml_c_interface_m
     end subroutine bml_adjacency_group_C
 
     function bml_group_matrix_C(a, hindex, ngroups, threshold) &
-      bind(C, name="bml_group_matrix")
+         bind(C, name="bml_group_matrix")
       import :: C_PTR, C_INT, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: hindex
@@ -491,7 +491,7 @@ module bml_c_interface_m
     end subroutine bml_threshold_C
 
     subroutine bml_print_bml_vector_C(v, i_l, i_u) &
-        & bind(C, name="bml_print_bml_vector")
+         & bind(C, name="bml_print_bml_vector")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: v
       integer(C_INT), value, intent(in) :: i_l
@@ -499,7 +499,7 @@ module bml_c_interface_m
     end subroutine bml_print_bml_vector_C
 
     subroutine bml_print_bml_matrix_C(a, i_l, i_u, j_l, j_u) &
-        & bind(C, name="bml_print_bml_matrix")
+         & bind(C, name="bml_print_bml_matrix")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i_l
@@ -509,7 +509,7 @@ module bml_c_interface_m
     end subroutine bml_print_bml_matrix_C
 
     subroutine bml_print_dense_matrix_C(n, matrix_precision, order, a, i_l, &
-        & i_u, j_l, j_u) bind(C, name="bml_print_dense_matrix")
+         & i_u, j_l, j_u) bind(C, name="bml_print_dense_matrix")
       import :: C_PTR, C_INT
       integer(C_INT), value, intent(in) :: n
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -522,7 +522,7 @@ module bml_c_interface_m
     end subroutine bml_print_dense_matrix_C
 
     subroutine bml_read_bml_matrix_C(a, filename) &
-        & bind(C, name="bml_read_bml_matrix")
+         & bind(C, name="bml_read_bml_matrix")
       import :: C_PTR, C_CHAR
       type(C_PTR), value, intent(in) :: a
       character(C_CHAR), intent(in) :: filename(*)
@@ -534,12 +534,12 @@ module bml_c_interface_m
       real(C_DOUBLE) :: bml_trace_C
     end function bml_trace_C
 
-    function bml_traceMult_C(a, b) bind(C, name="bml_traceMult")
+    function bml_trace_mult_C(a, b) bind(C, name="bml_trace_mult")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
-      real(C_DOUBLE) :: bml_traceMult_C
-    end function bml_traceMult_C
+      real(C_DOUBLE) :: bml_trace_mult_C
+    end function bml_trace_mult_C
 
     function bml_transpose_new_C(a) bind(C, name="bml_transpose_new")
       import :: C_PTR
@@ -548,14 +548,14 @@ module bml_c_interface_m
     end function bml_transpose_new_C
 
     subroutine bml_write_bml_matrix_C(a, filename) &
-        & bind(C, name="bml_write_bml_matrix")
+         & bind(C, name="bml_write_bml_matrix")
       import :: C_PTR, C_CHAR
       type(C_PTR), value, intent(in) :: a
       character(C_CHAR), intent(in) :: filename(*)
     end subroutine bml_write_bml_matrix_C
 
     function bml_zero_matrix_C(matrix_type, matrix_precision, n, m, &
-        & distrib_mode) bind(C, name="bml_zero_matrix")
+         & distrib_mode) bind(C, name="bml_zero_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -566,7 +566,7 @@ module bml_c_interface_m
     end function bml_zero_matrix_C
 
     function bml_block_matrix_C(matrix_type, matrix_precision, nb, mb, bsizes, &
-        & distrib_mode) bind(C, name="bml_block_matrix")
+         & distrib_mode) bind(C, name="bml_block_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -578,7 +578,7 @@ module bml_c_interface_m
     end function bml_block_matrix_C
 
     function bml_noinit_matrix_C(matrix_type, matrix_precision, n, m, &
-        & distrib_mode) bind(C, name="bml_noinit_matrix")
+         & distrib_mode) bind(C, name="bml_noinit_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision

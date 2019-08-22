@@ -4,12 +4,7 @@
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13443/badge.svg)](https://scan.coverity.com/projects/lanl-bml)
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/lanl/bml.svg?columns=all)](https://waffle.io/lanl/bml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d34f276064ea4421a4d7a3380910cb1c)](https://www.codacy.com/app/nicolasbock/bml?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lanl/bml&amp;utm_campaign=Badge_Grade)
-
-# Activity
-
-[![Throughput Graph](https://graphs.waffle.io/lanl/bml/throughput.svg)](https://waffle.io/lanl/bml/metrics/throughput)
 
 # Introduction
 

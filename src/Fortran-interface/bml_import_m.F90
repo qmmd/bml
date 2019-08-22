@@ -9,10 +9,10 @@ module bml_import_m
   private
 
   interface bml_import_from_dense
-     module procedure bml_import_from_dense_single
-     module procedure bml_import_from_dense_double
-     module procedure bml_import_from_dense_single_complex
-     module procedure bml_import_from_dense_double_complex
+    module procedure bml_import_from_dense_single
+    module procedure bml_import_from_dense_double
+    module procedure bml_import_from_dense_single_complex
+    module procedure bml_import_from_dense_double_complex
   end interface bml_import_from_dense
 
   public :: bml_import_from_dense
@@ -49,9 +49,9 @@ contains
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)
@@ -109,9 +109,9 @@ contains
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)
@@ -169,9 +169,9 @@ contains
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)
@@ -229,9 +229,9 @@ contains
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)

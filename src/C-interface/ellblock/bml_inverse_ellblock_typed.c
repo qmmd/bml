@@ -34,7 +34,7 @@
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_inverse_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     double threshold = 0.0;
     bml_matrix_dense_t *D;

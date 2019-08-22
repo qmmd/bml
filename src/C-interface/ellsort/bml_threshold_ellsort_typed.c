@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_threshold.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_threshold.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_threshold_ellsort.h"
 #include "bml_types_ellsort.h"
@@ -27,8 +27,8 @@
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_threshold_new_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;
@@ -48,7 +48,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, M, A_value, A_index, A_nnz)         \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   shared(B_value, B_index, B_nnz)
@@ -81,8 +81,8 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;
@@ -96,7 +96,7 @@ void TYPED_FUNC(
     int myRank = bml_getMyRank();
 
     int rlen;
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   private(rlen)                                 \
   shared(N,M,A_value,A_index,A_nnz)             \
   shared(A_localRowMin, A_localRowMax, myRank)

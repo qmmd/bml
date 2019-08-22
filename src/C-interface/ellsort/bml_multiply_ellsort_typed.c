@@ -1,14 +1,14 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_add.h"
+#include "../bml_add.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_multiply.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_add_ellsort.h"
-#include "bml_allocate.h"
 #include "bml_allocate_ellsort.h"
-#include "bml_logger.h"
-#include "bml_multiply.h"
 #include "bml_multiply_ellsort.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>
@@ -36,15 +36,15 @@
  */
 void TYPED_FUNC(
     bml_multiply_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
     bml_matrix_ellsort_t * C,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    double alpha,
+    double beta,
+    double threshold)
 {
-    const double ONE = 1.0;
-    const double ZERO = 0.0;
+    double ONE = 1.0;
+    double ZERO = 0.0;
 
     if (A == NULL || B == NULL)
     {
@@ -96,9 +96,9 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_multiply_x2_ellsort) (
-    const bml_matrix_ellsort_t * X,
+    bml_matrix_ellsort_t * X,
     bml_matrix_ellsort_t * X2,
-    const double threshold)
+    double threshold)
 {
     int *X_localRowMin = X->domain->localRowMin;
     int *X_localRowMax = X->domain->localRowMax;
@@ -132,15 +132,13 @@ void *TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel                                 \
-  default(none)                                      \
+#pragma omp parallel for                             \
   shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
   shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
   shared(X_localRowMin, X_localRowMax)               \
   reduction(+: traceX, traceX2)
 #else
-#pragma omp parallel                                 \
-  default(none)                                      \
+#pragma omp parallel for                             \
   shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
   shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
   shared(X_localRowMin, X_localRowMax)               \
@@ -234,10 +232,10 @@ void *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_AB_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
     bml_matrix_ellsort_t * C,
-    const double threshold)
+    double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -273,7 +271,6 @@ void TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                     \
-  default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \
@@ -281,7 +278,6 @@ void TYPED_FUNC(
   shared(myRank)
 #else
 #pragma omp parallel for                     \
-  default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \
@@ -367,10 +363,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_adjust_AB_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
     bml_matrix_ellsort_t * C,
-    const double threshold)
+    double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -413,8 +409,7 @@ void TYPED_FUNC(
         aflag = 0;
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
-  default(none)                              \
+#pragma omp parallel for                     \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \
@@ -423,7 +418,6 @@ void TYPED_FUNC(
   reduction(+:aflag)
 #else
 #pragma omp parallel for                     \
-  default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \

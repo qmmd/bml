@@ -23,10 +23,10 @@
 void
 bml_add(
     bml_matrix_t * A,
-    const bml_matrix_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -64,10 +64,10 @@ bml_add(
 double
 bml_add_norm(
     bml_matrix_t * A,
-    const bml_matrix_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
 
     switch (bml_get_type(A))
@@ -104,8 +104,8 @@ bml_add_norm(
 void
 bml_add_identity(
     bml_matrix_t * A,
-    const double beta,
-    const double threshold)
+    double beta,
+    double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -141,9 +141,9 @@ bml_add_identity(
 void
 bml_scale_add_identity(
     bml_matrix_t * A,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (bml_get_type(A))
     {

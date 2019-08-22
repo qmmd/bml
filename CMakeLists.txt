@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 2.8.7)
 
+message(STATUS "CMake version ${CMAKE_VERSION}")
+
 set(LANGUAGES C CXX)
 set(BML_BUILD_FORTRAN_INTERFACE TRUE CACHE BOOL
   "Build the Fortran API (requires a Fortran compiler)")
 if(BML_BUILD_FORTRAN_INTERFACE)
-  #set(LANGUAGES "${LANGUAGES} Fortran")
   list(APPEND LANGUAGES Fortran)
 endif()
 
@@ -14,7 +15,7 @@ project(bml ${LANGUAGES})
 # changes, the library version should be bumped.
 set(PROJECT_VERSION_MAJOR "1")
 set(PROJECT_VERSION_MINOR "3")
-set(PROJECT_VERSION_PATCH "0")
+set(PROJECT_VERSION_PATCH "1")
 
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(PROJECT_DESCRIPTION
@@ -40,7 +41,7 @@ else()
 endif()
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
-  -Wunused-variable -Wno-unknown-pragmas --coverage -save-temps -std=c99)
+  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
 set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
@@ -152,6 +153,11 @@ if(BML_OPENMP)
   endif()
 else()
   message(STATUS "Will not build with OpenMP")
+endif()
+
+set(BML_COVERAGE FALSE CACHE BOOL "Whether to generate coverage code")
+if(BML_COVERAGE)
+  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} --coverage)
 endif()
 
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
@@ -451,6 +457,28 @@ if(LAPACK_FOUND)
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
+# Check whether the compiler supports complex types. The Nvidia
+# compiler is known not to support them for example.
+
+set(BML_COMPLEX TRUE
+  CACHE BOOL "Whether to build complex types")
+
+if(BML_COMPLEX)
+  try_compile(SUPPORTS_COMPLEX ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/test_complex.c
+    OUTPUT_VARIABLE COMPLEX_OUTPUT
+    )
+  message(STATUS "Compile output: ${COMPLEX_OUTPUT}")
+  if(SUPPORTS_COMPLEX)
+    message(STATUS "The compiler supports complex types")
+    add_definitions(-DBML_COMPLEX)
+  else()
+    message(STATUS "The compiler does not support complex types. Will skip them.")
+    set(BML_COMPLEX FALSE)
+  endif()
+else()
+  message(STATUS "Complex types disabled by user request")
+endif()
+
 find_program(ADDR2LINE addr2line)
 if(ADDR2LINE)
   message(STATUS "Found addr2line, backtrace will resolve line numbers")
@@ -496,13 +524,15 @@ endif()
 
 set(BML_TESTING FALSE
   CACHE BOOL "Whether to build the test suite.")
+set(BML_VALGRIND FALSE
+  CACHE BOOL "Whether to test for memory leaks with valgrind")
 
 if(BML_TESTING)
   message(STATUS "Setting up test suite")
   find_program(VALGRIND valgrind
     DOC "valgrind - a suite of tools for debugging and profiling programs")
-  if(VALGRIND)
-    message(STATUS "Found valgrind, will test memory")
+  if(VALGRIND AND BML_VALGRIND)
+    message(STATUS "Will test for memory leaks")
   endif()
   enable_testing()
   if(BML_OLD)

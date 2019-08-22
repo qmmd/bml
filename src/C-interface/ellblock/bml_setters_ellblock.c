@@ -7,9 +7,9 @@
 void
 bml_set_element_new_ellblock(
     bml_matrix_ellblock_t * A,
-    const int i,
-    const int j,
-    const void *value)
+    int i,
+    int j,
+    void *value)
 {
     switch (bml_get_precision(A))
     {
@@ -35,9 +35,9 @@ bml_set_element_new_ellblock(
 void
 bml_set_element_ellblock(
     bml_matrix_ellblock_t * A,
-    const int i,
-    const int j,
-    const void *value)
+    int i,
+    int j,
+    void *value)
 {
     switch (bml_get_precision(A))
     {
@@ -62,9 +62,9 @@ bml_set_element_ellblock(
 void
 bml_set_row_ellblock(
     bml_matrix_ellblock_t * A,
-    const int i,
-    const void *row,
-    const double threshold)
+    int i,
+    void *row,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -89,8 +89,8 @@ bml_set_row_ellblock(
 void
 bml_set_diagonal_ellblock(
     bml_matrix_ellblock_t * A,
-    const void *diagonal,
-    const double threshold)
+    void *diagonal,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -115,9 +115,9 @@ bml_set_diagonal_ellblock(
 void
 bml_set_block_ellblock(
     bml_matrix_ellblock_t * A,
-    const int ib,
-    const int jb,
-    const void *values)
+    int ib,
+    int jb,
+    void *values)
 {
     switch (A->matrix_precision)
     {

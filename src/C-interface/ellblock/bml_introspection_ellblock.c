@@ -1,10 +1,10 @@
-#include "bml_introspection_ellblock.h"
-#include "bml_types_ellblock.h"
-#include "bml_logger.h"
 #include "../../macros.h"
-#include "../bml_types.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
+#include "bml_introspection_ellblock.h"
+#include "bml_types_ellblock.h"
 
 #include <complex.h>
 #include <math.h>
@@ -18,7 +18,7 @@
  */
 bml_matrix_precision_t
 bml_get_precision_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     if (A != NULL)
     {
@@ -37,7 +37,7 @@ bml_get_precision_ellblock(
  */
 bml_distribution_mode_t
 bml_get_distribution_mode_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     if (A != NULL)
     {
@@ -56,7 +56,7 @@ bml_get_distribution_mode_ellblock(
  */
 int
 bml_get_N_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     if (A != NULL)
     {
@@ -75,7 +75,7 @@ bml_get_N_ellblock(
  */
 int
 bml_get_M_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     if (A != NULL)
     {
@@ -89,7 +89,7 @@ bml_get_M_ellblock(
 
 int
 bml_get_NB_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     if (A != NULL)
     {
@@ -109,8 +109,8 @@ bml_get_NB_ellblock(
  */
 int
 bml_get_row_bandwidth_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const int i)
+    bml_matrix_ellblock_t * A,
+    int i)
 {
     //determine block index and index within block
     int ib = 0;
@@ -136,7 +136,7 @@ bml_get_row_bandwidth_ellblock(
  */
 int
 bml_get_bandwidth_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     int max_bandwidth = 0;
     int offset = 0;
@@ -164,8 +164,8 @@ bml_get_bandwidth_ellblock(
  */
 double
 bml_get_sparsity_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double threshold)
 {
     switch (bml_get_precision_ellblock(A))
     {

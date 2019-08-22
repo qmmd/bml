@@ -11,8 +11,8 @@
  *
  *  \ingroup adjungate_triangle_group
  *
- *  \param A  The matrix for which the triangle should be adjungated
- *  \param triangle  Which triangle to adjungate ('u': upper, 'l': lower)
+ *  \param[in,out] A  The matrix for which the triangle should be adjungated
+ *  \param[in] triangle  Which triangle to adjungate ('u': upper, 'l': lower)
  */
 void
 bml_adjungate_triangle(

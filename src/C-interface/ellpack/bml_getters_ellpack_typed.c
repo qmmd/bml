@@ -15,11 +15,11 @@
  * \param j The column index
  * \return The matrix element
  */
-REAL_T *TYPED_FUNC(
+void *TYPED_FUNC(
     bml_get_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const int i,
-    const int j)
+    bml_matrix_ellpack_t * A,
+    int i,
+    int j)
 {
     static REAL_T MINUS_ONE = -1;
     static REAL_T ZERO = 0;
@@ -62,7 +62,7 @@ REAL_T *TYPED_FUNC(
 void *TYPED_FUNC(
     bml_get_row_ellpack) (
     bml_matrix_ellpack_t * A,
-    const int i)
+    int i)
 {
     int ll;
     int A_N = A->N;

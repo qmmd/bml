@@ -8,49 +8,49 @@
 #include <complex.h>
 
 void *bml_get_dense(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j);
+    bml_matrix_dense_t * A,
+    int i,
+    int j);
 
-float *bml_get_dense_single_real(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j);
+void *bml_get_dense_single_real(
+    bml_matrix_dense_t * A,
+    int i,
+    int j);
 
-double *bml_get_dense_double_real(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j);
+void *bml_get_dense_double_real(
+    bml_matrix_dense_t * A,
+    int i,
+    int j);
 
-float complex *bml_get_dense_single_complex(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j);
+void *bml_get_dense_single_complex(
+    bml_matrix_dense_t * A,
+    int i,
+    int j);
 
-double complex *bml_get_dense_double_complex(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j);
+void *bml_get_dense_double_complex(
+    bml_matrix_dense_t * A,
+    int i,
+    int j);
 
 void *bml_get_row_dense(
     bml_matrix_dense_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_dense_single_real(
     bml_matrix_dense_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_dense_double_real(
     bml_matrix_dense_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_dense_single_complex(
     bml_matrix_dense_t * A,
-    const int i);
+    int i);
 
 void *bml_get_row_dense_double_complex(
     bml_matrix_dense_t * A,
-    const int i);
+    int i);
 
 void *bml_get_diagonal_dense(
     bml_matrix_dense_t * A);

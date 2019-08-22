@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_normalize.h"
+#include "../bml_logger.h"
+#include "../bml_normalize.h"
+#include "../bml_types.h"
 #include "bml_normalize_ellblock.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>
@@ -18,8 +18,8 @@
 void
 bml_normalize_ellblock(
     bml_matrix_ellblock_t * A,
-    const double mineval,
-    const double maxeval)
+    double mineval,
+    double maxeval)
 {
     switch (A->matrix_precision)
     {
@@ -51,7 +51,7 @@ bml_normalize_ellblock(
  */
 void *
 bml_gershgorin_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     switch (A->matrix_precision)
     {

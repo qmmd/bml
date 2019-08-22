@@ -4,6 +4,6 @@
 #include "bml_types.h"
 
 bml_matrix_t *bml_inverse(
-    const bml_matrix_t * A);
+    bml_matrix_t * A);
 
 #endif

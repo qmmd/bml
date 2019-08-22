@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "../bml_types.h"
 #include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "../bml_utilities.h"
 #include "bml_types_ellsort.h"
 #include "bml_utilities_ellsort.h"
-#include "bml_parallel.h"
 
 #include <complex.h>
 #include <math.h>
@@ -21,8 +21,8 @@
  */
 void TYPED_FUNC(
     bml_read_bml_matrix_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const char *filename)
+    bml_matrix_ellsort_t * A,
+    char *filename)
 {
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
@@ -108,8 +108,8 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_write_bml_matrix_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const char *filename)
+    bml_matrix_ellsort_t * A,
+    char *filename)
 {
     FILE *mFile;
     int msum;

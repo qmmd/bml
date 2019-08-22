@@ -1,8 +1,8 @@
-#include "bml_logger.h"
-#include "bml_adjungate_triangle.h"
+#include "../bml_adjungate_triangle.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_adjungate_triangle_dense.h"
 #include "bml_transpose_triangle_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
@@ -17,8 +17,8 @@
  *
  *  \ingroup adjungate_triangle_group
  *
- *  \param A  The matrix for which the triangle should be adjungated
- *  \param triangle  Which triangle to adjungate ('u': upper, 'l': lower)
+ *  \param A[in,out] The matrix for which the triangle should be adjungated
+ *  \param triangle[in]  Which triangle to adjungate ('u': upper, 'l': lower)
  */
 void
 bml_adjungate_triangle_dense(

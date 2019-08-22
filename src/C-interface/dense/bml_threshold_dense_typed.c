@@ -1,12 +1,12 @@
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_threshold.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_threshold.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_threshold_dense.h"
 #include "bml_types_dense.h"
-#include "bml_logger.h"
+#include "../bml_logger.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -27,8 +27,8 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_threshold_new_dense) (
-    const bml_matrix_dense_t * A,
-    const double threshold)
+    bml_matrix_dense_t * A,
+    double threshold)
 {
 #ifdef BML_USE_MAGMA
     LOG_ERROR
@@ -48,7 +48,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N * N; i++)
@@ -74,7 +74,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 void TYPED_FUNC(
     bml_threshold_dense) (
     bml_matrix_dense_t * A,
-    const double threshold)
+    double threshold)
 {
 #ifdef BML_USE_MAGMA
     LOG_ERROR("bml_threshold_dense() not implemented for MAGMA matrices\n");
@@ -88,7 +88,7 @@ void TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N * N; i++)

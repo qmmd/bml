@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_parallel.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_parallel_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>

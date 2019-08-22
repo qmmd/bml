@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_threshold.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_threshold.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_threshold_ellblock.h"
 #include "bml_types_ellblock.h"
@@ -28,8 +28,8 @@
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_threshold_new_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double threshold)
 {
     int NB = A->NB;
     int MB = A->MB;
@@ -93,8 +93,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double threshold)
 {
     int NB = A->NB;
     int MB = A->MB;

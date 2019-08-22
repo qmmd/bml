@@ -12,9 +12,10 @@ fi
 
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
-LOG_FILE="${TOP_DIR}/build.log"
-: ${VERBOSE_MAKEFILE:=no}
 : ${PARALLEL_TEST_JOBS:=1}
+: ${TESTING_EXTRA_ARGS:=}
+: ${VERBOSE_MAKEFILE:=no}
+LOG_FILE="${TOP_DIR}/build.log"
 
 help() {
     cat <<EOF
@@ -47,7 +48,10 @@ EOF
     echo "FC                     Path to Fortran compiler    (default is ${FC})"
     echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
+    echo "BML_COMPLEX            {yes,no}                    (default is ${BML_COMPLEX})"
     echo "BML_TESTING            {yes,no}                    (default is ${BML_TESTING})"
+    echo "BML_VALGRIND           {yes,no}                    (default is ${BML_VALGRIND})"
+    echo "BML_COVERAGE           {yes,no}                    (default is ${BML_COVERAGE})"
     echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
     echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,IBM,Auto}  (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS      {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
@@ -74,6 +78,7 @@ set_defaults() {
     : ${FC:=gfortran}
     : ${BML_OPENMP:=yes}
     : ${BML_MPI:=no}
+    : ${BML_COMPLEX:=yes}
     : ${BLAS_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
     : ${EXTRA_CFLAGS:=}
@@ -82,6 +87,8 @@ set_defaults() {
     : ${CMAKE_CXX_FLAGS:=}
     : ${CMAKE_Fortran_FLAGS:=}
     : ${BML_TESTING:=yes}
+    : ${BML_VALGRIND:=no}
+    : ${BML_COVERAGE:=no}
     : ${FORTRAN_FLAGS:=}
     : ${EXTRA_LINK_FLAGS:=}
     : ${BML_GPU:=no}
@@ -143,8 +150,11 @@ configure() {
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
+        -DBML_COMPLEX="${BML_COMPLEX}" \
         -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS}" \
         -DBML_TESTING="${BML_TESTING:=yes}" \
+        -DBML_VALGRIND="${BML_VALGRIND:=no}" \
+        -DBML_COVERAGE="${BML_COVERAGE:=no}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
         ${EXTRA_CFLAGS:+-DEXTRA_CFLAGS="${EXTRA_CFLAGS}"} \
@@ -183,7 +193,10 @@ install() {
 
 testing() {
     cd "${BUILD_DIR}"
-    ctest --output-on-failure --parallel ${PARALLEL_TEST_JOBS} 2>&1 | tee -a "${LOG_FILE}"
+    ctest --output-on-failure \
+      --parallel ${PARALLEL_TEST_JOBS} \
+      ${TESTING_EXTRA_ARGS} \
+      2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
@@ -195,10 +208,9 @@ indent() {
 }
 
 check_indent() {
-    cd "${BUILD_DIR}"
+    cd "${TOP_DIR}"
     "${TOP_DIR}/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
-    cd "${TOP_DIR}"
     git diff 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
     LINES=$(git diff | wc -l)

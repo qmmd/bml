@@ -28,7 +28,7 @@ contains
   !! \param vsize Sizes of core_halo_index and cores
   !! \param double_jump_flag Flag 0=no 1=yes
   subroutine bml_matrix2submatrix_index(b, nodelist, nsize, &
-    core_halo_index, vsize, double_jump_flag, a)
+       core_halo_index, vsize, double_jump_flag, a)
 
     type(bml_matrix_t), optional, intent(in) :: a
     type(bml_matrix_t), intent(in) :: b
@@ -48,12 +48,12 @@ contains
 
     if (present(a)) then
       call bml_matrix2submatrix_index_C(a%ptr, b%ptr, &
-        c_loc(nodelist), nsize, c_loc(core_halo_index), &
-        c_loc(vsize), cflag)
+           c_loc(nodelist), nsize, c_loc(core_halo_index), &
+           c_loc(vsize), cflag)
     else
       call bml_matrix2submatrix_index_graph_C(b%ptr, &
-        c_loc(nodelist), nsize, c_loc(core_halo_index), &
-        c_loc(vsize), cflag)
+           c_loc(nodelist), nsize, c_loc(core_halo_index), &
+           c_loc(vsize), cflag)
     endif
 
   end subroutine bml_matrix2submatrix_index
@@ -87,7 +87,7 @@ contains
   !! \param lsize Number of indeces in core_halo_index
   !! \param llsize Number of cores
   subroutine bml_submatrix2matrix(a, b, core_halo_index, lsize, &
-    llsize, threshold)
+       llsize, threshold)
 
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: b
@@ -98,13 +98,13 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     call bml_submatrix2matrix_C(a%ptr, b%ptr, c_loc(core_halo_index), lsize, &
-      llsize, threshold_)
+         llsize, threshold_)
 
   end subroutine bml_submatrix2matrix
 

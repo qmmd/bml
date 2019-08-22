@@ -1,9 +1,9 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_copy.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_copy.h"
 #include "bml_copy_dense.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <assert.h>
@@ -19,7 +19,7 @@
  */
 bml_matrix_dense_t *
 bml_copy_dense_new(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = NULL;
     assert(A != NULL);
@@ -53,7 +53,7 @@ bml_copy_dense_new(
  */
 void
 bml_copy_dense(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
     assert(A != NULL);

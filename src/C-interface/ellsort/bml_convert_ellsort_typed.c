@@ -1,20 +1,20 @@
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_getters.h"
+#include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_setters.h"
 #include "bml_allocate_ellsort.h"
-#include "bml_getters.h"
-#include "bml_introspection.h"
-#include "bml_setters.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>
 
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_convert_ellsort) (
-    const bml_matrix_t * A,
-    const bml_matrix_precision_t matrix_precision,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_t * A,
+    bml_matrix_precision_t matrix_precision,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     int N = bml_get_N(A);
 

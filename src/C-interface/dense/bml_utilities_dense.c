@@ -5,8 +5,8 @@
 
 void
 bml_read_bml_matrix_dense(
-    const bml_matrix_dense_t * A,
-    const char *filename)
+    bml_matrix_dense_t * A,
+    char *filename)
 {
     switch (A->matrix_precision)
     {
@@ -30,8 +30,8 @@ bml_read_bml_matrix_dense(
 
 void
 bml_write_bml_matrix_dense(
-    const bml_matrix_dense_t * A,
-    const char *filename)
+    bml_matrix_dense_t * A,
+    char *filename)
 {
     switch (A->matrix_precision)
     {
@@ -55,11 +55,11 @@ bml_write_bml_matrix_dense(
 
 void
 bml_print_bml_matrix_dense(
-    const bml_matrix_dense_t * A,
-    const int i_l,
-    const int i_u,
-    const int j_l,
-    const int j_u)
+    bml_matrix_dense_t * A,
+    int i_l,
+    int i_u,
+    int j_l,
+    int j_u)
 {
     switch (A->matrix_precision)
     {

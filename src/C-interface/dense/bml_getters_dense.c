@@ -1,13 +1,13 @@
+#include "../bml_introspection.h"
+#include "../bml_logger.h"
 #include "bml_getters_dense.h"
-#include "bml_introspection.h"
-#include "bml_logger.h"
 #include "bml_types_dense.h"
 
 void *
 bml_get_dense(
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j)
+    bml_matrix_dense_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_precision(A))
     {
@@ -33,7 +33,7 @@ bml_get_dense(
 void *
 bml_get_row_dense(
     bml_matrix_dense_t * A,
-    const int i)
+    int i)
 {
     switch (bml_get_precision(A))
     {

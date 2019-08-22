@@ -8,12 +8,7 @@ title: BML
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13443/badge.svg)](https://scan.coverity.com/projects/lanl-bml)
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/lanl/bml.svg?columns=all)](https://waffle.io/lanl/bml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d34f276064ea4421a4d7a3380910cb1c)](https://www.codacy.com/app/nicolasbock/bml?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lanl/bml&amp;utm_campaign=Badge_Grade)
-
-# Activity
-
-[![Throughput Graph](https://graphs.waffle.io/lanl/bml/throughput.svg)](https://waffle.io/lanl/bml/metrics/throughput)
 
 # Introduction
 
@@ -91,14 +86,14 @@ format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
 
 # Build Instructions
 
-The bml library is built with CMake.  For convenience, we provide a shell
+The bml library is built with CMake. For convenience, we provide a shell
 script which goes through the necessary motions and builds the library, runs
 the tests, and installs it (in the `install` directory). Simply run:
 
     $ ./build.sh install
 
 and the library will be built in the `build` directory and installed in the
-`install` directory.  In case you change any sources and simply want to
+`install` directory. In case you change any sources and simply want to
 rebuild the library, you don't have to run `build.sh` again, but rather
 
     $ make -C build
@@ -223,9 +218,9 @@ produced under U.S. Government contract DE-AC52-06NA25396 for Los
 Alamos National Laboratory (LANL), which is operated by Los Alamos
 National Security, LLC for the U.S. Department of Energy. The
 U.S. Government has rights to use, reproduce, and distribute this
-software.  NEITHER THE GOVERNMENT NOR LOS ALAMOS NATIONAL SECURITY,
+software. NEITHER THE GOVERNMENT NOR LOS ALAMOS NATIONAL SECURITY,
 LLC MAKES ANY WARRANTY, EXPRESS OR IMPLIED, OR ASSUMES ANY LIABILITY
-FOR THE USE OF THIS SOFTWARE.  If software is modified to produce
+FOR THE USE OF THIS SOFTWARE. If software is modified to produce
 derivative works, such modified software should be clearly marked, so
 as not to confuse it with the version available from LANL.
 

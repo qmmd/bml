@@ -1,7 +1,7 @@
-#include "bml_add.h"
+#include "../bml_add.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_add_ellblock.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>
@@ -21,11 +21,11 @@
  */
 void
 bml_add_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (B->matrix_precision)
     {
@@ -61,11 +61,11 @@ bml_add_ellblock(
  */
 double
 bml_add_norm_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     double trnorm = 0.0;
 
@@ -110,9 +110,9 @@ bml_add_norm_ellblock(
  */
 void
 bml_add_identity_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double beta,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -146,10 +146,10 @@ bml_add_identity_ellblock(
  */
 void
 bml_scale_add_identity_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double alpha,
+    double beta,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
