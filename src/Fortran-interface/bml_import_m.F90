@@ -71,192 +71,192 @@ contains
 
     call bml_deallocate(a)
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-    a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
-         & get_element_id(BML_ELEMENT_REAL, C_FLOAT), &
-         & BML_DENSE_COLUMN_MAJOR, n_, m_, &
-         & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
-  end associate
+      a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
+           & get_element_id(BML_ELEMENT_REAL, C_FLOAT), &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
+           & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
+    end associate
 
-end subroutine bml_import_from_dense_single
+  end subroutine bml_import_from_dense_single
 
-!> Convert a dense matrix into a bml matrix.
-!!
-!! \ingroup convert_group_Fortran
-!!
-!! \param matrix_type The matrix type
-!! \param a_dense The dense matrix
-!! \param a The bml matrix
-!! \param threshold The matrix element magnited threshold
-!! \param m the extra arg
-subroutine bml_import_from_dense_double(matrix_type, a_dense, a, threshold, m, distrib_mode)
+  !> Convert a dense matrix into a bml matrix.
+  !!
+  !! \ingroup convert_group_Fortran
+  !!
+  !! \param matrix_type The matrix type
+  !! \param a_dense The dense matrix
+  !! \param a The bml matrix
+  !! \param threshold The matrix element magnited threshold
+  !! \param m the extra arg
+  subroutine bml_import_from_dense_double(matrix_type, a_dense, a, threshold, m, distrib_mode)
 
-  character(len=*), intent(in) :: matrix_type
-  real(C_DOUBLE), target, intent(in) :: a_dense(:, :)
-  type(bml_matrix_t), intent(inout) :: a
-  real(C_DOUBLE), optional, intent(in) :: threshold
-  integer, optional, intent(in) :: m
-  character(len=*), optional, intent(in) :: distrib_mode
+    character(len=*), intent(in) :: matrix_type
+    real(C_DOUBLE), target, intent(in) :: a_dense(:, :)
+    type(bml_matrix_t), intent(inout) :: a
+    real(C_DOUBLE), optional, intent(in) :: threshold
+    integer, optional, intent(in) :: m
+    character(len=*), optional, intent(in) :: distrib_mode
 
-  integer(C_INT) :: n_
-  integer(C_INT) :: m_
-  real(C_DOUBLE) :: threshold_
-  character(len=20) :: distrib_mode_
+    integer(C_INT) :: n_
+    integer(C_INT) :: m_
+    real(C_DOUBLE) :: threshold_
+    character(len=20) :: distrib_mode_
 
-  if (present(distrib_mode)) then
-    distrib_mode_ = distrib_mode
-  else
-    distrib_mode_ = bml_dmode_sequential
-  endif
+    if (present(distrib_mode)) then
+      distrib_mode_ = distrib_mode
+    else
+      distrib_mode_ = bml_dmode_sequential
+    endif
 
-  if (present(threshold)) then
-    threshold_ = threshold
-  else
-    threshold_ = 0
-  end if
-
-  n_ = size(a_dense, 1, C_INT)
-
-  if (matrix_type /= BML_MATRIX_DENSE) then
-    if (.not. present(m)) then
-      write(*, *) "missing parameter m; number of non-zeros per row"
-      error stop
+    if (present(threshold)) then
+      threshold_ = threshold
+    else
+      threshold_ = 0
     end if
-  end if
 
-  if (present(m)) then
-    m_ = m
-  else
-    m_ = n_
-  end if
+    n_ = size(a_dense, 1, C_INT)
 
-  call bml_deallocate(a)
-  associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-  a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
-       & get_element_id(BML_ELEMENT_REAL, C_DOUBLE), &
-       & BML_DENSE_COLUMN_MAJOR, n_, m_, &
-       & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
-end associate
+    if (matrix_type /= BML_MATRIX_DENSE) then
+      if (.not. present(m)) then
+        write(*, *) "missing parameter m; number of non-zeros per row"
+        error stop
+      end if
+    end if
 
-end subroutine bml_import_from_dense_double
+    if (present(m)) then
+      m_ = m
+    else
+      m_ = n_
+    end if
 
-!> Convert a dense matrix into a bml matrix.
-!!
-!! \ingroup convert_group_Fortran
-!!
-!! \param matrix_type The matrix type
-!! \param a_dense The dense matrix
-!! \param a The bml matrix
-!! \param threshold The matrix element magnited threshold
-!! \param m The extra arg
-subroutine bml_import_from_dense_single_complex(matrix_type, a_dense, a, threshold, m, distrib_mode)
+    call bml_deallocate(a)
+    associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
+      a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
+           & get_element_id(BML_ELEMENT_REAL, C_DOUBLE), &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
+           & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
+    end associate
 
-character(len=*), intent(in) :: matrix_type
-complex(C_FLOAT_COMPLEX), target, intent(in) :: a_dense(:, :)
-type(bml_matrix_t), intent(inout) :: a
-real(C_DOUBLE), optional, intent(in) :: threshold
-integer, optional, intent(in) :: m
-character(len=*), optional, intent(in) :: distrib_mode
+  end subroutine bml_import_from_dense_double
 
-integer(C_INT) :: n_
-integer(C_INT) :: m_
-real(C_DOUBLE) :: threshold_
-character(len=20) :: distrib_mode_
+  !> Convert a dense matrix into a bml matrix.
+  !!
+  !! \ingroup convert_group_Fortran
+  !!
+  !! \param matrix_type The matrix type
+  !! \param a_dense The dense matrix
+  !! \param a The bml matrix
+  !! \param threshold The matrix element magnited threshold
+  !! \param m The extra arg
+  subroutine bml_import_from_dense_single_complex(matrix_type, a_dense, a, threshold, m, distrib_mode)
 
-if (present(distrib_mode)) then
-  distrib_mode_ = distrib_mode
-else
-  distrib_mode_ = bml_dmode_sequential
-endif
+    character(len=*), intent(in) :: matrix_type
+    complex(C_FLOAT_COMPLEX), target, intent(in) :: a_dense(:, :)
+    type(bml_matrix_t), intent(inout) :: a
+    real(C_DOUBLE), optional, intent(in) :: threshold
+    integer, optional, intent(in) :: m
+    character(len=*), optional, intent(in) :: distrib_mode
 
-if (present(threshold)) then
-  threshold_ = threshold
-else
-  threshold_ = 0
-end if
+    integer(C_INT) :: n_
+    integer(C_INT) :: m_
+    real(C_DOUBLE) :: threshold_
+    character(len=20) :: distrib_mode_
 
-n_ = size(a_dense, 1, C_INT)
+    if (present(distrib_mode)) then
+      distrib_mode_ = distrib_mode
+    else
+      distrib_mode_ = bml_dmode_sequential
+    endif
 
-if (matrix_type /= BML_MATRIX_DENSE) then
-  if (.not. present(m)) then
-    write(*, *) "missing parameter m; number of non-zeros per row"
-    error stop
-  end if
-end if
+    if (present(threshold)) then
+      threshold_ = threshold
+    else
+      threshold_ = 0
+    end if
 
-if (present(m)) then
-  m_ = m
-else
-  m_ = n_
-end if
+    n_ = size(a_dense, 1, C_INT)
 
-call bml_deallocate(a)
-associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
-     & get_element_id(BML_ELEMENT_COMPLEX, C_FLOAT_COMPLEX), &
-     & BML_DENSE_COLUMN_MAJOR, n_, m_, &
-     & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
-end associate
+    if (matrix_type /= BML_MATRIX_DENSE) then
+      if (.not. present(m)) then
+        write(*, *) "missing parameter m; number of non-zeros per row"
+        error stop
+      end if
+    end if
 
-end subroutine bml_import_from_dense_single_complex
+    if (present(m)) then
+      m_ = m
+    else
+      m_ = n_
+    end if
 
-!> Convert a dense matrix into a bml matrix.
-!!
-!! \ingroup convert_group_Fortran
-!!
-!! \param matrix_type The matrix type
-!! \param a_dense The dense matrix
-!! \param a The bml matrix
-!! \param threshold The matrix element magnited threshold
-!! \param m the extra arg
-subroutine bml_import_from_dense_double_complex(matrix_type, a_dense, a, threshold, m, distrib_mode)
+    call bml_deallocate(a)
+    associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
+      a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
+           & get_element_id(BML_ELEMENT_COMPLEX, C_FLOAT_COMPLEX), &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
+           & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
+    end associate
 
-character(len=*), intent(in) :: matrix_type
-complex(C_DOUBLE_COMPLEX), target, intent(in) :: a_dense(:, :)
-type(bml_matrix_t), intent(inout) :: a
-real(C_DOUBLE), optional, intent(in) :: threshold
-integer, optional, intent(in) :: m
-character(len=*), optional, intent(in) :: distrib_mode
+  end subroutine bml_import_from_dense_single_complex
 
-integer(C_INT) :: n_
-integer(C_INT) :: m_
-real(C_DOUBLE) :: threshold_
-character(len=20) :: distrib_mode_
+  !> Convert a dense matrix into a bml matrix.
+  !!
+  !! \ingroup convert_group_Fortran
+  !!
+  !! \param matrix_type The matrix type
+  !! \param a_dense The dense matrix
+  !! \param a The bml matrix
+  !! \param threshold The matrix element magnited threshold
+  !! \param m the extra arg
+  subroutine bml_import_from_dense_double_complex(matrix_type, a_dense, a, threshold, m, distrib_mode)
 
-if (present(distrib_mode)) then
-distrib_mode_ = distrib_mode
-else
-distrib_mode_ = bml_dmode_sequential
-endif
+    character(len=*), intent(in) :: matrix_type
+    complex(C_DOUBLE_COMPLEX), target, intent(in) :: a_dense(:, :)
+    type(bml_matrix_t), intent(inout) :: a
+    real(C_DOUBLE), optional, intent(in) :: threshold
+    integer, optional, intent(in) :: m
+    character(len=*), optional, intent(in) :: distrib_mode
 
-if (present(threshold)) then
-threshold_ = threshold
-else
-threshold_ = 0
-end if
+    integer(C_INT) :: n_
+    integer(C_INT) :: m_
+    real(C_DOUBLE) :: threshold_
+    character(len=20) :: distrib_mode_
 
-n_ = size(a_dense, 1, C_INT)
+    if (present(distrib_mode)) then
+      distrib_mode_ = distrib_mode
+    else
+      distrib_mode_ = bml_dmode_sequential
+    endif
 
-if (matrix_type /= BML_MATRIX_DENSE) then
-if (.not. present(m)) then
-  write(*, *) "missing parameter m; number of non-zeros per row"
-  error stop
-end if
-end if
+    if (present(threshold)) then
+      threshold_ = threshold
+    else
+      threshold_ = 0
+    end if
 
-if (present(m)) then
-m_ = m
-else
-m_ = n_
-end if
+    n_ = size(a_dense, 1, C_INT)
 
-call bml_deallocate(a)
-associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
-   & get_element_id(BML_ELEMENT_COMPLEX, C_DOUBLE_COMPLEX), &
-   & BML_DENSE_COLUMN_MAJOR, n_, m_, &
-   & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
-end associate
+    if (matrix_type /= BML_MATRIX_DENSE) then
+      if (.not. present(m)) then
+        write(*, *) "missing parameter m; number of non-zeros per row"
+        error stop
+      end if
+    end if
 
-end subroutine bml_import_from_dense_double_complex
+    if (present(m)) then
+      m_ = m
+    else
+      m_ = n_
+    end if
+
+    call bml_deallocate(a)
+    associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
+      a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
+           & get_element_id(BML_ELEMENT_COMPLEX, C_DOUBLE_COMPLEX), &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
+           & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
+    end associate
+
+  end subroutine bml_import_from_dense_double_complex
 
 end module bml_import_m

@@ -38,14 +38,14 @@ contains
     associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
       ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
       ! exclusive in the upper bound in the C code.
-    call bml_print_dense_matrix_C(size(a, 1, kind=C_INT), &
-         & get_element_id(REAL_NAME, REAL_KIND), &
-         & BML_DENSE_COLUMN_MAJOR, &
-         & c_loc(a_ptr), &
-         & i_l-lbound(a, 1, kind=C_INT), i_u-lbound(a, 1, kind=C_INT)+1, &
-         & j_l-lbound(a, 2, kind=C_INT), j_u-lbound(a, 2, kind=C_INT)+1)
-  end associate
+      call bml_print_dense_matrix_C(size(a, 1, kind=C_INT), &
+           & get_element_id(REAL_NAME, REAL_KIND), &
+           & BML_DENSE_COLUMN_MAJOR, &
+           & c_loc(a_ptr), &
+           & i_l-lbound(a, 1, kind=C_INT), i_u-lbound(a, 1, kind=C_INT)+1, &
+           & j_l-lbound(a, 2, kind=C_INT), j_u-lbound(a, 2, kind=C_INT)+1)
+    end associate
 
-end subroutine bml_print_dense_matrix_MATRIX_TYPE
+  end subroutine bml_print_dense_matrix_MATRIX_TYPE
 
 end module bml_utilities_MATRIX_TYPE_m
