@@ -52,6 +52,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
 #pragma omp target parallel for default(none) \
     shared(N,M, rowMin, rowMax) \
+    shared(threshold)           \
     shared(A_value, A_index, A_nnz) \
     shared(B_value, B_index, B_nnz)
     for (int i = rowMin; i < rowMax; i++)
@@ -103,6 +104,7 @@ void TYPED_FUNC(
 #pragma omp target parallel for default(none) \
     private(rlen) \
     shared(N,M, rowMin, rowMax) \
+    shared(threshold)           \
     shared(A_value,A_index,A_nnz)
     for (int i = rowMin; i < rowMax; i++)
     {

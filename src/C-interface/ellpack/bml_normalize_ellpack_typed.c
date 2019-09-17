@@ -182,6 +182,7 @@ void *TYPED_FUNC(
 #pragma omp parallel for default(none)          \
   shared(N, M, A_nnz, A_index, A_value)         \
   shared(rad, dval)                             \
+  shared(nrows)                                 \
   private(absham, radius, dvalue)               \
   reduction(max:emax)                           \
   reduction(min:emin)

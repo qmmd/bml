@@ -82,6 +82,7 @@ double TYPED_FUNC(
 
 #pragma omp target parallel for default(none)          \
   shared(N, M, A_index, A_nnz, A_value)         \
+  shared(core_size)                             \
   reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {

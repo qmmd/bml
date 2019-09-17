@@ -9,7 +9,7 @@
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
-#include <cuComplex.h>
+//#include <cuComplex.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -74,6 +74,7 @@ void TYPED_FUNC(
     default(none)                         \
     shared(N, A_M, B_M)           \
     shared(rowMin, rowMax)                \
+    shared(alpha, beta, threshold)	  \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)
 #else
@@ -81,6 +82,7 @@ void TYPED_FUNC(
     default(none)                         \
     shared(N, A_M, B_M)           \
     shared(rowMin, rowMax)                \
+    shared(alpha, beta, threshold)	  \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
     firstprivate(ix, jx, x)
@@ -221,6 +223,7 @@ double TYPED_FUNC(
     default(none)                         \
     shared(N, A_M, B_M)           \
     shared(rowMin, rowMax)                \
+    shared(alpha, beta, threshold)	  \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
     reduction(+:trnorm)
@@ -229,6 +232,7 @@ double TYPED_FUNC(
     default(none)                         \
     shared(N, A_M, B_M)           \
     shared(rowMin, rowMax)                \
+    shared(alpha, beta, threshold)	  \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
     firstprivate(ix, jx, x, y)            \
