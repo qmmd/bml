@@ -20,7 +20,7 @@ export EXTRA_CFLAGS=${EXTRA_CFLAGS:=""}
 export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:=""}
 export CMAKE_Fortran_FLAGS="-fopenmp -foffload=nvptx-none -foffload=-lm"
 export CMAKE_C_FLAGS="-O3 -fopenmp -foffload=nvptx-none -foffload=-lm"
-
+export CUDA_TOOLKIT_ROOT_DIR=${CUDATOOLKIT_ROOT}
 ./build.sh install
 
                                                                                                                                                                                               
