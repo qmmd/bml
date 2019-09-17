@@ -45,7 +45,9 @@ double TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#pragma omp target parallel for  \
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+//#pragma omp target data map(tofrom: trace)
+#pragma omp parallel for  \
   default(none)          \
   shared(N, M, A_value, A_index, A_nnz)         \
   shared(rowMin, rowMax)  \
@@ -62,6 +64,7 @@ double TYPED_FUNC(
             }
         }
     }
+//#pragma omp target update from(trace)
 
     return (double) REAL_PART(trace);
 }

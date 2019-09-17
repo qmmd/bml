@@ -4,6 +4,7 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int TYPED_FUNC(
     test_allocate) (
@@ -18,6 +19,7 @@ int TYPED_FUNC(
     REAL_T *B_dense = NULL;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    printf("Random matrix A allocated\n");
     A_dense = bml_export_to_dense(A, dense_row_major);
     B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
                               N, M, A_dense, 0, sequential);

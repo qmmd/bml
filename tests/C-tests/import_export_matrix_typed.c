@@ -4,6 +4,7 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int TYPED_FUNC(
     test_import_export) (

@@ -57,8 +57,8 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
-#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+//#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+//#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[N], jx[N];
@@ -70,7 +70,7 @@ void TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp target parallel for \
+#pragma omp parallel for \
     default(none)                         \
     shared(N, A_M, B_M)           \
     shared(rowMin, rowMax)                \
@@ -78,7 +78,7 @@ void TYPED_FUNC(
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)
 #else
-#pragma omp parallel for                  \
+#pragma omp target parallel for                  \
     default(none)                         \
     shared(N, A_M, B_M)           \
     shared(rowMin, rowMax)                \
@@ -157,7 +157,7 @@ void TYPED_FUNC(
         }
         A_nnz[i] = ll;
     }
-#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+//#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
 
 }
 
@@ -204,8 +204,8 @@ double TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
-#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+//#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+//#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[N], jx[N];
@@ -228,7 +228,7 @@ double TYPED_FUNC(
     shared(B_index, B_value, B_nnz)       \
     reduction(+:trnorm)
 #else
-#pragma omp parallel for                  \
+#pragma omp target parallel for                  \
     default(none)                         \
     shared(N, A_M, B_M)           \
     shared(rowMin, rowMax)                \
@@ -304,7 +304,7 @@ double TYPED_FUNC(
         A_nnz[i] = ll;
     }
 
-#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+//#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
 
     return trnorm;
 }

@@ -8,11 +8,14 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+
+//#define NOGPU
 
 /** Clear a matrix.
  *
@@ -40,8 +43,7 @@ void TYPED_FUNC(
     memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
 
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
-#endif
-
+#else
     // All data and copy stays on deveice
 #pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
@@ -59,6 +61,7 @@ void TYPED_FUNC(
         }
     }
 
+#endif
 }
 
 /** Allocate a matrix with uninitialized values.
@@ -135,26 +138,43 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->M = M;
     A->distribution_mode = distrib_mode;
     // need to keep these allocates for host copy
-    A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
+    A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
+
     A->domain = bml_default_domain(N, M, distrib_mode);
     A->domain2 = bml_default_domain(N, M, distrib_mode);
 
-    int *A_index = A->index;
     int *A_nnz = A->nnz;
+    int *A_index = A->index;
     REAL_T *A_value = A->value;
+    int NM = N*M;
 
-#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
+    printf("Allocating device memory in bml_zero_matrix\n");
+    printf("N = %d, M = %d\n", N, M);
+
+#pragma omp target enter data map(alloc:A_nnz[0:N]) 
+#pragma omp target enter data map(alloc:A_index[0:NM]) 
+#pragma omp target enter data map(alloc:A_value[0:NM]) 
+
+    printf("Device memory allocated\n");
 
     // All arrays set on device
-#pragma omp target teams distribute parallel for
+#ifdef NOGPU
+#pragma omp parallel for 
+#else
+#pragma omp target teams distribute parallel for schedule (static, 1)
+#endif
     for (int i = 0; i < N; i++)
     {
         A_nnz[i] = 0;
     }
 
+#ifdef NOGPU
+#pragma omp parallel for 
+#else
 #pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+#endif
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < M; j++)
@@ -163,6 +183,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
             A_value[ROWMAJOR(i, j, N, M)] = 0.0;
         }
     }
+#ifdef NOGPU
+#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#endif
     return A;
 }
 
@@ -237,6 +260,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
+    // Note this allocates space on the device already!
     bml_matrix_ellpack_t *A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
@@ -244,8 +268,10 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
+//#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
         int jind = 0;
@@ -283,6 +309,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
+    // this allocates space on the gpu already
     bml_matrix_ellpack_t *A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
@@ -290,9 +317,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
 #pragma omp \
-    target \
   parallel for default(none) shared(A_value, A_index, A_nnz, N, M)
     for (int i = 0; i < N; i++)
     {
@@ -300,6 +325,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         A_index[ROWMAJOR(i, 0, N, M)] = i;
         A_nnz[i] = 1;
     }
+#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
     return A;
 }

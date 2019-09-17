@@ -33,6 +33,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int N = A->N;
     int M = A->M;
 
+    // space allocated on device
     bml_matrix_ellpack_t *B =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, A->distribution_mode);
 
@@ -50,7 +51,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#pragma omp target parallel for default(none) \
+#pragma omp target update from(A_value[:N*M],A_index[:N*M],A_nnz[:N])
+
+#pragma omp parallel for default(none) \
     shared(N,M, rowMin, rowMax) \
     shared(threshold)           \
     shared(A_value, A_index, A_nnz) \
@@ -69,6 +72,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
             }
         }
     }
+#pragma omp target update to(B_value[:N*M],B_index[:N*M],B_nnz[:N])
 
     return B;
 }
@@ -100,8 +104,9 @@ void TYPED_FUNC(
     int rowMax = A_localRowMax[myRank];
 
     int rlen;
+#pragma omp target update from(A_value[:N*M],A_index[:N*M],A_nnz[:N])
 
-#pragma omp target parallel for default(none) \
+#pragma omp parallel for default(none) \
     private(rlen) \
     shared(N,M, rowMin, rowMax) \
     shared(threshold)           \
@@ -125,4 +130,5 @@ void TYPED_FUNC(
         }
         A_nnz[i] = rlen;
     }
+#pragma omp target update to(A_value[:N*M],A_index[:N*M],A_nnz[:N])
 }
