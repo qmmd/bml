@@ -148,20 +148,20 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     REAL_T *A_value = A->value;
-    int NM = N*M;
+    int NM = N * M;
 
     printf("Allocating device memory in bml_zero_matrix\n");
     printf("N = %d, M = %d\n", N, M);
 
-#pragma omp target enter data map(alloc:A_nnz[0:N]) 
-#pragma omp target enter data map(alloc:A_index[0:NM]) 
-#pragma omp target enter data map(alloc:A_value[0:NM]) 
+#pragma omp target enter data map(alloc:A_nnz[0:N])
+#pragma omp target enter data map(alloc:A_index[0:NM])
+#pragma omp target enter data map(alloc:A_value[0:NM])
 
     printf("Device memory allocated\n");
 
     // All arrays set on device
 #ifdef NOGPU
-#pragma omp parallel for 
+#pragma omp parallel for
 #else
 #pragma omp target teams distribute parallel for schedule (static, 1)
 #endif
@@ -171,7 +171,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
 #ifdef NOGPU
-#pragma omp parallel for 
+#pragma omp parallel for
 #else
 #pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
 #endif

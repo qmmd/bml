@@ -152,7 +152,7 @@ void *TYPED_FUNC(
 #endif
 
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
-    for (int i = rowMin; i < rowMax; i++) // CALCULATES THRESHOLDED X^2
+    for (int i = rowMin; i < rowMax; i++)       // CALCULATES THRESHOLDED X^2
     {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
@@ -301,7 +301,7 @@ void TYPED_FUNC(
 
     //for (int i = 0; i < A_N; i++)
     //for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
-    for (int i = rowMin; i < rowMax; i++) 
+    for (int i = rowMin; i < rowMax; i++)
     {
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
