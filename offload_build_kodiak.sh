@@ -4,7 +4,7 @@
 
 module purge
 module use /usr/projects/consult/mcoyne/toss34ofed/modulefiles
-module load binutils gcc92_icn openmpi31_gcc92_icn 
+module load binutils gcc92_icn
 module load cudatoolkit/10.1 mkl
 
 rm -r build
@@ -17,7 +17,7 @@ export FC=${FC:=gfortran}
 export CXX=${CXX:=g++}
 export BLAS_VENDOR=${BLAS_VENDOR:=MKL}
 export BML_OPENMP=${BML_OPENMP:=yes}
-export BML_GPU=${BML_GPU:=yes}
+export BML_GPU=${BML_GPU:=no}
 export INSTALL_DIR=${INSTALL_DIR:="${MY_PATH}/install"}
 export BML_TESTING=${BML_TESTING:=yes}
 export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Release}

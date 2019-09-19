@@ -31,12 +31,31 @@ void TYPED_FUNC(
     bml_clear_dense) (
     bml_matrix_dense_t * A)
 {
+ int N = A->N;
+ int NN = N * N;
+ REAL_T *A_matrix = A->matrix;
+ 
 #ifdef BML_USE_MAGMA
     MAGMA_T zero = MAGMACOMPLEX(MAKE) (0., 0.);
     MAGMABLAS(laset) (MagmaFull, A->N, A->N, zero, zero, A->matrix, A->ld,
                       A->queue);
 #else
-    memset(A->matrix, 0.0, A->N * A->ld * sizeof(REAL_T));
+#ifdef NOGPU
+#pragma omp target update from(A_matrix[:NN])
+    memset(A->matrix, 0.0, NN * sizeof(REAL_T));
+#pragma omp target update to(A_matrix[:NN])
+#else
+    // All data and copy stays on evice
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            A_matrix[ROWMAJOR(i, j, N, N)] = 0.0;
+        }
+    }
+
+#endif
 #endif
 }
 
@@ -80,6 +99,33 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->matrix =
         bml_allocate_memory(sizeof(REAL_T) * matrix_dimension.N_rows *
                             matrix_dimension.N_rows);
+    int N = A->N;
+    int NN = N * N;
+    REAL_T *A_matrix = A->matrix;
+
+    printf("Allocating device memory in bml_zero_matrix\n");
+    printf("N = %d", N);
+
+#pragma omp target enter data map(alloc:A_matrix[0:NN])
+
+    printf("Device memory allocated\n");
+
+#ifdef NOGPU
+#pragma omp parallel for
+#else
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+#endif
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            A_matrix[ROWMAJOR(i, j, N, N)] = 0.0;
+        }
+    }
+#ifdef NOGPU
+#pragma omp target update to(A_matrix[:NN])
+#endif
+
 #endif
     A->domain =
         bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
@@ -113,6 +159,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
     REAL_T *A_dense = A->matrix;
+    int NN = N * N;
+#pragma omp target enter data map(alloc:A_dense[0:NN])
 #pragma omp parallel for shared(A_dense)
     for (int i = 0; i < N; i++)
     {
@@ -122,6 +170,8 @@ bml_matrix_dense_t *TYPED_FUNC(
             A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
         }
     }
+#pragma omp target update to(A_dense[:NN])
+
     return A;
 }
 
@@ -148,12 +198,15 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
+    int NN = N * N;
 #ifdef BML_USE_MAGMA
     MAGMA_T *A_dense = malloc(N * N * sizeof(REAL_T));
 #else
     REAL_T *A_dense = A->matrix;
+#pragma omp target update from(A_dense[:NN])
 #endif
 
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -170,7 +223,10 @@ bml_matrix_dense_t *TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, A->queue);
     free(A_dense);
+#else
+    #pragma omp target update to(A_dense[:NN])
 #endif
+    
     return A;
 }
 
@@ -194,10 +250,12 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
+    int NN = N * N;
 #ifdef BML_USE_MAGMA
     MAGMA_T *A_dense = calloc(N * N, sizeof(REAL_T));
 #else
     REAL_T *A_dense = A->matrix;
+#pragma omp target update from(A_dense[:NN])
 #endif
 
 #pragma omp parallel for shared(A_dense)
@@ -213,6 +271,8 @@ bml_matrix_dense_t *TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, A->queue);
     free(A_dense);
+#else
+#pragma omp target update to(A_dense[:NN])
 #endif
     return A;
 }
