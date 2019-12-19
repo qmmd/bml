@@ -47,8 +47,10 @@ bml_matrix_dense_t *TYPED_FUNC(
     int myRank = bml_getMyRank();
 
 #ifdef BML_USE_MAGMA
+    magma_queue_sync(A->queue);
     MAGMABLAS(transpose) (A->N, A->N, A->matrix, A->ld,
-                          B->matrix, B->ld, A->queue);
+                          B->matrix, B->ld, B->queue);
+    magma_queue_sync(B->queue);
 #else
 #pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
@@ -79,6 +81,7 @@ void TYPED_FUNC(
     int N = A->N;
 
 #ifdef BML_USE_MAGMA
+    magma_queue_sync(A->queue);
     MAGMABLAS(transpose_inplace) (A->N, A->matrix, A->ld, A->queue);
 #else
     REAL_T *A_matrix = A->matrix;

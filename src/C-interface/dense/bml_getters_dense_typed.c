@@ -22,7 +22,7 @@ void *TYPED_FUNC(
 {
     int N = bml_get_N(A);
     int NN = N * N;
-    
+
     if (N < 0)
     {
         LOG_ERROR("A is not initialized\n");
@@ -65,7 +65,7 @@ void *TYPED_FUNC(
 #else
     REAL_T *A_matrix = A->matrix;
     REAL_T *row = calloc(N, sizeof(REAL_T));
-    
+
     //#pragma omp target update from(A_matrix[:NN])
 
     for (int j = 0; j < N; j++)
@@ -82,7 +82,7 @@ void *TYPED_FUNC(
 {
     int N = bml_get_N(A);
     int NN = N * N;
-    
+
     if (N < 0)
     {
         LOG_ERROR("A is not initialized\n");

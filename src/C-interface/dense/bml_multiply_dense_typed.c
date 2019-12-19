@@ -59,6 +59,9 @@ void TYPED_FUNC(
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
     MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
 
+    magma_queue_sync(A->queue);
+    magma_queue_sync(B->queue);
+
     MAGMA(gemm) (MagmaNoTrans, MagmaNoTrans,
                  A->N, A->N, A->N, alpha_, B->matrix, B->ld,
                  A->matrix, A->ld, beta_, C->matrix, C->ld, C->queue);

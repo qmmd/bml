@@ -156,8 +156,9 @@ with the following `bibtex` snipped:
                       Susan Mniszewski and
                       Bálint Aradi and
                       Michael Wall and
-                      Christian F. A. Negre and
-                      Jamal Mohd-Yusof},
+                      Christian F. A. Negre
+                      Jamal Mohd-Yusof and
+                      Anders N. M. Niklasson},
       title        = {qmmd/bml v1.2.3},
       month        = feb,
       year         = 2018,

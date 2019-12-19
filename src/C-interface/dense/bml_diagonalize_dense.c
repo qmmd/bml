@@ -146,12 +146,22 @@ bml_diagonalize_dense_double_real(
     magmablas_dlacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
                      A->queue);
 
+    magma_queue_sync(A->queue);
+
     magma_dsyevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
                      wa, ldwa, work, lwork, iwork, liwork, &info);
     if (info != 0)
         LOG_ERROR("ERROR in magma_dsyevd_gpu");
 
     free(wa);
+
+    //verify norm eigenvectors
+    //for(int i=0;i<A->N;i++)
+    //{
+    //    double norm = magma_dnrm2(A->N, evecs+A->ld*i, 1, A->queue);
+    //    printf("norm = %le\n", norm);
+    //}
+
 #else
     int lwork = 3 * A->N;
     double *evecs = calloc(A->N * A->N, sizeof(double));
@@ -169,8 +179,19 @@ bml_diagonalize_dense_double_real(
 
     A_matrix = (double *) eigenvectors->matrix;
 #ifdef BML_USE_MAGMA
+    magma_queue_sync(A->queue);
+
     magmablas_dtranspose(A->N, A->N, evecs, A->ld,
                          A_matrix, eigenvectors->ld, A->queue);
+    magma_queue_sync(eigenvectors->queue);
+
+    //verify norm eigenvectors transposed
+    //for(int i=0;i<A->N;i++)
+    //{
+    //    double norm = magma_dnrm2(A->N, evecs+i, A->ld, A->queue);
+    //    printf("norm transposed vector = %le\n", norm);
+    //}
+
     for (int i = 0; i < A->N; i++)
         typed_eigenvalues[i] = (double) evals[i];
 #else

@@ -60,6 +60,8 @@ EOF
     echo "CMAKE_C_FLAGS          Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
     echo "CMAKE_CXX_FLAGS        Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
     echo "CMAKE_Fortran_FLAGS    Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
+    echo "BLAS_LIBRARIES         Blas libraries              (default is '${BLAS_LIBRARIES}')"
+    echo "LAPACK LIBRARIES       Lapack libraries            (default is '${LAPACK_LIBRARIES}')"
     echo "EXTRA_CFLAGS           Extra C flags               (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FFLAGS           Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "EXTRA_LINK_FLAGS       Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
@@ -86,6 +88,8 @@ set_defaults() {
     : ${CMAKE_C_FLAGS:=}
     : ${CMAKE_CXX_FLAGS:=}
     : ${CMAKE_Fortran_FLAGS:=}
+    : ${BLAS_LIBRARIES:=}
+    : ${LAPACK_LIBRARIES:=}
     : ${BML_TESTING:=yes}
     : ${BML_VALGRIND:=no}
     : ${BML_COVERAGE:=no}
@@ -148,6 +152,8 @@ configure() {
         ${CMAKE_CXX_FLAGS:+-DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"} \
         ${CMAKE_Fortran_FLAGS:+-DCMAKE_Fortran_FLAGS="${CMAKE_Fortran_FLAGS}"} \
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
+        -DBLAS_LIBRARIES="${BLAS_LIBRARIES}" \
+        -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
         -DBML_COMPLEX="${BML_COMPLEX}" \

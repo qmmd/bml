@@ -36,7 +36,7 @@ void *TYPED_FUNC(
 #ifndef BML_USE_MAGMA
     //#pragma omp target update from(B_ptr[:NN])
 #endif
-    
+
     switch (order)
     {
         case dense_row_major:

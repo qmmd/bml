@@ -1,5 +1,6 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../C-interface/dense/bml_getters_dense.h"
 
 #include <complex.h>
 #include <math.h>
@@ -27,6 +28,7 @@ int TYPED_FUNC(
     bml_matrix_t *aux = NULL;
     bml_matrix_t *aux1 = NULL;
     bml_matrix_t *aux2 = NULL;
+    bml_matrix_t *id = NULL;
     float fnorm;
 
     if (matrix_type != dense && matrix_type != ellpack)
@@ -75,13 +77,34 @@ int TYPED_FUNC(
     printf("%s\n", "eigenvectors");
     bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
 
-    //aux = bml_transpose_new(eigenvectors);
-    aux = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
-    bml_copy(eigenvectors, aux);
-    bml_transpose(aux);
+    printf("%s\n", "eigenvalues");
+    for (int i = 0; i < N; i++)
+        printf("val = %e\n", eigenvalues[i]);
 
-    printf("%s\n", "aux");
-    bml_print_bml_matrix(aux, 0, N, 0, N);
+    aux = bml_transpose_new(eigenvectors);
+    bml_multiply(aux, eigenvectors, aux2, 1.0, 0.0, 0.0);       // C^t*C
+    printf("%s\n", "check eigenvectors norms");
+    for (int i = 0; i < N; i++)
+    {
+        REAL_T *val = bml_get(aux2, i, i);
+        if (fabsf(*val - 1.) > REL_TOL)
+        {
+            printf("i = %d, val = %e\n", i, *val);
+            LOG_ERROR
+                ("Error in matrix diagonalization; eigenvector not normalized\n");
+        }
+    }
+
+    id = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_add(aux2, id, 1.0, -1.0, 0.0);
+    fnorm = bml_fnorm(aux2);
+    if (fabsf(fnorm) > N * REL_TOL)
+    {
+        LOG_ERROR
+            ("Error in matrix diagonalization; fnorm(C^txC^t-Id) = %e\n",
+             fnorm);
+        return -1;
+    }
 
     bml_set_diagonal(aux1, eigenvalues, 0.0);
 
@@ -93,7 +116,7 @@ int TYPED_FUNC(
 
     fnorm = bml_fnorm(aux);
 
-    if (fabsf(fnorm) > REL_TOL)
+    if (fabsf(fnorm) > N * REL_TOL)
     {
         LOG_ERROR
             ("Error in matrix diagonalization; fnorm(CDC^t-A) = %e\n", fnorm);
@@ -106,6 +129,7 @@ int TYPED_FUNC(
     bml_deallocate(&aux2);
     bml_deallocate(&A_t);
     bml_deallocate(&eigenvectors);
+    bml_deallocate(&id);
     free(eigenvalues);
 
     LOG_INFO("diagonalize matrix test passed\n");

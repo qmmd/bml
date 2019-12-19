@@ -31,13 +31,13 @@ void TYPED_FUNC(
     int k_val = *k;
     REAL_T alpha_val = *alpha;
     REAL_T beta_val = *beta;
- 
+
     int N_rows_A;
     int N_rows_B;
     int N_cols_A;
 
-    printf("alpha = %g, beta = %g\n",alpha_val,beta_val);
-    
+    printf("alpha = %g, beta = %g\n", alpha_val, beta_val);
+
     if (*transa == 'N')
     {
         N_rows_A = m_val;
@@ -100,7 +100,8 @@ void TYPED_FUNC(
         return;
     }
 
-    if ((m_val == 0 || n_val == 0) || ((alpha_val == 0 || k_val == 0) && beta_val == 1.0))
+    if ((m_val == 0 || n_val == 0)
+        || ((alpha_val == 0 || k_val == 0) && beta_val == 1.0))
     {
         return;
     }
@@ -110,7 +111,7 @@ void TYPED_FUNC(
         if (beta_val == 0)
         {
 #pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
-	for (int j = 0; j < n_val; j++)
+            for (int j = 0; j < n_val; j++)
             {
                 for (int i = 0; i < m_val; i++)
                 {
@@ -146,12 +147,15 @@ void TYPED_FUNC(
                     for (int i = 0; i < m_val; i++)
                     {
                         c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
-			for (int l = 0; l < k_val; l++) {
-			c[COLMAJOR(i, j, m_val, n_val)] += alpha_val * a[COLMAJOR(i,l,m_val,k_val)] * b[COLMAJOR(l,j,k_val,n_val)];
-			}
+                        for (int l = 0; l < k_val; l++)
+                        {
+                            c[COLMAJOR(i, j, m_val, n_val)] +=
+                                alpha_val * a[COLMAJOR(i, l, m_val, k_val)] *
+                                b[COLMAJOR(l, j, k_val, n_val)];
+                        }
                     }
                 }
-	    }	    
+            }
         }
         else
         {
@@ -165,12 +169,15 @@ void TYPED_FUNC(
                     for (int i = 0; i < m_val; i++)
                     {
                         c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
-			for (int l = 0; l < k_val; l++) {
-			c[COLMAJOR(i, j, m_val, n_val)] += alpha_val * a[COLMAJOR(l,i,m_val,k_val)] * b[COLMAJOR(l,j,k_val,n_val)];
-			}
+                        for (int l = 0; l < k_val; l++)
+                        {
+                            c[COLMAJOR(i, j, m_val, n_val)] +=
+                                alpha_val * a[COLMAJOR(l, i, m_val, k_val)] *
+                                b[COLMAJOR(l, j, k_val, n_val)];
+                        }
                     }
                 }
-	    }	    
+            }
         }
     }
     else
@@ -187,12 +194,15 @@ void TYPED_FUNC(
                     for (int i = 0; i < m_val; i++)
                     {
                         c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
-			for (int l = 0; l < k_val; l++) {
-			c[COLMAJOR(i, j, m_val, n_val)] += alpha_val * a[COLMAJOR(i,l,m_val,k_val)] * b[COLMAJOR(j,l,k_val,n_val)];
-			}
+                        for (int l = 0; l < k_val; l++)
+                        {
+                            c[COLMAJOR(i, j, m_val, n_val)] +=
+                                alpha_val * a[COLMAJOR(i, l, m_val, k_val)] *
+                                b[COLMAJOR(j, l, k_val, n_val)];
+                        }
                     }
                 }
-	    }	    
+            }
         }
         else
         {
@@ -206,12 +216,15 @@ void TYPED_FUNC(
                     for (int i = 0; i < m_val; i++)
                     {
                         c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
-			for (int l = 0; l < k_val; l++) {
-			c[COLMAJOR(i, j, m_val, n_val)] += alpha_val * a[COLMAJOR(l,i,m_val,k_val)] * b[COLMAJOR(j,l,k_val,n_val)];
-			}
+                        for (int l = 0; l < k_val; l++)
+                        {
+                            c[COLMAJOR(i, j, m_val, n_val)] +=
+                                alpha_val * a[COLMAJOR(l, i, m_val, k_val)] *
+                                b[COLMAJOR(j, l, k_val, n_val)];
+                        }
                     }
                 }
-	    }	    
+            }
         }
     }
 }
@@ -235,7 +248,7 @@ void TYPED_FUNC(
 #ifdef BML_INTERNAL_GEMM
     TYPED_FUNC(bml_gemm_internal) (transa, transb, m, n, k, alpha, a,
                                    lda, b, ldb, beta, c, ldc);
-    int MN= *m * *n;
+    int MN = *m * *n;
 #pragma omp target update from(c[:MN])
 #else
 

@@ -94,8 +94,6 @@ double TYPED_FUNC(
     int N = A->N;
 
     REAL_T trace = 0.0;
-    REAL_T *A_matrix = A->matrix;
-    REAL_T *B_matrix = B->matrix;
 
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
@@ -108,6 +106,27 @@ double TYPED_FUNC(
             ("bml_trace_mult_dense: Matrices A and B are different sizes.");
     }
 
+#ifdef BML_USE_MAGMA
+
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    {
+#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+        MAGMA_T ttrace = MAGMA(dotu) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
+                                      (MAGMA_T *) B->matrix + i * B->ld, 1,
+                                      A->queue);
+        trace +=
+            MAGMACOMPLEX(REAL) (ttrace) + I * MAGMACOMPLEX(IMAG) (ttrace);
+#else
+        trace += MAGMA(dot) (N, (REAL_T *) A->matrix + i * A->ld, 1,
+                             (REAL_T *) B->matrix + i * B->ld, 1, A->queue);
+#endif
+    }
+
+#else
+
+    REAL_T *A_matrix = A->matrix;
+    REAL_T *B_matrix = B->matrix;
+
 #pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)  \
@@ -117,6 +136,8 @@ double TYPED_FUNC(
     {
         trace += A_matrix[i] * B_matrix[i];
     }
+
+#endif
 
     return (double) REAL_PART(trace);
 }

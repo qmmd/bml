@@ -31,10 +31,10 @@ void TYPED_FUNC(
     bml_clear_dense) (
     bml_matrix_dense_t * A)
 {
- int N = A->N;
- int NN = N * N;
- REAL_T *A_matrix = A->matrix;
- 
+    int N = A->N;
+    int NN = N * N;
+    REAL_T *A_matrix = A->matrix;
+
 #ifdef BML_USE_MAGMA
     MAGMA_T zero = MAGMACOMPLEX(MAKE) (0., 0.);
     MAGMABLAS(laset) (MagmaFull, A->N, A->N, zero, zero, A->matrix, A->ld,
@@ -224,9 +224,9 @@ bml_matrix_dense_t *TYPED_FUNC(
     MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, A->queue);
     free(A_dense);
 #else
-    #pragma omp target update to(A_dense[:NN])
+#pragma omp target update to(A_dense[:NN])
 #endif
-    
+
     return A;
 }
 
