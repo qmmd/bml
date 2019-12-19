@@ -50,6 +50,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 
 #pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
+  shared(threshold)                             \
   shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N * N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
@@ -90,6 +91,7 @@ void TYPED_FUNC(
 
 #pragma omp parallel for                        \
   shared(N, A_matrix)                           \
+  shared(threshold)                             \
   shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N * N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;

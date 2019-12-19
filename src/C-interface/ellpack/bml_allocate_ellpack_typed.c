@@ -318,7 +318,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
 
 #pragma omp \
-  parallel for default(none) shared(A_value, A_index, A_nnz, N, M)
+    parallel for default(none) shared(A_value, A_index, A_nnz, N, M)
     for (int i = 0; i < N; i++)
     {
         A_value[ROWMAJOR(i, 0, N, M)] = (REAL_T) 1.0;

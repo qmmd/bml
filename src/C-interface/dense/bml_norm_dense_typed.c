@@ -125,6 +125,7 @@ double TYPED_FUNC(
 
 #pragma omp parallel for                        \
   shared(N, A_matrix)                           \
+  shared(core_size)                             \
   reduction(+:sum)
     for (int i = 0; i < core_size * N; i++)
     {
@@ -194,7 +195,8 @@ double TYPED_FUNC(
     int myRank = bml_getMyRank();
 
 #pragma omp parallel for                        \
-  shared(alpha_, beta_)                         \
+  default(none)                                 \
+  shared(alpha_, beta_, threshold)              \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   reduction(+:sum)

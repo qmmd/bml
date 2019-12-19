@@ -43,7 +43,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *dense_A = (REAL_T *) A;
     REAL_T *A_value = A_bml->value;
 
-#pragma omp parallel for shared(A_value, A_index, A_nnz, dense_A)
+#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz, dense_A, order, N, M, threshold)
     for (int i = 0; i < N; i++)
     {
         A_nnz[i] = 0;

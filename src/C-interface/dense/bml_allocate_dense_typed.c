@@ -161,7 +161,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     REAL_T *A_dense = A->matrix;
     int NN = N * N;
 #pragma omp target enter data map(alloc:A_dense[0:NN])
-#pragma omp parallel for shared(A_dense)
+#pragma omp parallel for default(none) shared(A_dense, M, N)
     for (int i = 0; i < N; i++)
     {
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
@@ -258,7 +258,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 #pragma omp target update from(A_dense[:NN])
 #endif
 
-#pragma omp parallel for shared(A_dense)
+#pragma omp parallel for default(none) shared(A_dense, N)
     for (int i = 0; i < N; i++)
     {
 #ifdef BML_USE_MAGMA

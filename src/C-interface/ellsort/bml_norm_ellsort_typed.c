@@ -79,8 +79,8 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for                        \
-  shared(N, M, A_index, A_nnz, A_value)         \
+#pragma omp parallel for default(none)              \
+  shared(N, M, A_index, A_nnz, A_value, core_size)  \
   reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {
@@ -156,7 +156,8 @@ double TYPED_FUNC(
   reduction(+:sum)
 #else
 #pragma omp parallel for                        \
-  shared(alpha_, beta_)                         \
+  default(none)                                 \
+  shared(alpha_, beta_, threshold)              \
   shared(A_N, A_M, A_index, A_nnz, A_value)     \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   shared(B_N, B_M, B_index, B_nnz, B_value)     \

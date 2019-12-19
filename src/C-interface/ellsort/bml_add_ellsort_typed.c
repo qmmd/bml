@@ -72,6 +72,7 @@ void TYPED_FUNC(
 #else
 #pragma omp parallel for                \
   shared(N, A_M, B_M, myRank)           \
+  shared(alpha, beta, threshold)        \
   shared(A_index, A_value, A_nnz)       \
   shared(A_localRowMin, A_localRowMax)  \
   shared(B_index, B_value, B_nnz)       \
@@ -199,6 +200,8 @@ double TYPED_FUNC(
   reduction(+:trnorm)
 #else
 #pragma omp parallel for                \
+  default(none)                         \
+  shared(alpha, beta, threshold)        \
   shared(N, A_M, B_M, myRank)           \
   shared(A_index, A_value, A_nnz)       \
   shared(A_localRowMin, A_localRowMax)  \
