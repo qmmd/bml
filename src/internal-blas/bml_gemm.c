@@ -142,16 +142,6 @@ void TYPED_FUNC(
 #pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
             for (int j = 0; j < n_val; j++)
             {
-	    /*
-                if (beta_val == 0)
-                {
-                    for (int i = 0; i < m_val; i++)
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] = 0;
-                    }
-                }
-                else if (beta_val != 1.0)
-	    */
                 {
                     for (int i = 0; i < m_val; i++)
                     {
@@ -161,22 +151,7 @@ void TYPED_FUNC(
 			}
                     }
                 }
-	    }
-	    
-	    //#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
-	    /*            for (int j = 0; j < n_val; j++)
-            {
-	    for (int l = 0; l < k_val; l++)
-                {
-                    REAL_T temp = alpha_val * b[COLMAJOR(l, j, k_val, n_val)];
-                    for (int i = 0; i < m_val; i++)
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] +=
-                            temp * a[COLMAJOR(i, l, m_val, k_val)];
-                    }
-                }
-            }
-	    */
+	    }	    
         }
         else
         {
@@ -186,28 +161,16 @@ void TYPED_FUNC(
 #pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
             for (int j = 0; j < n_val; j++)
             {
-                for (int i = 0; i < m_val; i++)
                 {
-                    REAL_T temp = 0;
-                    for (int l = 0; l < k_val; l++)
+                    for (int i = 0; i < m_val; i++)
                     {
-                        temp +=
-                            a[COLMAJOR(l, i, k_val, m_val)] *
-                            b[COLMAJOR(l, j, k_val, n_val)];
-                    }
-		    /*
-                    if (beta_val == 0)
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] = alpha_val * temp;
-                    }
-                    else
-		    */
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] =
-                            alpha_val * temp + beta_val * c[COLMAJOR(i, j, m_val, n_val)];
+                        c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
+			for (int l = 0; l < k_val; l++) {
+			c[COLMAJOR(i, j, m_val, n_val)] += alpha_val * a[COLMAJOR(l,i,m_val,k_val)] * b[COLMAJOR(l,j,k_val,n_val)];
+			}
                     }
                 }
-            }
+	    }	    
         }
     }
     else
@@ -218,35 +181,18 @@ void TYPED_FUNC(
              */
 
 #pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
-            for (int j = 0; j < n_val; ++j)
+            for (int j = 0; j < n_val; j++)
             {
-	    /*
-                if (beta_val == 0)
-                {
-                    for (int i = 0; i < m_val; i++)
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] = 0;
-                    }
-                }
-                else if (beta_val != 1.0)
                 {
                     for (int i = 0; i < m_val; i++)
                     {
                         c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
+			for (int l = 0; l < k_val; l++) {
+			c[COLMAJOR(i, j, m_val, n_val)] += alpha_val * a[COLMAJOR(i,l,m_val,k_val)] * b[COLMAJOR(j,l,k_val,n_val)];
+			}
                     }
                 }
-
-	    */
-	    for (int l = 0; l < k_val; l++)
-                {
-                    REAL_T temp = alpha_val * b[COLMAJOR(j, l, n_val, k_val)];
-                    for (int i = 0; i < m_val; i++)
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] +=
-                            temp * a[COLMAJOR(i, l, m_val, k_val)];
-                    }
-                }
-            }
+	    }	    
         }
         else
         {
@@ -256,29 +202,16 @@ void TYPED_FUNC(
 #pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
             for (int j = 0; j < n_val; j++)
             {
-                for (int i = 0; i < m_val; i++)
                 {
-                    REAL_T temp = 0;
-                    for (int l = 0; l < k_val; l++)
+                    for (int i = 0; i < m_val; i++)
                     {
-                        temp +=
-                            a[COLMAJOR(l, i, k_val, m_val)] *
-                            b[COLMAJOR(j, l, n_val, k_val)];
-                    }
-
-		    /*
-                    if (beta_val == 0)
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] = alpha_val * temp;
-                    }
-                    else
-		    */
-                    {
-                        c[COLMAJOR(i, j, m_val, n_val)] =
-                            alpha_val * temp + beta_val * c[COLMAJOR(i, j, m_val, n_val)];
+                        c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
+			for (int l = 0; l < k_val; l++) {
+			c[COLMAJOR(i, j, m_val, n_val)] += alpha_val * a[COLMAJOR(l,i,m_val,k_val)] * b[COLMAJOR(j,l,k_val,n_val)];
+			}
                     }
                 }
-            }
+	    }	    
         }
     }
 }
