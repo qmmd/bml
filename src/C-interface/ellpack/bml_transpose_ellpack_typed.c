@@ -17,6 +17,8 @@
 #include <omp.h>
 #endif
 
+#define NOGPU
+
 /** Transpose a matrix.
  *
  *  \ingroup transpose_group

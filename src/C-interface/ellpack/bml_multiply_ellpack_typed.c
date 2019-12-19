@@ -121,6 +121,8 @@ void *TYPED_FUNC(
     double *trace = bml_allocate_memory(sizeof(double) * 2);
 
     int myRank = bml_getMyRank();
+    int rowMin = X_localRowMin[myRank];
+    int rowMax = X_localRowMax[myRank];
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[X_N], jx[X_N];
@@ -131,25 +133,26 @@ void *TYPED_FUNC(
     memset(x, 0.0, X_N * sizeof(REAL_T));
 #endif
 
-#pragma omp target update from(X_nnz[:X_N], X_index[:X_N*X_M], X_value[:X_N*X_M])
+//#pragma omp target update from(X_nnz[:X_N], X_index[:X_N*X_M], X_value[:X_N*X_M])
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                               \
     shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
-    shared(X_localRowMin, X_localRowMax)               \
+    shared(rowMin, rowMax)               \
     reduction(+: traceX, traceX2)
 #else
-#pragma omp parallel for                               \
+#pragma omp target parallel for                               \
+    default(none)                                      \
     shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
-    shared(X_localRowMin, X_localRowMax)               \
+    shared(rowMin, rowMax)               \
     firstprivate(ix,jx, x)                             \
     reduction(+: traceX, traceX2)
 #endif
 
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
-    for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
+    for (int i = rowMin; i < rowMax; i++) // CALCULATES THRESHOLDED X^2
     {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
@@ -187,7 +190,7 @@ void *TYPED_FUNC(
         // Check for number of non-zeroes per row exceeded
         if (l > X2_M)
         {
-            LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
+            //LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
         }
 
         int ll = 0;
@@ -215,7 +218,7 @@ void *TYPED_FUNC(
         X2_nnz[i] = ll;
     }
 
-#pragma omp target update to(X2_nnz[:X2_N], X2_index[:X2_N*X2_M], X2_value[:X2_N*X2_M])
+//#pragma omp target update to(X2_nnz[:X2_N], X2_index[:X2_N*X2_M], X2_value[:X2_N*X2_M])
 
     trace[0] = traceX;
     trace[1] = traceX2;
@@ -263,9 +266,11 @@ void TYPED_FUNC(
     REAL_T *C_value = (REAL_T *) C->value;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
-#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
-#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
+//#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+//#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[C->N], jx[C->N];
@@ -279,14 +284,15 @@ void TYPED_FUNC(
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
-    shared(A_localRowMin, A_localRowMax)       \
+    shared(rowMin, rowMax)               \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
     shared(myRank)
 #else
-#pragma omp parallel for                       \
+#pragma omp target parallel for                       \
+    default(none)                              \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
-    shared(A_localRowMin, A_localRowMax)       \
+    shared(rowMin, rowMax)               \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
     shared(myRank)                             \
@@ -294,7 +300,8 @@ void TYPED_FUNC(
 #endif
 
     //for (int i = 0; i < A_N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    //for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++) 
     {
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
@@ -328,7 +335,7 @@ void TYPED_FUNC(
         // Check for number of non-zeroes per row exceeded
         if (l > C_M)
         {
-            LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
+            //LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
         }
 
         int ll = 0;
@@ -354,7 +361,7 @@ void TYPED_FUNC(
         }
         C_nnz[i] = ll;
     }
-#pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
+//#pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
 }
 
 /** Matrix multiply with threshold adjustment.
