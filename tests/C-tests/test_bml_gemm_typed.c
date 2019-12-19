@@ -135,6 +135,8 @@ int TYPED_FUNC(
     REAL_T *C = calloc(sizeof(REAL_T), N * N);
     REAL_T *C_ref = calloc(sizeof(REAL_T), N * N);
 
+    int NN = N*N;
+    
     for (int i = 0; i < 2; i++)
     {
         for (int j = 0; j < 2; j++)
@@ -181,6 +183,7 @@ int TYPED_FUNC(
             bml_print_dense_matrix(N, matrix_precision, dense_column_major,
                                    C_ref, 0, N, 0, N);
 
+#pragma omp target update to(A[:NN],B[:NN])
             TYPED_FUNC(bml_gemm) (transa[i], transb[j], &N, &N, &N, &alpha, A,
                                   &N, B, &N, &beta, C, &N);
             LOG_INFO("C:\n");

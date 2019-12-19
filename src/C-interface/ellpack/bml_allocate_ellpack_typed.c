@@ -157,7 +157,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #pragma omp target enter data map(alloc:A_index[0:NM])
 #pragma omp target enter data map(alloc:A_value[0:NM])
 
-    printf("Device memory allocated\n");
+    //    printf("Device memory allocated\n");
 
     // All arrays set on device
 #ifdef NOGPU

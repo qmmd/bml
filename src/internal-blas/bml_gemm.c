@@ -109,7 +109,7 @@ void TYPED_FUNC(
     {
         if (beta_val == 0)
         {
-	//#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
+#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
 	for (int j = 0; j < n_val; j++)
             {
                 for (int i = 0; i < m_val; i++)
@@ -120,7 +120,7 @@ void TYPED_FUNC(
         }
         else
         {
-	//#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
+#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
             for (int j = 0; j < n_val; j++)
             {
                 for (int i = 0; i < m_val; i++)
@@ -183,7 +183,7 @@ void TYPED_FUNC(
             /* C := alpha*A**T*B + beta*C
              */
 
-	//#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
+#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
             for (int j = 0; j < n_val; j++)
             {
                 for (int i = 0; i < m_val; i++)
@@ -217,7 +217,7 @@ void TYPED_FUNC(
             /* C := alpha*A*B**T + beta*C
              */
 
-	//#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
+#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
             for (int j = 0; j < n_val; ++j)
             {
 	    /*
@@ -253,7 +253,7 @@ void TYPED_FUNC(
             /* C := alpha*A**T*B**T + beta*C
              */
 
-	//#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
+#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
             for (int j = 0; j < n_val; j++)
             {
                 for (int i = 0; i < m_val; i++)
@@ -302,6 +302,8 @@ void TYPED_FUNC(
 #ifdef BML_INTERNAL_GEMM
     TYPED_FUNC(bml_gemm_internal) (transa, transb, m, n, k, alpha, a,
                                    lda, b, ldb, beta, c, ldc);
+    int MN= *m * *n;
+#pragma omp target update from(c[:MN])
 #else
 
 #ifdef NOBLAS

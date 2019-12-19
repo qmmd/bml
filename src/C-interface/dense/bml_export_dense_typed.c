@@ -34,7 +34,7 @@ void *TYPED_FUNC(
     int NN = N * N;
 
 #ifndef BML_USE_MAGMA
-#pragma omp target update from(B_ptr[:NN])
+    //#pragma omp target update from(B_ptr[:NN])
 #endif
     
     switch (order)

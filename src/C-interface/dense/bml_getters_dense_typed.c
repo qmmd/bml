@@ -38,7 +38,7 @@ void *TYPED_FUNC(
 #else
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp target update from(A_matrix[:NN])
+    //#pragma omp target update from(A_matrix[:NN])
     return &A_matrix[ROWMAJOR(i, j, N, N)];
 #endif
 }
@@ -66,7 +66,7 @@ void *TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *row = calloc(N, sizeof(REAL_T));
     
-#pragma omp target update from(A_matrix[:NN])
+    //#pragma omp target update from(A_matrix[:NN])
 
     for (int j = 0; j < N; j++)
     {
@@ -92,7 +92,7 @@ void *TYPED_FUNC(
     REAL_T *A_matrix = bml_export_to_dense(A, dense_row_major);
 #else
     REAL_T *A_matrix = A->matrix;
-#pragma omp target update from(A_matrix[:NN])
+    //#pragma omp target update from(A_matrix[:NN])
 #endif
     REAL_T *diagonal = calloc(N, sizeof(REAL_T));
 

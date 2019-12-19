@@ -103,12 +103,12 @@ bml_matrix_dense_t *TYPED_FUNC(
     int NN = N * N;
     REAL_T *A_matrix = A->matrix;
 
-    printf("Allocating device memory in bml_zero_matrix\n");
-    printf("N = %d", N);
+    //    printf("Allocating device memory in bml_zero_matrix\n");
+    //    printf("N = %d", N);
 
 #pragma omp target enter data map(alloc:A_matrix[0:NN])
 
-    printf("Device memory allocated\n");
+    //    printf("Device memory allocated\n");
 
 #ifdef NOGPU
 #pragma omp parallel for
