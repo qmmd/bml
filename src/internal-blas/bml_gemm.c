@@ -137,16 +137,16 @@ void TYPED_FUNC(
         {
             /* C := alpha*A*B + beta*C
              */
-	int i,j,l;
+            int i, j, l;
 #pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1) \
 shared(a,b,c,i,j,l,m_val,n_val,k_val,alpha_val,beta_val)
-	for (j = 0; j < n_val; j++)
+            for (j = 0; j < n_val; j++)
             {
                 {
                     for (i = 0; i < m_val; i++)
                     {
-		        c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
-			for (l = 0; l < k_val; l++)
+                        c[COLMAJOR(i, j, m_val, n_val)] *= beta_val;
+                        for (l = 0; l < k_val; l++)
                         {
                             c[COLMAJOR(i, j, m_val, n_val)] +=
                                 alpha_val * a[COLMAJOR(i, l, m_val, k_val)] *
@@ -186,7 +186,7 @@ shared(a,b,c,i,j,l,m_val,n_val,k_val,alpha_val,beta_val)
             /* C := alpha*A*B**T + beta*C
              */
 
-	//#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
+            //#pragma omp target teams distribute parallel for simd collapse(2) schedule(static, 1)
 #pragma omp target
             for (int j = 0; j < n_val; j++)
             {
