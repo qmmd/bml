@@ -96,6 +96,7 @@ int TYPED_FUNC(
     }
 
     bml_free_memory(A_dense);
+    bml_free_memory(B_dense);
     bml_deallocate(&A);
 
     LOG_INFO("get element test passed\n");
