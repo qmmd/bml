@@ -66,13 +66,13 @@ const char *test_description[] = {
     "Normalize bml matrices",
     "Print bml matrix to stdout",
     "Scale bml matrices",
-    "Set a single element of a bml matrix"
-        "Set the elements of a row in a bml matrix",
+    "Set a single element of a bml matrix",
+     "Set the elements of a row in a bml matrix",
     "Submatrix bml matrices",
     "Threshold bml matrices",
     "Trace of bml matrices",
-    "Trace from multiplication of two bml matrices"
-        "Transpose of bml matrices"
+    "Trace from multiplication of two bml matrices",
+    "Transpose of bml matrices"
 };
 
 const test_function_t testers[] = {
