@@ -31,6 +31,7 @@ typedef int (
 #include "set_row.h"
 #include "submatrix_matrix.h"
 #include "test_bml_gemm.h"
+#include "set_element.h"
 #include "test_trace_mult.h"
 #include "threshold_matrix.h"
 #include "trace_matrix.h"

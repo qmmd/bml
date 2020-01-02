@@ -19,6 +19,7 @@ set(SOURCES_TYPED
   norm_matrix_typed.c
   print_matrix_typed.c
   scale_matrix_typed.c
+  set_element_typed.c
   set_row_typed.c
   submatrix_matrix_typed.c
   test_bml_gemm_typed.c
@@ -62,6 +63,7 @@ add_executable(bml-test
   norm_matrix.c
   print_matrix.c
   scale_matrix.c
+  set_element.c
   set_row.c
   submatrix_matrix.c
   test_bml_gemm.c
@@ -88,6 +90,23 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 
+function(test_formats ${formats})
+  foreach(T ${formats} )
+    foreach(P single_real double_real single_complex double_complex)
+      #if(BML_MPI)
+      #add_test(${N}-${T}-${P} mpirun -np 1 bml-test -n ${N} -t ${T} -p ${P})
+      #else()
+      add_test(${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
+      #endif()
+      if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
+        add_test(${N}-${T}-${P}-valgrind ${VALGRIND} --error-exitcode=1
+          --leak-check=full --read-var-info=yes --track-origins=yes
+          ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
+      endif()
+    endforeach()
+  endforeach()
+endfunction(test_formats)
+
 foreach(N
     add
     adjacency
@@ -108,6 +127,7 @@ foreach(N
     normalize
     print
     scale
+    set_element
     set_row
     submatrix
     threshold
@@ -115,21 +135,17 @@ foreach(N
     trace_mult
     transpose
   )
-  foreach(T dense ellpack ellsort ellblock)
-    foreach(P single_real double_real single_complex double_complex)
-      #if(BML_MPI)
-        #add_test(${N}-${T}-${P} mpirun -np 1 bml-test -n ${N} -t ${T} -p ${P})
-      #else()
-        add_test(${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
-      #endif()
-      if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
-        add_test(${N}-${T}-${P}-valgrind ${VALGRIND} --error-exitcode=1
-          --leak-check=full --read-var-info=yes --track-origins=yes
-          ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
-      endif()
-    endforeach()
-  endforeach()
+  set(formats dense ellpack ellsort ellblock)
+
+  #Setting specific formats for a particula bml function
+  if(${N} MATCHES set_element)
+    set(formats dense ellpack ellsort)
+  endif()
+
+  test_formats(${formats})
+
 endforeach()
+
 
 add_executable(test-backtrace test_backtrace.c)
 target_link_libraries(test-backtrace bml ${LINK_LIBRARIES})
