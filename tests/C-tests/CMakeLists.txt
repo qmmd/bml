@@ -137,7 +137,7 @@ foreach(N
   )
   set(formats dense ellpack ellsort ellblock)
 
-  #Setting specific formats for a particula bml function
+  #Setting specific formats for a particular bml function
   if(${N} MATCHES set_element)
     set(formats dense ellpack ellsort)
   endif()
