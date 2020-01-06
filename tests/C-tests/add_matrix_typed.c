@@ -5,7 +5,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
 #define REL_TOL 1e-6
 #else
@@ -42,13 +41,10 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
     C_dense = bml_export_to_dense(C, dense_row_major);
-    printf("A = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
-    printf("B = %f * copy_new(A) + %f * C\n", alpha, beta);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
-    printf("C = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
                            N, 0, N);
     for (int i = 0; i < N * N; i++)

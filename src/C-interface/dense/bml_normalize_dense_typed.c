@@ -160,8 +160,7 @@ void *TYPED_FUNC(
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
 #pragma omp parallel for                        \
-  default(none)                                 \
-  shared(N, A_matrix, nrows)                    \
+  shared(N, A_matrix)                           \
   private(absham, radius, dvalue)               \
   reduction(max:emax)                           \
   reduction(min:emin)

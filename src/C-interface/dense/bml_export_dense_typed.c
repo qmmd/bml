@@ -29,14 +29,6 @@ void *TYPED_FUNC(
 {
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
 
-    REAL_T *B_ptr = (REAL_T *) A->matrix;
-    int N = A->N;
-    int NN = N * N;
-
-#ifndef BML_USE_MAGMA
-    //#pragma omp target update from(B_ptr[:NN])
-#endif
-
     switch (order)
     {
         case dense_row_major:
@@ -57,6 +49,7 @@ void *TYPED_FUNC(
                               (MAGMA_T *) A_dense, A->N, A->queue);
             MAGMABLAS(transpose_inplace) (A->N, A->matrix, A->ld, A->queue);
 #else
+            REAL_T *B_ptr = (REAL_T *) A->matrix;
             for (int i = 0; i < A->N; i++)
             {
                 for (int j = 0; j < A->N; j++)

@@ -135,12 +135,6 @@ int TYPED_FUNC(
     REAL_T *C = calloc(sizeof(REAL_T), N * N);
     REAL_T *C_ref = calloc(sizeof(REAL_T), N * N);
 
-    int NN = N * N;
-
-    printf("NN = %d\n", NN);
-
-#pragma omp target enter data map(alloc:A[:NN], B[:NN], C[:NN])
-
     for (int i = 0; i < 2; i++)
     {
         for (int j = 0; j < 2; j++)
@@ -187,13 +181,8 @@ int TYPED_FUNC(
             bml_print_dense_matrix(N, matrix_precision, dense_column_major,
                                    C_ref, 0, N, 0, N);
 
-            //#pragma omp target enter data map(alloc:A[:NN], B[:NN], C[:NN])
-#pragma omp target update to(A[:NN],B[:NN],C[:NN])
-
             TYPED_FUNC(bml_gemm) (transa[i], transb[j], &N, &N, &N, &alpha, A,
                                   &N, B, &N, &beta, C, &N);
-            //#pragma omp target exit data map(from:C[:NN])
-#pragma omp target update from(C[:NN])
             LOG_INFO("C:\n");
             bml_print_dense_matrix(N, matrix_precision, dense_column_major, C,
                                    0, N, 0, N);
@@ -207,8 +196,6 @@ int TYPED_FUNC(
         }
     }
     LOG_INFO("test_bml_gemm passed\n");
-
-#pragma omp target exit data map(delete:A[:NN], B[:NN], C[:NN])
 
     free(A);
     free(A_input);

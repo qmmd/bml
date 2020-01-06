@@ -15,10 +15,6 @@ void
 bml_deallocate_dense(
     bml_matrix_dense_t * A)
 {
-    float *A_matrix = A->matrix;
-    int N = A->N;
-    int NN = N * N;
-
 #ifdef BML_USE_MAGMA
     magma_queue_destroy(A->queue);
 #endif
@@ -28,7 +24,6 @@ bml_deallocate_dense(
     magma_int_t ret = magma_free(A->matrix);
     assert(ret == MAGMA_SUCCESS);
 #else
-#pragma omp target exit data map(delete: A_matrix[:NN])
     bml_free_memory(A->matrix);
 #endif
     bml_free_memory(A);

@@ -46,13 +46,10 @@ int TYPED_FUNC(
     B_dense = bml_export_to_dense(B, dense_row_major);
     C_dense = bml_export_to_dense(C, dense_row_major);
 
-    printf("A = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
-    printf("B = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
-    printf("C = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
                            N, 0, N);
 

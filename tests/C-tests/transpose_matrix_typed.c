@@ -52,8 +52,5 @@ int TYPED_FUNC(
     bml_deallocate(&A);
     bml_deallocate(&B);
     bml_deallocate(&C);
-
-    LOG_INFO("transpose matrix test passed\n");
-
     return 0;
 }

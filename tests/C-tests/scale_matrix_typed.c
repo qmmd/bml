@@ -4,7 +4,6 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 int TYPED_FUNC(
     test_scale) (
@@ -23,8 +22,8 @@ int TYPED_FUNC(
 
     REAL_T scale_factor = 2.0;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    //A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+    //A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_scale_new(&scale_factor, A);
     C = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
     bml_scale(&scale_factor, A, C);
@@ -33,13 +32,10 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
     C_dense = bml_export_to_dense(C, dense_row_major);
-    printf("A = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
-    printf("B (scale_new) = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
-    printf("C (scale) = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
                            N, 0, N);
     for (int i = 0; i < N * N; i++)
