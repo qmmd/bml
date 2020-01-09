@@ -22,6 +22,7 @@ typedef int (
 #include "get_sparsity.h"
 #include "import_export_matrix.h"
 #include "inverse_matrix.h"
+#include "io_matrix.h"
 #include "multiply_matrix.h"
 #include "multiply_matrix_x2.h"
 #include "normalize_matrix.h"

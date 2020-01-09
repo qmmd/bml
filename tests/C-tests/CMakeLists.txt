@@ -13,6 +13,7 @@ set(SOURCES_TYPED
   get_sparsity_typed.c
   import_export_matrix_typed.c
   inverse_matrix_typed.c
+  io_matrix_typed.c
   multiply_matrix_typed.c
   multiply_matrix_x2_typed.c
   normalize_matrix_typed.c
@@ -57,6 +58,7 @@ add_executable(bml-test
   get_sparsity.c
   import_export_matrix.c
   inverse_matrix.c
+  io_matrix.c
   multiply_matrix.c
   multiply_matrix_x2.c
   normalize_matrix.c
@@ -121,6 +123,7 @@ foreach(N
     get_sparsity
     import_export
     inverse
+    io_matrix
     multiply
     multiply_x2
     norm
