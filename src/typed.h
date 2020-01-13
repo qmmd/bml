@@ -22,7 +22,7 @@
 #define BLAS_PREFIX S
 #define MAGMA_PREFIX s
 #define REAL_PART(x) (x)
-#define IMAGINARY_PART(x) (0)
+#define IMAGINARY_PART(x) (0.0)
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabsf(x))
 #define is_above_threshold(x, t) (fabsf(x) > (float) (t))
@@ -33,7 +33,7 @@
 #define BLAS_PREFIX D
 #define MAGMA_PREFIX d
 #define REAL_PART(x) (x)
-#define IMAGINARY_PART(x) (0)
+#define IMAGINARY_PART(x) (0.0)
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabs(x))
 #define is_above_threshold(x, t) (fabs(x) > (double) (t))
