@@ -25,7 +25,6 @@ void TYPED_FUNC(
     bml_matrix_ellblock_t * A,
     char *filename)
 {
-    //for(int i=0;i<A->NB;i++)printf("bsize=%d\n",A->bsize[i]);
     assert(A->bsize[0] < 1e6);
 
     FILE *hFile;

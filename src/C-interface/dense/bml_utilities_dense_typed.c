@@ -28,103 +28,160 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     char *filename)
 {
-    FILE *hFile;
+    FILE *matrix_file;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol;
-    REAL_T val;
+    int values_read;
+    double real_part, imaginary_part;
 
     int N = A->N;
 
     REAL_T *A_value = A->matrix;
 
-    hFile = fopen(filename, "r");
+    matrix_file = fopen(filename, "r");
 
     // Read header
-    if (fscanf(hFile, "%s %s %s %s %s", header1, header2, header3, header4,
-               header5) < 5)
+    if ((values_read = fscanf
+         (matrix_file, "%s %s %s %s %s", header1, header2, header3, header4,
+          header5)) < 5)
     {
-        LOG_ERROR("read error\n");
+        LOG_ERROR("Line 1, expected 5 entries, read %d\n", values_read);
     }
 
     // Read N, N, # of non-zeroes
-    if (fscanf(hFile, "%d %d %d", &hdimx, &hdimx, &nnz) < 3)
+    if ((values_read =
+         fscanf(matrix_file, "%d %d %d", &hdimx, &hdimx, &nnz)) < 3)
     {
-        LOG_ERROR("read error\n");
-    }
-
-    char *FMT;
-    switch (A->matrix_precision)
-    {
-        case single_real:
-            FMT = "%d %d %g\n";
-            break;
-        case double_real:
-            FMT = "%d %d %lg\n";
-            break;
-        case single_complex:
-            FMT = "%d %d %g\n";
-            break;
-        case double_complex:
-            FMT = "%d %d %lg\n";
-            break;
-        default:
-            LOG_ERROR("unknown precision\n");
-            break;
+        LOG_ERROR("Line 2, Expected 3 entries, read %d\n", values_read);
     }
 
     // Read in values
     for (int i = 0; i < nnz; i++)
     {
-        if (fscanf(hFile, FMT, &irow, &icol, &val) < 3)
+        switch (A->matrix_precision)
         {
-            LOG_ERROR("read error\n");
+            case single_real:
+                if ((values_read = fscanf
+                     (matrix_file, "%d %d %lg\n", &irow, &icol,
+                      &real_part)) < 3)
+                {
+                    LOG_ERROR("Line %d, expected 3 entries, read %d\n", i + 3,
+                              values_read);
+                }
+                A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] = real_part;
+                break;
+            case double_real:
+                if ((values_read = fscanf
+                     (matrix_file, "%d %d %lg\n", &irow, &icol,
+                      &real_part)) < 3)
+                {
+                    LOG_ERROR("Line %d, expected 3 entries, read %d\n", i + 3,
+                              values_read);
+                }
+                A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] = real_part;
+                break;
+            case single_complex:
+                if ((values_read = fscanf
+                     (matrix_file, "%d %d %lg %lg\n", &irow, &icol,
+                      &real_part, &imaginary_part)) < 4)
+                {
+                    LOG_ERROR("Line %d, expected 4 entries, read %d\n", i + 3,
+                              values_read);
+                }
+                A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] =
+                    real_part + I * imaginary_part;
+                break;
+            case double_complex:
+                if ((values_read = fscanf
+                     (matrix_file, "%d %d %lg %lg\n", &irow, &icol,
+                      &real_part, &imaginary_part)) < 4)
+                {
+                    LOG_ERROR("Line %d, expected 4 entries, read %d\n", i + 3,
+                              values_read);
+                }
+                A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] =
+                    real_part + I * imaginary_part;
+                break;
+            default:
+                LOG_ERROR("unknown precision\n");
+                break;
         }
-        irow--;
-        icol--;
-        A_value[ROWMAJOR(irow, icol, N, N)] = val;
     }
 
-    fclose(hFile);
+    fclose(matrix_file);
 }
 
 /** Write a Matrix Market format file from a bml matrix.
  *
  *  \ingroup utilities_group
  *
- *  \param A The matrix to be written
- *  \param filename The Matrix Market format file
+ * Note, all matrix elements are written, even the ones that are zero.
+ *
+ * \param A The matrix to be written
+ * \param filename The Matrix Market format file
  */
 void TYPED_FUNC(
     bml_write_bml_matrix_dense) (
     bml_matrix_dense_t * A,
     char *filename)
 {
-    FILE *mFile;
+    FILE *matrix_file;
 
     int N = A->N;
     int msum = N * N;
 
     REAL_T *A_value = A->matrix;
 
-    mFile = fopen(filename, "w");
+    matrix_file = fopen(filename, "w");
 
     // Write header
-    fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate real general\n");
+    if (A->matrix_precision == single_complex
+        || A->matrix_precision == double_complex)
+    {
+        fprintf(matrix_file,
+                "%%%%%%MatrixMarket matrix coordinate complex general\n");
+    }
+    else
+    {
+        fprintf(matrix_file,
+                "%%%%%%MatrixMarket matrix coordinate real general\n");
+    }
 
     // Write out matrix size as dense and number of non-zero elements
-    fprintf(mFile, "%d %d %d\n", N, N, msum);
+    fprintf(matrix_file, "%d %d %d\n", N, N, msum);
 
     // Write out non-zero elements
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            fprintf(mFile, "%d %d %20.15e\n", i + 1, j + 1,
-                    REAL_PART(A_value[ROWMAJOR(i, j, N, N)]));
+            switch (A->matrix_precision)
+            {
+                case single_real:
+                    fprintf(matrix_file, "%d %d %20.15g\n", i + 1, j + 1,
+                            REAL_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    break;
+                case double_real:
+                    fprintf(matrix_file, "%d %d %20.15lg\n", i + 1, j + 1,
+                            REAL_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    break;
+                case single_complex:
+                    fprintf(matrix_file, "%d %d %20.15g %20.15g\n", i + 1,
+                            j + 1, REAL_PART(A_value[ROWMAJOR(i, j, N, N)]),
+                            IMAGINARY_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    break;
+                case double_complex:
+                    fprintf(matrix_file, "%d %d %20.15lg %20.15lg\n", i + 1,
+                            j + 1, REAL_PART(A_value[ROWMAJOR(i, j, N, N)]),
+                            IMAGINARY_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    break;
+                default:
+                    LOG_ERROR("unknown precision\n");
+                    break;
+            }
         }
     }
-
-    fclose(mFile);
+    fclose(matrix_file);
 }
 
 void TYPED_FUNC(
