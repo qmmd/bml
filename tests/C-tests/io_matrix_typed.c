@@ -21,6 +21,7 @@ int TYPED_FUNC(
     REAL_T *B_dense = NULL;
 
     double diff;
+    double tol;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     bml_write_bml_matrix(A, "ctest_matrix.mtx");
@@ -37,15 +38,24 @@ int TYPED_FUNC(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
 
+    if (matrix_precision == single_real || matrix_precision == single_complex)
+    {
+	tol = 1e-6; 
+    }
+    else 
+    {
+	tol = 1e-12; 
+    }
+
     for (int i = 0; i < N * N; i++)
     {
         diff = ABS(A_dense[i] - B_dense[i]);
-        if (diff > 1e-12)
+        if (diff > tol)
         {
             LOG_ERROR
                 ("matrices are not identical; A[%d] = %e, B[%d] = %e, diff = %e\n",
                  i, A_dense[i], B_dense[i], diff);
-            return -1;
+	    return -1;
         }
     }
     bml_free_memory(A_dense);
