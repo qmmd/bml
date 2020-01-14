@@ -40,11 +40,11 @@ int TYPED_FUNC(
 
     if (matrix_precision == single_real || matrix_precision == single_complex)
     {
-	tol = 1e-6; 
+        tol = 1e-6;
     }
-    else 
+    else
     {
-	tol = 1e-12; 
+        tol = 1e-12;
     }
 
     for (int i = 0; i < N * N; i++)
@@ -55,7 +55,7 @@ int TYPED_FUNC(
             LOG_ERROR
                 ("matrices are not identical; A[%d] = %e, B[%d] = %e, diff = %e\n",
                  i, A_dense[i], B_dense[i], diff);
-	    return -1;
+            return -1;
         }
     }
     bml_free_memory(A_dense);
