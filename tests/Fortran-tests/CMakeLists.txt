@@ -122,18 +122,18 @@ endfunction(test_formats)
 # Adding tests
 foreach(N
     add
-    allocate
+    #allocate
     multiply
     convert
     copy
     get_bandwidth
-    diagonalize
-    get_element
+    #diagonalize
+    #get_element
     inverse
     io
     multiply
-    normalize
-    scale
+    #normalize
+    #scale
     threshold
     trace
     transpose
