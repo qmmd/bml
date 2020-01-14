@@ -14,7 +14,7 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
-    bml_matrix_t *A = NULL;
+    bml_matrix_t * A = NULL;
     bml_matrix_t *B = NULL;
 
     REAL_T *A_dense = NULL;
@@ -23,9 +23,9 @@ int TYPED_FUNC(
     double diff;
     double tol;
 
-    char *matrix_filename = strdup("ctest_matrix_XXXXXX.mtx");
-
-    mktemp(matrix_filename);
+    int fd;
+    char matrix_filename[] = "ctest_matrix_XXXXXX.mtx";
+    fd = mkstemp(matrix_filename);
 
     LOG_INFO("Using %s as matrix file\n", matrix_filename);
 
