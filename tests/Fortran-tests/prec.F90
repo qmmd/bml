@@ -1,8 +1,6 @@
 
 module prec
 
-  use bml
-
   implicit none
 
   private
