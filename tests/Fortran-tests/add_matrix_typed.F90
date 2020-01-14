@@ -45,7 +45,6 @@ contains
 
     test_result = .true.
 
-    write(*,*) matrix_type, element_kind, element_precision
     !c = a + b
     call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
          & a)

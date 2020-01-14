@@ -10,6 +10,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 # Adding the low-level source for each test
 set(FORTRAN-SOURCES-TYPED
   add_matrix_typed.F90
+  adjungate_triangle_typed.F90
   allocate_matrix_typed.F90
   convert_matrix_typed.F90
   copy_matrix_typed.F90
@@ -20,6 +21,7 @@ set(FORTRAN-SOURCES-TYPED
   inverse_matrix_typed.F90
   multiply_matrix_typed.F90
   normalize_matrix_typed.F90
+  scale_matrix_typed.F90
   threshold_matrix_typed.F90
   trace_matrix_typed.F90
   transpose_matrix_typed.F90
@@ -79,6 +81,7 @@ ${BLAS_LIBRARIES}
 add_executable(bml-testf
   testf.F90
   add_matrix.F90
+  adjungate_triangle.F90
   allocate_matrix.F90
   convert_matrix.F90
   copy_matrix.F90
@@ -89,6 +92,7 @@ add_executable(bml-testf
   io_matrix.F90
   multiply_matrix.F90
   normalize_matrix.F90
+  scale_matrix.F90
   threshold_matrix.F90
   trace_matrix.F90
   transpose_matrix.F90
@@ -120,6 +124,7 @@ endfunction(test_formats)
 # Adding tests
 foreach(N
     add
+    adjungate
     allocate
     multiply
     convert
@@ -131,6 +136,7 @@ foreach(N
     io
     multiply
     normalize
+    scale
     threshold
     trace
     transpose

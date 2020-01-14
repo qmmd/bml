@@ -9,6 +9,7 @@ program testf
 
   use bml
   use add_matrix
+  use adjungate_triangle
   use allocate_matrix
   use convert_matrix
   use copy_matrix
@@ -39,6 +40,8 @@ program testf
   select case(test_name)
   case("add")
     test_result = test_add_matrix(matrix_type, element_type, N, M)
+  case("adjungate")
+    test_result = test_adjungate_triangle(matrix_type, element_type, N, M)
   case("allocate")
     test_result = test_allocate_matrix(matrix_type, element_type, N, M)
   case("convert")
