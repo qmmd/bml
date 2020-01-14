@@ -24,7 +24,7 @@ int TYPED_FUNC(
     double tol;
 
     int fd;
-    char matrix_filename[] = "ctest_matrix_XXXXXX.mtx";
+    char matrix_filename[] = "ctest_matrix_XXXXXX";
     fd = mkstemp(matrix_filename);
 
     LOG_INFO("Using %s as matrix file\n", matrix_filename);
