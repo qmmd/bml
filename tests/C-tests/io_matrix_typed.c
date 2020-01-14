@@ -23,10 +23,16 @@ int TYPED_FUNC(
     double diff;
     double tol;
 
+    char *matrix_filename = strdup("ctest_matrix_XXXXXX.mtx");
+
+    mktemp(matrix_filename);
+
+    LOG_INFO("Using %s as matrix file\n", matrix_filename);
+
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    bml_write_bml_matrix(A, "ctest_matrix.mtx");
+    bml_write_bml_matrix(A, matrix_filename);
     B = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
-    bml_read_bml_matrix(B, "ctest_matrix.mtx");
+    bml_read_bml_matrix(B, matrix_filename);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
