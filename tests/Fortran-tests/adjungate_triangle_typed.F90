@@ -44,8 +44,8 @@ contains
 
     do i=1,n
       do j=i+1,n
-          aji = a_dense(j,i)
-          aux = abs(a_dense(j,i) - conjg(aji))
+        aji = a_dense(j,i)
+        aux = abs(a_dense(j,i) - conjg(aji))
         if(aux > tol)then
           test_result = .false.
         end if
