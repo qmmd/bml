@@ -1,4 +1,5 @@
 include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/tests/Fortran-tests)
 include_directories(${CMAKE_SOURCE_DIR}/build/src)
 include_directories(${BML_INCLUDEDIR})
@@ -75,6 +76,7 @@ set(FORTRAN_TEST_LINK_FLAGS
 -L${CMAKE_SOURCE_DIR}/build/src -lbml_fortran -lbml
 ${OpenMP_Fortran_FLAGS}
 ${BLAS_LIBRARIES}
+${LINK_LIBRARIES}
 )
 
 # Building the general executable
@@ -110,6 +112,7 @@ endif()
 
 # Adding link flags
 target_link_libraries(bml-testf ${FORTRAN_TEST_LINK_FLAGS})
+target_link_libraries(bml-testf ${LINK_LIBRARIES})
 
 # Function that adds the test
 function(test_formats ${formats})
