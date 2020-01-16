@@ -112,7 +112,6 @@ endif()
 
 # Adding link flags
 target_link_libraries(bml-testf ${FORTRAN_TEST_LINK_FLAGS})
-target_link_libraries(bml-testf ${LINK_LIBRARIES})
 
 # Function that adds the test
 function(test_formats ${formats})
