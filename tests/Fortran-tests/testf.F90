@@ -21,6 +21,7 @@ program testf
   use multiply_matrix
   use normalize_matrix
   use scale_matrix
+  use set_row
   use threshold_matrix
   use trace_matrix
   use transpose_matrix
@@ -62,14 +63,16 @@ program testf
     test_result = test_multiply_matrix(matrix_type, element_type, N, M)
   case("normalize")
     test_result = test_normalize_matrix(matrix_type, element_type, N, M)
+  case("scale")
+    test_result = test_scale_matrix(matrix_type, element_type, N, M)
+  case("set_row")
+    test_result = test_set_row(matrix_type, element_type, N, M)
   case("threshold")
     test_result = test_threshold_matrix(matrix_type, element_type, N, M)
   case("trace")
     test_result = test_trace_matrix(matrix_type, element_type, N, M)
   case("transpose")
     test_result = test_transpose_matrix(matrix_type, element_type, N, M)
-  case("scale")
-    test_result = test_scale_matrix(matrix_type, element_type, N, M)
   case default
     call error_usage("Invalid test name "//test_name)
   end select

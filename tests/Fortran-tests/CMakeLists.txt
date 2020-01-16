@@ -17,6 +17,7 @@ set(FORTRAN-SOURCES-TYPED
   multiply_matrix_typed.F90
   normalize_matrix_typed.F90
   scale_matrix_typed.F90
+  set_row_typed.F90
   threshold_matrix_typed.F90
   trace_matrix_typed.F90
   transpose_matrix_typed.F90
@@ -89,6 +90,7 @@ add_executable(bml-testf
   multiply_matrix.F90
   normalize_matrix.F90
   scale_matrix.F90
+  set_row.F90
   threshold_matrix.F90
   trace_matrix.F90
   transpose_matrix.F90
@@ -133,6 +135,7 @@ foreach(N
     multiply
     #normalize
     #scale
+    set_row
     threshold
     trace
     transpose
