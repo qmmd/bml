@@ -18,8 +18,10 @@ contains
     integer, intent(in) :: n, m
     logical :: test_result
     real(DUMMY_PREC) :: tol
+    integer :: pid
+    character(20) :: pid_char
+    character(100) :: fname
 
-    character(len=*), parameter :: fname="ftest_matrix.mtx"
 
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: b
@@ -27,9 +29,12 @@ contains
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: b_dense(:, :)
 
+    pid = getpid()
+    write(pid_char,*)pid
+    write(fname,*)"ftest_matrix",trim(adjustl(pid_char)),".mtx"
+
     allocate(a_dense(n,n))
     allocate(b_dense(n,n))
-
 
     if(element_precision == sp)then
       tol = 1e-6
