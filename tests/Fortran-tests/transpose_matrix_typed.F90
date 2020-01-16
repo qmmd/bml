@@ -10,10 +10,10 @@ module transpose_matrix_typed
 
 contains
 
-  function test_transpose_matrix_typed(matrix_type, element_type, element_precision, n, m) &
+  function test_transpose_matrix_typed(matrix_type, element_kind, element_precision, n, m) &
        & result(test_result)
 
-    character(len=*), intent(in) :: matrix_type, element_type
+    character(len=*), intent(in) :: matrix_type, element_kind
     integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
@@ -33,7 +33,7 @@ contains
       tol = 1d-12
     endif
 
-    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
+    call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
          & a)
     call bml_transpose(a, b)
     call bml_copy_new(a, c)

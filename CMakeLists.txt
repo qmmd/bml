@@ -546,6 +546,8 @@ if(BML_TESTING)
   else()
     add_subdirectory(tests)
   endif()
+elseif(${BML_TESTING} MATCHES "Fortran")
+message(STATUS "AAAAAAAAAAAAAAAAAAAAAAATesting for Fortran only")
 endif()
 
 find_program(TAR tar)
@@ -582,7 +584,9 @@ message(STATUS "LINK_LIBRARIES=${LINK_LIBRARIES}")
 string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
 string(STRIP "${LINKLINE}" LINKLINE)
 message(STATUS "Link flags: '${LINKLINE}'")
+MESSAGE(STATUS "DDDDDDDDDDDDDDDDDDDDDDDDD",${BML_LINK_FLAGS})
 
 configure_file(src/bml.pc.in bml.pc)
 install(FILES ${CMAKE_BINARY_DIR}/bml.pc
   DESTINATION ${CMAKE_INSTALL_PKG_CONFIG_DIR})
+

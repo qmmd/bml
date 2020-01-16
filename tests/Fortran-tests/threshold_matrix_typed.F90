@@ -10,10 +10,10 @@ module threshold_matrix_typed
 
 contains
 
-  function test_threshold_matrix_typed(matrix_type, element_type, element_precision, n, m) &
+  function test_threshold_matrix_typed(matrix_type, element_kind, element_precision, n, m) &
        & result(test_result)
 
-    character(len=*), intent(in) :: matrix_type, element_type
+    character(len=*), intent(in) :: matrix_type, element_kind
     integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
@@ -22,7 +22,7 @@ contains
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     integer :: i, j
 
-    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
+    call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
          & a)
     call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_threshold(a, 0.5_dp)

@@ -1,11 +1,5 @@
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/tests/Fortran-tests)
-include_directories(${CMAKE_SOURCE_DIR}/build/src)
 include_directories(${BML_INCLUDEDIR})
-include_directories(${CMAKE_SOURCE_DIR}/src/Fortran-interface)
-include_directories(${CMAKE_SOURCE_DIR}/build/src/Fortran-interface)
-include_directories(${CMAKE_SOURCE_DIR}/build/src/C-interface)
+include_directories(${CMAKE_BINARY_DIR}/src/Fortran-interface)
 include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 
 # Adding the low-level source for each test
@@ -72,12 +66,12 @@ foreach(T ${TYPES})
 endforeach()
 
 # Setting link flags
-set(FORTRAN_TEST_LINK_FLAGS
--L${CMAKE_SOURCE_DIR}/build/src -lbml_fortran -lbml
-${OpenMP_Fortran_FLAGS}
-${BLAS_LIBRARIES}
-${LINK_LIBRARIES}
-)
+#set(FORTRAN_TEST_LINK_FLAGS
+#-L${CMAKE_SOURCE_DIR}/build/src -lbml_fortran -lbml
+#${OpenMP_Fortran_FLAGS}
+#${BLAS_LIBRARIES}
+#${LINK_LIBRARIES}
+#)
 
 # Building the general executable
 add_executable(bml-testf
@@ -103,15 +97,15 @@ add_executable(bml-testf
   ${FORTRAN-SOURCES-PRIVATE}
   )
 
+target_link_libraries(bml-testf bml_fortran bml ${LINK_LIBRARIES})
+
 # More flags
 if(OPENMP_FOUND)
   set_target_properties(bml-testf
-   PROPERTIES
-  COMPILE_FLAGS ${OpenMP_Fortran_FLAGS} )
+  PROPERTIES
+  COMPILE_FLAGS ${OpenMP_Fortran_FLAGS}
+  LINK_FLAGS ${OpenMP_Fortran_FLAGS} )
 endif()
-
-# Adding link flags
-target_link_libraries(bml-testf ${FORTRAN_TEST_LINK_FLAGS})
 
 # Function that adds the test
 function(test_formats ${formats})
@@ -126,7 +120,7 @@ endfunction(test_formats)
 # Adding tests
 foreach(N
     add
-    adjungate
+    #adjungate
     #allocate
     multiply
     convert
