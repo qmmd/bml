@@ -1,4 +1,4 @@
-module set_diagonal_typed
+module get_diagonal_typed
 
   use bml
   use prec
@@ -6,11 +6,11 @@ module set_diagonal_typed
 
   implicit none
 
-  public :: test_set_diagonal_typed
+  public :: test_get_diagonal_typed
 
 contains
 
-  function test_set_diagonal_typed(matrix_type, element_kind, element_precision,&
+  function test_get_diagonal_typed(matrix_type, element_kind, element_precision,&
        & n, m) result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_kind
@@ -37,19 +37,15 @@ contains
     call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
          & a)
 
-    do i=1,n
-      diag(i) = real(i,DUMMY_PREC)
-    end do
-
-    call bml_set_diagonal(a, diag, threshold)
+    call bml_get_diagonal(a, diag)
 
     call bml_export_to_dense(a, a_dense)
 
     do i=1,n
-      diff = abs(a_dense(i,i) - real(i,DUMMY_PREC))
+      diff = abs(a_dense(i,i) - diag(i))
       if(diff > tol) then
         print *, "diff = ", diff,a_dense(i,i)
-        call bml_error(__FILE__, __LINE__, "set_diagonal failing")
+        call bml_error(__FILE__, __LINE__, "get_diagonal failing")
         test_result = .false.
       end if
     end do
@@ -58,6 +54,6 @@ contains
     deallocate(diag)
     call bml_deallocate(a)
 
-  end function test_set_diagonal_typed
+  end function test_get_diagonal_typed
 
-end module set_diagonal_typed
+end module get_diagonal_typed

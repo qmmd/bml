@@ -10,6 +10,8 @@ set(FORTRAN-SOURCES-TYPED
   convert_matrix_typed.F90
   copy_matrix_typed.F90
   get_bandwidth_typed.F90
+  get_diagonal_typed.F90
+  get_row_typed.F90
   diagonalize_matrix_typed.F90
   get_element_typed.F90
   io_matrix_typed.F90
@@ -83,9 +85,11 @@ add_executable(bml-testf
   allocate_matrix.F90
   convert_matrix.F90
   copy_matrix.F90
-  get_bandwidth.F90
   diagonalize_matrix.F90
+  get_bandwidth.F90
+  get_diagonal.F90
   get_element.F90
+  get_row.F90
   inverse_matrix.F90
   io_matrix.F90
   multiply_matrix.F90
@@ -125,13 +129,15 @@ endfunction(test_formats)
 foreach(N
     add
     #adjungate
-    #allocate
+    allocate
     multiply
     convert
     copy
-    get_bandwidth
     #diagonalize
+    get_bandwidth
+    get_diagonal
     #get_element
+    get_row
     inverse
     io
     multiply

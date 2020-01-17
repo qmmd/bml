@@ -17,7 +17,7 @@ contains
     integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
-    DUMMY_KIND(DUMMY_PRC) :: variable
+    DUMMY_KIND(DUMMY_PREC) :: variable
 
     variable = 1.0_DM
 

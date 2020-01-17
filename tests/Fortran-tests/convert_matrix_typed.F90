@@ -21,7 +21,7 @@ contains
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: b
 
-    double precision, allocatable :: a_random(:, :)
+    real(DUMMY_PREC), allocatable :: a_random(:, :)
 
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: b_dense(:, :)
@@ -49,12 +49,13 @@ contains
     if(test_result) then
       print *, "Test passed"
     end if
-
+    
     call bml_deallocate(a)
     call bml_deallocate(b)
 
     deallocate(a_dense)
     deallocate(b_dense)
+    deallocate(a_random)
 
   end function test_convert_matrix_typed
 

@@ -15,7 +15,9 @@ program testf
   use copy_matrix
   use diagonalize_matrix
   use get_bandwidth
+  use get_diagonal
   use get_element
+  use get_row 
   use inverse_matrix
   use io_matrix
   use multiply_matrix
@@ -54,8 +56,12 @@ program testf
     test_result = test_diagonalize_matrix(matrix_type, element_type, N, M)
   case("get_bandwidth")
     test_result = test_get_bandwidth(matrix_type, element_type, N, M)
+  case("get_diagonal")
+    test_result = test_get_diagonal(matrix_type, element_type, N, M)
   case("get_element")
     test_result = test_get_element(matrix_type, element_type, N, M)
+  case("get_row")
+    test_result = test_get_row(matrix_type, element_type, N, M)
   case("inverse")
     test_result = test_inverse_matrix(matrix_type, element_type, N, M)
   case("io")

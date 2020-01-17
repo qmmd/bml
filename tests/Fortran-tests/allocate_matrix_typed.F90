@@ -18,7 +18,7 @@ contains
     integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
-    DUMMY_KIND(DUMMY_PREC) :: rel_tol
+    real(DUMMY_PREC) :: tol
 
     type(bml_matrix_t) :: a
 
@@ -28,9 +28,9 @@ contains
     test_result = .true.
 
     if(element_precision == sp)then
-      rel_tol = 1e-6
+      tol = 1e-6
     elseif(element_precision == dp)then
-      rel_tol = 1d-12
+      tol = 1d-12
     endif
 
     call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
@@ -51,6 +51,7 @@ contains
       return
     end if
     call bml_print_matrix("A", a, 1, n, 1, n)
+
     deallocate(a_dense)
 
     call bml_deallocate(a)
@@ -63,13 +64,13 @@ contains
     do i = 1, n
       do j = 1, n
         if(i == j) then
-          if(abs(a_dense(i, j)-1.0_MP) > 1e-12) then
+          if(abs(a_dense(i, j)-1.0_MP) > tol) then
             print *, "Incorrect value on diagonal", a_dense(i, j)
             test_result = .false.
             return
           end if
         else
-          if(abs(a_dense(i, j)) > 1e-12) then
+          if(abs(a_dense(i, j)) > tol) then
             print *, "Incorrect value off diagonal", a_dense(i, j)
             test_result = .false.
             return
