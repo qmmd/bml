@@ -57,6 +57,10 @@ contains
       end do
     end do
 
+    deallocate(a_dense)
+    deallocate(row)
+    call bml_deallocate(a)
+
   end function test_set_row_typed
 
 end module set_row_typed
