@@ -21,6 +21,7 @@ program testf
   use multiply_matrix
   use normalize_matrix
   use scale_matrix
+  use set_diagonal
   use set_row
   use threshold_matrix
   use trace_matrix
@@ -65,6 +66,8 @@ program testf
     test_result = test_normalize_matrix(matrix_type, element_type, N, M)
   case("scale")
     test_result = test_scale_matrix(matrix_type, element_type, N, M)
+  case("set_diagonal")
+    test_result = test_set_diagonal(matrix_type, element_type, N, M)
   case("set_row")
     test_result = test_set_row(matrix_type, element_type, N, M)
   case("threshold")
