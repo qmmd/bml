@@ -24,6 +24,13 @@ contains
 
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     DUMMY_KIND(DUMMY_PREC) :: a_ij
+    real(DUMMY_PREC) :: tol
+
+    if(element_precision == sp)then
+      tol = 1e-6
+    elseif(element_precision == dp)then
+      tol = 1d-12
+    endif
 
     call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
          & a)
@@ -35,7 +42,7 @@ contains
     do i = 1, n
       do j = 1, n
         call bml_get_element(a_ij, a, i, j)
-        if(abs(a_ij-a_dense(i, j)) > 1e-12) then
+        if(abs(a_ij-a_dense(i, j)) > tol) then
           test_result = .false.
           print *, "matrix element mismatch"
           print *, "got ", a_ij

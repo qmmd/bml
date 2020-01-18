@@ -131,7 +131,7 @@ endfunction(test_formats)
 foreach(N
     add
     #adjungate
-    allocate
+    #allocate
     multiply
     convert
     copy
@@ -158,6 +158,20 @@ foreach(N
   elseif(${N} MATCHES inverse)
     set(formats dense ellpack ellblock)
   elseif(${N} MATCHES threshold)
+    set(formats dense ellpack ellsort)
+  elseif(${N} MATCHES multiply)
+    set(formats dense ellpack ellsort)
+  elseif(${N} MATCHES get_diagonal)
+    set(formats dense ellpack ellsort)
+  elseif(${N} MATCHES get_row)
+    set(formats dense ellpack ellsort)
+  elseif(${N} MATCHES io)
+    set(formats dense ellpack ellsort)
+  elseif(${N} MATCHES set_diagonal)
+    set(formats dense ellpack ellsort)
+  elseif(${N} MATCHES set_row)
+    set(formats dense ellpack ellsort)
+  elseif(${N} MATCHES transpose)
     set(formats dense ellpack ellsort)
   endif()
   test_formats(${formats})
