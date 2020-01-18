@@ -20,6 +20,7 @@ set(FORTRAN-SOURCES-TYPED
   normalize_matrix_typed.F90
   scale_matrix_typed.F90
   set_diagonal_typed.F90
+  set_element_typed.F90
   set_row_typed.F90
   threshold_matrix_typed.F90
   trace_matrix_typed.F90
@@ -96,6 +97,7 @@ add_executable(bml-testf
   normalize_matrix.F90
   scale_matrix.F90
   set_diagonal.F90
+  set_element.F90
   set_row.F90
   threshold_matrix.F90
   trace_matrix.F90

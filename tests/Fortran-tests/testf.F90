@@ -17,13 +17,14 @@ program testf
   use get_bandwidth
   use get_diagonal
   use get_element
-  use get_row 
+  use get_row
   use inverse_matrix
   use io_matrix
   use multiply_matrix
   use normalize_matrix
   use scale_matrix
   use set_diagonal
+  use set_element
   use set_row
   use threshold_matrix
   use trace_matrix
@@ -74,6 +75,8 @@ program testf
     test_result = test_scale_matrix(matrix_type, element_type, N, M)
   case("set_diagonal")
     test_result = test_set_diagonal(matrix_type, element_type, N, M)
+  case("set_element")
+    test_result = test_set_element(matrix_type, element_type, N, M)
   case("set_row")
     test_result = test_set_row(matrix_type, element_type, N, M)
   case("threshold")
