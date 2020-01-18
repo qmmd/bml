@@ -38,7 +38,7 @@ contains
          & a)
 
     call bml_export_to_dense(a,a_dense)
-    
+
     do i=1,n
       call bml_get_row(a, i, row)
       do j=1,n

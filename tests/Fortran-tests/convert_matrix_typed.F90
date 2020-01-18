@@ -49,7 +49,7 @@ contains
     if(test_result) then
       print *, "Test passed"
     end if
-    
+
     call bml_deallocate(a)
     call bml_deallocate(b)
 
