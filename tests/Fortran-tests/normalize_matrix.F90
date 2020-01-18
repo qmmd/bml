@@ -4,8 +4,10 @@ module normalize_matrix
   use prec
   use normalize_matrix_single_real
   use normalize_matrix_double_real
+#ifdef BML_COMPLEX
   use normalize_matrix_single_complex
   use normalize_matrix_double_complex
+#endif
 
   implicit none
 
@@ -34,6 +36,7 @@ contains
       element_precision = dp
       test_result = test_normalize_matrix_double_real(matrix_type, element_kind,&
            &element_precision, n, m)
+#ifdef BML_COMPLEX
     case("single_complex")
       element_kind = bml_complex
       element_precision = sp
@@ -44,6 +47,7 @@ contains
       element_precision = dp
       test_result = test_normalize_matrix_double_complex(matrix_type, element_kind,&
            &element_precision, n, m)
+#endif
     end select
 
   end function test_normalize_matrix

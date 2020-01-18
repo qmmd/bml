@@ -28,18 +28,27 @@ set(FORTRAN-SOURCES-TYPED
   )
 
 # Setting all the relevant element/numeric types
+if(BML_COMPLEX)
 set(TYPES
   single_real
   double_real
   single_complex
   double_complex
   )
+else()
+set(TYPES
+  single_real
+  double_real
+  )
+endif()
+
 
 # Preprocessing the low-level sources
 foreach(T ${TYPES})
   foreach(S ${FORTRAN-SOURCES-TYPED})
     string(REPLACE "typed" ${T} S_TYPED ${S})
     get_filename_component(S_TYPED ${S_TYPED} NAME)
+
     if(${T} MATCHES "single_real")
       set(FORMATED_KIND "real")
       set(FORMATED_PREC "sp")
@@ -56,7 +65,8 @@ foreach(T ${TYPES})
       set(FORMATED_KIND "complex")
       set(FORMATED_PREC "dp")
       set(NUMBER_PREC "_dp")
-  endif()
+    endif()
+
     add_custom_command(OUTPUT ${S_TYPED}
       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
       COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template

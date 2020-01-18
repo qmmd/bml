@@ -4,8 +4,10 @@ module diagonalize_matrix
   use prec
   use diagonalize_matrix_single_real
   use diagonalize_matrix_double_real
+#ifdef BML_COMPLEX
   use diagonalize_matrix_single_complex
   use diagonalize_matrix_double_complex
+#endif
 
   implicit none
 
@@ -36,6 +38,7 @@ contains
       element_precision = dp
       test_result = test_diagonalize_matrix_single_real(matrix_type, element_kind,&
            &element_precision, n, m)
+#ifdef BML_COMPLEX
     case("single_complex")
       element_kind = bml_complex
       element_precision = sp
@@ -46,6 +49,7 @@ contains
       element_precision = dp
       test_result = test_diagonalize_matrix_double_complex(matrix_type, element_kind,&
            &element_precision, n, m)
+#endif
     case default
       write(*,*)"No valid element_type"
       test_result = .false.

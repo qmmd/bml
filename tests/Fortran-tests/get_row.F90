@@ -4,8 +4,10 @@ module get_row
   use prec
   use get_row_single_real
   use get_row_double_real
+#ifdef BML_COMPLEX
   use get_row_single_complex
   use get_row_double_complex
+#endif
 
   implicit none
 
@@ -34,6 +36,7 @@ contains
       element_precision = dp
       test_result = test_get_row_double_real(matrix_type, element_kind,&
            &element_precision, n, m)
+#ifdef BML_COMPLEX
     case("single_complex")
       element_kind = bml_complex
       element_precision = sp
@@ -44,6 +47,7 @@ contains
       element_precision = dp
       test_result = test_get_row_double_complex(matrix_type, element_kind,&
            &element_precision, n, m)
+#endif
     end select
 
   end function test_get_row

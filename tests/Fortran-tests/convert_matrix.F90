@@ -4,8 +4,10 @@ module convert_matrix
   use prec
   use convert_matrix_single_real
   use convert_matrix_double_real
+#ifdef BML_COMPLEX
   use convert_matrix_single_complex
   use convert_matrix_double_complex
+#endif
 
   implicit none
 
@@ -34,6 +36,7 @@ contains
       element_precision = kind(1.0d0)
       test_result = test_convert_matrix_double_real(matrix_type, element_kind,&
            &element_precision, n, m)
+#ifdef BML_COMPLEX
     case("single_complex")
       element_kind = bml_complex
       element_precision = kind(1.0)
@@ -44,6 +47,7 @@ contains
       element_precision = kind(1.0d0)
       test_result = test_convert_matrix_double_complex(matrix_type, element_kind,&
            &element_precision, n, m)
+#endif
     end select
 
   end function test_convert_matrix
