@@ -35,7 +35,7 @@ void TYPED_FUNC(
     int j,
     void *_element)
 {
-    REAL_T *element = _element;
+    REAL_T * element = _element;
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     int *A_indexb = A->indexb;
     int *A_nnzb = A->nnzb;
@@ -129,7 +129,7 @@ void TYPED_FUNC(
     void *_row,
     double threshold)
 {
-    REAL_T *row = _row;
+    REAL_T * row = _row;
     int A_N = A->N;
 
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
@@ -204,7 +204,7 @@ void TYPED_FUNC(
     void *_diagonal,
     double threshold)
 {
-    REAL_T *diagonal = _diagonal;
+    REAL_T * diagonal = _diagonal;
     int A_NB = A->NB;
     int A_MB = A->MB;
 

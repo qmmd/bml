@@ -34,7 +34,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellsort_t *A_bml =
+    bml_matrix_ellsort_t * A_bml =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, distrib_mode);
 
     int *A_index = A_bml->index;

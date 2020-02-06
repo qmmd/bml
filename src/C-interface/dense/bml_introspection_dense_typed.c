@@ -81,9 +81,9 @@ double TYPED_FUNC(
 {
 
 #ifdef BML_USE_MAGMA
-    REAL_T *A_matrix = bml_export_to_dense(A, dense_row_major);
+    REAL_T * A_matrix = bml_export_to_dense(A, dense_row_major);
 #else
-    REAL_T *A_matrix = A->matrix;
+    REAL_T * A_matrix = A->matrix;
 #endif
     int nnzs = 0;
     int N = A->N;

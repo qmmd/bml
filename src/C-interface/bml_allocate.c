@@ -42,7 +42,12 @@ void *
 bml_allocate_memory(
     size_t size)
 {
+#ifdef __INTEL_COMPILER
+    void *ptr = _mm_malloc(size, 64);
+#else
     void *ptr = calloc(1, size);
+#endif
+
     if (ptr == NULL)
     {
         LOG_ERROR("error allocating memory of size %d: %s\n", size,
@@ -62,7 +67,12 @@ void *
 bml_noinit_allocate_memory(
     size_t size)
 {
+//    void *ptr = malloc(size);
+#ifdef __INTEL_COMPILER
+    void *ptr = _mm_malloc(size, 64);
+#else
     void *ptr = malloc(size);
+#endif
     if (ptr == NULL)
     {
         LOG_ERROR("error allocating memory: %s\n", strerror(errno));
@@ -80,7 +90,12 @@ void
 bml_free_memory(
     void *ptr)
 {
+//    free(ptr);
+#ifdef __INTEL_COMPILER
+    _mm_free(ptr);
+#else
     free(ptr);
+#endif
 }
 
 /** De-allocate a chunk of memory that was allocated inside a C

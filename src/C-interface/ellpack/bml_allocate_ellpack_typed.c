@@ -26,9 +26,29 @@ void TYPED_FUNC(
     bml_clear_ellpack) (
     bml_matrix_ellpack_t * A)
 {
-    memset(A->nnz, 0, A->N * sizeof(int));
-    memset(A->index, 0, A->N * A->M * sizeof(int));
-    memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
+    REAL_T *A_value = A->value;
+
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (int ii = 0; ii < (A->N * A->M); ii++)
+    {
+#ifdef __INTEL_COMPILER
+        __assume_aligned(A->index, 64);
+        __assume_aligned(A_value, 64);
+#endif
+        A->index[ii] = 0;
+        A_value[ii] = 0.0;
+    }
+
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (int ii = 0; ii < A->N; ii++)
+    {
+#ifdef __INTEL_COMPILER
+        __assume_aligned(A->nnz, 64);
+#endif
+        A->nnz[ii] = 0;
+    }
 }
 
 /** Allocate a matrix with uninitialized values.
@@ -59,6 +79,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->distribution_mode = distrib_mode;
     A->index = bml_noinit_allocate_memory(sizeof(int) * A->N * A->M);
     A->nnz = bml_allocate_memory(sizeof(int) * A->N);
+#ifdef __INTEL_COMPILER
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (int ii = 0; ii < A->N; ii++)
+    {
+        __assume_aligned(A->nnz, 64);
+        A->nnz[ii] = 0;
+    }
+#endif
+
     A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * A->N * A->M);
     A->domain = bml_default_domain(A->N, A->M, distrib_mode);
     A->domain2 = bml_default_domain(A->N, A->M, distrib_mode);
@@ -87,7 +117,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A =
+    bml_matrix_ellpack_t * A =
         bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
     A->matrix_type = ellpack;
     A->matrix_precision = MATRIX_PRECISION;
@@ -97,6 +127,28 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
+
+    REAL_T *A_value = A->value;
+
+#ifdef __INTEL_COMPILER
+#pragma omp parallel for schedule(guided)
+#pragma vector aligned
+    for (int ii = 0; ii < (N * M); ii++)
+    {
+        __assume_aligned(A->index, 64);
+        __assume_aligned(A_value, 64);
+        A->index[ii] = 0;
+        A_value[ii] = 0.0;
+    }
+
+#pragma omp parallel for schedule(guided)
+#pragma vector aligned
+    for (int ii = 0; ii < N; ii++)
+    {
+        __assume_aligned(A->nnz, 64);
+        A->nnz[ii] = 0;
+    }
+#endif
     A->domain = bml_default_domain(N, M, distrib_mode);
     A->domain2 = bml_default_domain(N, M, distrib_mode);
 
@@ -124,13 +176,13 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A =
+    bml_matrix_ellpack_t * A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -138,7 +190,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
              j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
         {
-            A_value[ROWMAJOR(i, jind, N, M)] = rand() / (REAL_T) RAND_MAX;
+            A_value[ROWMAJOR(i, jind, N, M)] = rand() * INV_RAND_MAX;
             A_index[ROWMAJOR(i, jind, N, M)] = j;
             jind++;
         }
@@ -171,19 +223,19 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A =
+    bml_matrix_ellpack_t * A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
     for (int i = 0; i < N; i++)
     {
         int jind = 0;
         for (int j = 0; j < M; j++)
         {
-            A_value[ROWMAJOR(i, jind, N, M)] = rand() / (REAL_T) RAND_MAX;
+            A_value[ROWMAJOR(i, jind, N, M)] = rand() * INV_RAND_MAX;
             A_index[ROWMAJOR(i, jind, N, M)] = j;
             jind++;
         }
@@ -213,7 +265,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A =
+    bml_matrix_ellpack_t * A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
@@ -223,6 +275,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
+#ifdef __INTEL_COMPILER
+        __assume_aligned(A_value, 64);
+        __assume_aligned(A_index, 64);
+        __assume_aligned(A_nnz, 64);
+#endif
         A_value[ROWMAJOR(i, 0, N, M)] = (REAL_T) 1.0;
         A_index[ROWMAJOR(i, 0, N, M)] = i;
         A_nnz[i] = 1;

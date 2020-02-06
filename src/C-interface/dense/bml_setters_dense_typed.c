@@ -37,7 +37,7 @@ void TYPED_FUNC(
     int i,
     void *_row)
 {
-    REAL_T *row = _row;
+    REAL_T * row = _row;
     int N = bml_get_N(A);
 
     if (N < 0)
@@ -62,7 +62,7 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     void *_diagonal)
 {
-    REAL_T *diagonal = _diagonal;
+    REAL_T * diagonal = _diagonal;
     int N = bml_get_N(A);
 
     if (N < 0)

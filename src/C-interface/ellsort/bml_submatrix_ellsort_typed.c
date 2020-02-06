@@ -239,7 +239,7 @@ void TYPED_FUNC(
     int *core_halo_index,
     int lsize)
 {
-    REAL_T *rvalue;
+    REAL_T * rvalue;
 
     int B_N = B->N;
 #ifdef BML_USE_MAGMA
@@ -267,7 +267,7 @@ void TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (B_N, B_N, (MAGMA_T *) B_matrix, B_N,
                       B->matrix, B->ld, B->queue);
-    free(B_matrix);
+    bml_free_memory(B_matrix);
 #endif
 }
 
@@ -335,7 +335,7 @@ void TYPED_FUNC(
         B_nnz[ii] = icol;
     }
 #ifdef BML_USE_MAGMA
-    free(A_matrix);
+    bml_free_memory(A_matrix);
 #endif
 }
 

@@ -28,7 +28,7 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     char *filename)
 {
-    FILE *hFile;
+    FILE * hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol;
     REAL_T val;
@@ -99,7 +99,7 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     char *filename)
 {
-    FILE *mFile;
+    FILE * mFile;
 
     int N = A->N;
     int msum = N * N;
@@ -139,11 +139,11 @@ void TYPED_FUNC(
     //copy matrix data from GPU to CPU so that we can use
     //bml_print_dense_matrix function with lower/upper row/column
     //index
-    REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+    REAL_T * A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
     MAGMA(getmatrix) (A->N, A->N,
                       A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
 #else
-    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    REAL_T * A_matrix = (REAL_T *) A->matrix;
 #endif
 
     bml_print_dense_matrix(A->N, A->matrix_precision, dense_row_major,

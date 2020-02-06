@@ -28,6 +28,14 @@ void *TYPED_FUNC(
     bml_dense_order_t order)
 {
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+#pragma omp parallel for
+    for (int ii = 0; ii < (A->N * A->N); ii++)
+    {
+#ifdef __INTEL_COMPILER
+        __assume_aligned(A_dense, 64);
+#endif
+        A_dense[ii] = 0.0;
+    }
 
     switch (order)
     {

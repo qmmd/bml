@@ -16,7 +16,7 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
-    bml_matrix_t *A = NULL;
+    bml_matrix_t * A = NULL;
     double sparsity;
     double sparsity_ref;
     int nnzs = 0;
@@ -52,7 +52,7 @@ int TYPED_FUNC(
     printf("Sparsity = %f\n", sparsity);
 
     bml_deallocate(&A);
-    free(A_dense);
+    bml_free_memory(A_dense);
 
     LOG_INFO("bml_get_sparsity passed\n");
 

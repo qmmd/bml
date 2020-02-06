@@ -345,7 +345,7 @@ void TYPED_FUNC(
     double beta,
     double threshold)
 {
-    bml_matrix_ellblock_t *Id =
+    bml_matrix_ellblock_t * Id =
         TYPED_FUNC(bml_identity_matrix_ellblock) (A->N, A->M,
                                                   A->distribution_mode);
 

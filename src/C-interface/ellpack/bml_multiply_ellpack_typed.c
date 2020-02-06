@@ -138,6 +138,7 @@ void *TYPED_FUNC(
     shared(X_localRowMin, X_localRowMax)               \
     reduction(+: traceX, traceX2)
 #else
+#pragma vector aligned
 #pragma omp parallel for                               \
     shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
@@ -156,7 +157,11 @@ void *TYPED_FUNC(
 
         memset(ix, 0, X_N * sizeof(int));
 #endif
-
+#ifdef __INTEL_COMPILER
+        __assume_aligned(X_nnz, 64);
+        __assume_aligned(X_index, 64);
+        __assume_aligned(X_value, 64);
+#endif
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
         {
@@ -188,6 +193,11 @@ void *TYPED_FUNC(
             LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
         }
 
+#ifdef __INTEL_COMPILER
+        __assume_aligned(X2_nnz, 64);
+        __assume_aligned(X2_index, 64);
+        __assume_aligned(X2_value, 64);
+#endif
         int ll = 0;
         for (int j = 0; j < l; j++)
         {

@@ -12,7 +12,7 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
-    bml_matrix_t *A;
+    bml_matrix_t * A;
     REAL_T *A_dense;
     REAL_T *B_dense;
 

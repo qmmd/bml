@@ -32,7 +32,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     void *A,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dimension_t matrix_dimension = { N, N, N };
+    bml_matrix_dimension_t matrix_dimension = {N, N, N};
     bml_matrix_dense_t *A_bml =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
 #ifdef BML_USE_MAGMA

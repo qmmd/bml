@@ -34,7 +34,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     void *_scale_factor,
     bml_matrix_dense_t * A)
 {
-    bml_matrix_dense_t *B = TYPED_FUNC(bml_copy_dense_new) (A);
+    bml_matrix_dense_t * B = TYPED_FUNC(bml_copy_dense_new) (A);
     REAL_T *scale_factor = _scale_factor;
     REAL_T *B_matrix = B->matrix;
     int myRank = bml_getMyRank();
@@ -71,51 +71,42 @@ void TYPED_FUNC(
 {
     if (A != B)
     {
-        TYPED_FUNC(bml_copy_dense) (A, B);
-    }
+     TYPED_FUNC(bml_copy_dense) (A, B);}
 
-    REAL_T *scale_factor = _scale_factor;
-    REAL_T *B_matrix = B->matrix;
-    int myRank = bml_getMyRank();
-    int nElems = B->domain->localRowExtent[myRank] * B->ld;
-    int startIndex = B->domain->localDispl[myRank];
-    int inc = 1;
-
+     REAL_T * scale_factor = _scale_factor;
+     REAL_T * B_matrix = B->matrix;
+     int myRank = bml_getMyRank();
+     int nElems = B->domain->localRowExtent[myRank] * B->ld;
+     int startIndex = B->domain->localDispl[myRank]; int inc = 1;
 #ifdef BML_USE_MAGMA
-    MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
-    MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, B->queue);
+     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
+     MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, B->queue);
 #else
 #ifdef NOBLAS
-    LOG_ERROR("No BLAS library");
+     LOG_ERROR("No BLAS library");
 #else
-    C_BLAS(SCAL) (&nElems, scale_factor, &(B_matrix[startIndex]), &inc);
+     C_BLAS(SCAL) (&nElems, scale_factor, &(B_matrix[startIndex]), &inc);
 #endif
 #endif
+     }
 
-}
-
-void TYPED_FUNC(
-    bml_scale_inplace_dense) (
-    void *_scale_factor,
-    bml_matrix_dense_t * A)
-{
-    REAL_T *A_matrix = A->matrix;
-    REAL_T *scale_factor = _scale_factor;
-    int myRank = bml_getMyRank();
-    int number_elements = A->domain->localRowExtent[myRank] * A->ld;
-    int startIndex = A->domain->localDispl[myRank];
-    int inc = 1;
-
+     void TYPED_FUNC(bml_scale_inplace_dense) (void *_scale_factor,
+                                               bml_matrix_dense_t * A)
+     {
+     REAL_T * A_matrix = A->matrix;
+     REAL_T * scale_factor = _scale_factor;
+     int myRank = bml_getMyRank();
+     int number_elements = A->domain->localRowExtent[myRank] * A->ld;
+     int startIndex = A->domain->localDispl[myRank]; int inc = 1;
 #ifdef BML_USE_MAGMA
-    MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
-    MAGMA(scal) (number_elements, scale_factor_, A->matrix, inc, A->queue);
+     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
+     MAGMA(scal) (number_elements, scale_factor_, A->matrix, inc, A->queue);
 #else
 #ifdef NOBLAS
-    LOG_ERROR("No BLAS library");
+     LOG_ERROR("No BLAS library");
 #else
-    C_BLAS(SCAL) (&number_elements, scale_factor, &(A_matrix[startIndex]),
-                  &inc);
+     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_matrix[startIndex]),
+                   &inc);
 #endif
 #endif
-
-}
+     }

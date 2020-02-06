@@ -34,7 +34,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A_bml =
+    bml_matrix_ellpack_t * A_bml =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
     int *A_index = A_bml->index;

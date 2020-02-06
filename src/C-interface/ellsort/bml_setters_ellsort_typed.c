@@ -119,7 +119,7 @@ void TYPED_FUNC(
     void *_row,
     double threshold)
 {
-    REAL_T *row = _row;
+    REAL_T * row = _row;
 
     int A_N = A->N;
     int A_M = A->M;
@@ -161,7 +161,7 @@ void TYPED_FUNC(
     void *_diagonal,
     double threshold)
 {
-    REAL_T *diagonal = _diagonal;
+    REAL_T * diagonal = _diagonal;
 
     int A_N = A->N;
     int A_M = A->M;

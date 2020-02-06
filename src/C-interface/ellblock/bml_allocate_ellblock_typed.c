@@ -138,7 +138,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellblock_t *A =
+    bml_matrix_ellblock_t * A =
         TYPED_FUNC(bml_zero_matrix_ellblock) (N, M, distrib_mode);
 
     for (int i = 0; i < N; i++)

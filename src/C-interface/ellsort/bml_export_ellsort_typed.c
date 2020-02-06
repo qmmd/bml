@@ -33,6 +33,15 @@ void *TYPED_FUNC(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+#ifdef __INTEL_COMPILER
+#pragma omp parallel for simd
+    for (int ii = 0; ii < (A->N * A->N); ii++)
+    {
+        __assume_aligned(A_dense, 64);
+        A_dense[ii] = 0.0;
+    }
+#endif
+
     REAL_T *A_value = A->value;
 
     switch (order)

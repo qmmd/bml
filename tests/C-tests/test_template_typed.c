@@ -13,7 +13,7 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
-    bml_matrix_t *A = NULL;
+    bml_matrix_t * A = NULL;
     REAL_T *array = NULL;
 
     // Add code here ...

@@ -172,7 +172,7 @@ void TYPED_FUNC(
     bml_matrix_ellblock_t * A,
     char *filename)
 {
-    FILE *mFile;
+    FILE * mFile;
     int msum;
 
     int NB = A->NB;
@@ -245,7 +245,7 @@ double TYPED_FUNC(
     int ncols,
     int ld)
 {
-    REAL_T *v = _v;
+    REAL_T * v = _v;
     double norm = 0.;
     for (int i = 0; i < nrows; i++)
         for (int j = 0; j < ncols; j++)
@@ -262,7 +262,7 @@ double TYPED_FUNC(
     void *_v,
     int n)
 {
-    REAL_T *v = _v;
+    REAL_T * v = _v;
     double norm = 0.;
     for (int i = 0; i < n; i++)
     {
@@ -280,7 +280,7 @@ double TYPED_FUNC(
     int ncols,
     int ld)
 {
-    REAL_T *v = _v;
+    REAL_T * v = _v;
     double n2 = 0.;
     for (int i = 0; i < nrows; i++)
         for (int j = 0; j < ncols; j++)

@@ -322,7 +322,7 @@ void TYPED_FUNC(
     double beta,
     double threshold)
 {
-    bml_matrix_ellsort_t *Id =
+    bml_matrix_ellsort_t * Id =
         TYPED_FUNC(bml_identity_matrix_ellsort) (A->N, A->M,
                                                  A->distribution_mode);
 

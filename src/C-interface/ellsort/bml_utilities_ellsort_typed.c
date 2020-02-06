@@ -24,7 +24,7 @@ void TYPED_FUNC(
     bml_matrix_ellsort_t * A,
     char *filename)
 {
-    FILE *hFile;
+    FILE * hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol, ind;
     REAL_T val;
@@ -111,7 +111,7 @@ void TYPED_FUNC(
     bml_matrix_ellsort_t * A,
     char *filename)
 {
-    FILE *mFile;
+    FILE * mFile;
     int msum;
 
     int N = A->N;

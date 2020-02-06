@@ -29,7 +29,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     void *_scale_factor,
     bml_matrix_ellpack_t * A)
 {
-    REAL_T *scale_factor = _scale_factor;
+    REAL_T * scale_factor = _scale_factor;
     bml_matrix_ellpack_t *B = TYPED_FUNC(bml_copy_ellpack_new) (A);
 
     REAL_T *B_value = B->value;
@@ -62,42 +62,32 @@ void TYPED_FUNC(
 {
     if (A != B)
     {
-        TYPED_FUNC(bml_copy_ellpack) (A, B);
-    }
+     TYPED_FUNC(bml_copy_ellpack) (A, B);}
 
-    REAL_T *scale_factor = _scale_factor;
-    REAL_T *B_value = B->value;
-    int myRank = bml_getMyRank();
-    int nElems = B->domain->localRowExtent[myRank] * B->M;
-    int startIndex = B->domain->localDispl[myRank];
-    int inc = 1;
-
+     REAL_T * scale_factor = _scale_factor;
+     REAL_T * B_value = B->value;
+     int myRank = bml_getMyRank();
+     int nElems = B->domain->localRowExtent[myRank] * B->M;
+     int startIndex = B->domain->localDispl[myRank]; int inc = 1;
 #ifdef NOBLAS
-    LOG_ERROR("No BLAS library");
+     LOG_ERROR("No BLAS library");
 #else
-    C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
+     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
 #endif
+     }
 
-}
-
-void TYPED_FUNC(
-    bml_scale_inplace_ellpack) (
-    void *_scale_factor,
-    bml_matrix_ellpack_t * A)
-{
-    REAL_T *scale_factor = _scale_factor;
-    REAL_T *A_value = A->value;
-
-    int myRank = bml_getMyRank();
-    int number_elements = A->domain->localRowExtent[myRank] * A->M;
-    int startIndex = A->domain->localDispl[myRank];
-    int inc = 1;
-
+     void TYPED_FUNC(bml_scale_inplace_ellpack) (void *_scale_factor,
+                                                 bml_matrix_ellpack_t * A)
+     {
+     REAL_T * scale_factor = _scale_factor;
+     REAL_T * A_value = A->value;
+     int myRank = bml_getMyRank();
+     int number_elements = A->domain->localRowExtent[myRank] * A->M;
+     int startIndex = A->domain->localDispl[myRank]; int inc = 1;
 #ifdef NOBLAS
-    LOG_ERROR("No BLAS library");
+     LOG_ERROR("No BLAS library");
 #else
-    C_BLAS(SCAL) (&number_elements, scale_factor, &(A_value[startIndex]),
-                  &inc);
+     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_value[startIndex]),
+                   &inc);
 #endif
-
-}
+     }

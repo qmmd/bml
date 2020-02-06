@@ -31,7 +31,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     void *_scale_factor,
     bml_matrix_ellblock_t * A)
 {
-    REAL_T *scale_factor = _scale_factor;
+    REAL_T * scale_factor = _scale_factor;
     bml_matrix_ellblock_t *B = TYPED_FUNC(bml_copy_ellblock_new) (A);
 
     TYPED_FUNC(bml_scale_ellblock) (scale_factor, A, B);
@@ -57,34 +57,25 @@ void TYPED_FUNC(
 #else
     if (A != B)
     {
-        TYPED_FUNC(bml_copy_ellblock) (A, B);
-    }
+     TYPED_FUNC(bml_copy_ellblock) (A, B);}
 
-    REAL_T *scale_factor = _scale_factor;
-    REAL_T **B_ptr_value = (REAL_T **) B->ptr_value;
-    int inc = 1;
-
-    for (int ib = 0; ib < A->NB; ib++)
-    {
-        for (int jp = 0; jp < A->nnzb[ib]; jp++)
-        {
-            int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
-            int jb = A->indexb[ind];
-            int nElems = A->bsize[ib] * A->bsize[jb];
-
-            REAL_T *B_value = B_ptr_value[ind];
-            assert(B_value != NULL);
-
-            C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[0]), &inc);
-        }
-    }
+     REAL_T * scale_factor = _scale_factor;
+     REAL_T ** B_ptr_value = (REAL_T **) B->ptr_value;
+     int inc = 1; for (int ib = 0; ib < A->NB; ib++)
+     {
+     for (int jp = 0; jp < A->nnzb[ib]; jp++)
+     {
+     int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
+     int jb = A->indexb[ind];
+     int nElems = A->bsize[ib] * A->bsize[jb];
+     REAL_T * B_value = B_ptr_value[ind];
+     assert(B_value != NULL);
+     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[0]), &inc);}
+     }
 #endif
-}
+     }
 
-void TYPED_FUNC(
-    bml_scale_inplace_ellblock) (
-    void *scale_factor,
-    bml_matrix_ellblock_t * A)
-{
-    TYPED_FUNC(bml_scale_ellblock) (scale_factor, A, A);
-}
+     void TYPED_FUNC(bml_scale_inplace_ellblock) (void *scale_factor,
+                                                  bml_matrix_ellblock_t * A)
+     {
+     TYPED_FUNC(bml_scale_ellblock) (scale_factor, A, A);}
