@@ -57,11 +57,12 @@ void TYPED_FUNC(
 #else
     if (A != B)
     {
-     TYPED_FUNC(bml_copy_ellblock) (A, B);}
+     TYPED_FUNC(bml_copy_ellblock) (A, B);
+     }
 
      REAL_T * scale_factor = _scale_factor;
-     REAL_T ** B_ptr_value = (REAL_T **) B->ptr_value;
-     int inc = 1; for (int ib = 0; ib < A->NB; ib++)
+     REAL_T ** B_ptr_value = (REAL_T **) B->ptr_value; int inc = 1;
+     for (int ib = 0; ib < A->NB; ib++)
      {
      for (int jp = 0; jp < A->nnzb[ib]; jp++)
      {

@@ -49,7 +49,9 @@ int TYPED_FUNC(
     if (matrix_precision == single_complex
         || matrix_precision == double_complex)
     {
-     printf("[FIXME] Skipping unsupported test\n"); return 0;}
+     printf("[FIXME] Skipping unsupported test\n");
+     return 0;
+     }
 #endif
 
      //generate random matrix
@@ -61,7 +63,8 @@ int TYPED_FUNC(
      /* Create unique filename (in case we run tests in parallel). */
      char *filename = strdup(tmpnam(NULL));
      fprintf(stdout, "Filename used for this test: %s\n", filename);
-     int fd = open(filename, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR); if (fd < 0)
+     int fd = open(filename, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+     if (fd < 0)
      {
      fprintf(stderr, "Failed to open %s\n", filename); return -1;}
 

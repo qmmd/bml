@@ -62,13 +62,15 @@ void TYPED_FUNC(
 {
     if (A != B)
     {
-     TYPED_FUNC(bml_copy_ellpack) (A, B);}
+     TYPED_FUNC(bml_copy_ellpack) (A, B);
+     }
 
      REAL_T * scale_factor = _scale_factor;
      REAL_T * B_value = B->value;
      int myRank = bml_getMyRank();
      int nElems = B->domain->localRowExtent[myRank] * B->M;
-     int startIndex = B->domain->localDispl[myRank]; int inc = 1;
+     int startIndex = B->domain->localDispl[myRank];
+     int inc = 1;
 #ifdef NOBLAS
      LOG_ERROR("No BLAS library");
 #else
@@ -83,7 +85,8 @@ void TYPED_FUNC(
      REAL_T * A_value = A->value;
      int myRank = bml_getMyRank();
      int number_elements = A->domain->localRowExtent[myRank] * A->M;
-     int startIndex = A->domain->localDispl[myRank]; int inc = 1;
+     int startIndex = A->domain->localDispl[myRank];
+     int inc = 1;
 #ifdef NOBLAS
      LOG_ERROR("No BLAS library");
 #else
