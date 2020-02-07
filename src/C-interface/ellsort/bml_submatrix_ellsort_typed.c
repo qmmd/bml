@@ -239,7 +239,7 @@ void TYPED_FUNC(
     int *core_halo_index,
     int lsize)
 {
-    REAL_T * rvalue;
+    REAL_T *rvalue;
 
     int B_N = B->N;
 #ifdef BML_USE_MAGMA

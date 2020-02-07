@@ -34,7 +34,7 @@ bml_matrix_ellblock_t
                                                   bml_distribution_mode_t
                                                   distrib_mode)
 {
-    bml_matrix_ellblock_t * A_bml =
+    bml_matrix_ellblock_t *A_bml =
         TYPED_FUNC(bml_zero_matrix_ellblock) (N, M, distrib_mode);
 
     int NB = A_bml->NB;

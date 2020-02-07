@@ -88,7 +88,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellsort_t * A =
+    bml_matrix_ellsort_t *A =
         bml_allocate_memory(sizeof(bml_matrix_ellsort_t));
     A->matrix_type = ellsort;
     A->matrix_precision = MATRIX_PRECISION;
@@ -145,7 +145,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellsort_t * A =
+    bml_matrix_ellsort_t *A =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
@@ -193,7 +193,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellsort_t * A =
+    bml_matrix_ellsort_t *A =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
@@ -235,7 +235,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellsort_t * A =
+    bml_matrix_ellsort_t *A =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;

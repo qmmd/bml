@@ -21,7 +21,7 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
-    bml_matrix_t * A = NULL;
+    bml_matrix_t *A = NULL;
     bml_matrix_t *A_t = NULL;
     REAL_T *eigenvalues = NULL;
     bml_matrix_t *eigenvectors = NULL;

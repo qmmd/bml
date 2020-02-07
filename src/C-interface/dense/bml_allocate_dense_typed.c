@@ -109,7 +109,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dimension_t matrix_dimension = {N, N, M};
+    bml_matrix_dimension_t matrix_dimension = { N, N, M };
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
     REAL_T *A_dense = A->matrix;
@@ -145,7 +145,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     int N,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dimension_t matrix_dimension = {N, N, N};
+    bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
 #ifdef BML_USE_MAGMA
@@ -191,7 +191,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     int N,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dimension_t matrix_dimension = {N, N, N};
+    bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
 #ifdef BML_USE_MAGMA
