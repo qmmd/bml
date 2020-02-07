@@ -26,10 +26,9 @@
  *  \param threshold Threshold value
  *  \return the thresholded A
  */
-bml_matrix_ellblock_t *TYPED_FUNC(
-    bml_threshold_new_ellblock) (
-    bml_matrix_ellblock_t * A,
-    double threshold)
+bml_matrix_ellblock_t
+    * TYPED_FUNC(bml_threshold_new_ellblock) (bml_matrix_ellblock_t * A,
+                                              double threshold)
 {
     int NB = A->NB;
     int MB = A->MB;

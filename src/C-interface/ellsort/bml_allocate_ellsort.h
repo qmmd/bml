@@ -26,21 +26,29 @@ bml_matrix_ellsort_t *bml_noinit_matrix_ellsort(
     bml_matrix_dimension_t matrix_dimension,
     bml_distribution_mode_t distrib_mode);
 
-bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_single_real(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellsort_t
+    * bml_noinit_matrix_ellsort_single_real(bml_matrix_dimension_t
+                                            matrix_dimension,
+                                            bml_distribution_mode_t
+                                            distrib_mode);
 
-bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_double_real(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellsort_t
+    * bml_noinit_matrix_ellsort_double_real(bml_matrix_dimension_t
+                                            matrix_dimension,
+                                            bml_distribution_mode_t
+                                            distrib_mode);
 
-bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_single_complex(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellsort_t
+    * bml_noinit_matrix_ellsort_single_complex(bml_matrix_dimension_t
+                                               matrix_dimension,
+                                               bml_distribution_mode_t
+                                               distrib_mode);
 
-bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_double_complex(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellsort_t
+    * bml_noinit_matrix_ellsort_double_complex(bml_matrix_dimension_t
+                                               matrix_dimension,
+                                               bml_distribution_mode_t
+                                               distrib_mode);
 
 bml_matrix_ellsort_t *bml_zero_matrix_ellsort(
     bml_matrix_precision_t matrix_precision,

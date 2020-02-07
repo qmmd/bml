@@ -25,9 +25,8 @@
  *  \param A The matrix to be transposed
  *  \return the transposed A
  */
-bml_matrix_ellblock_t *TYPED_FUNC(
-    bml_transpose_new_ellblock) (
-    bml_matrix_ellblock_t * A)
+bml_matrix_ellblock_t
+    * TYPED_FUNC(bml_transpose_new_ellblock) (bml_matrix_ellblock_t * A)
 {
     int NB = A->NB;
     int MB = A->MB;

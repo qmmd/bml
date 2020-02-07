@@ -6,17 +6,17 @@
 bml_matrix_ellsort_t *bml_transpose_new_ellsort(
     bml_matrix_ellsort_t * A);
 
-bml_matrix_ellsort_t *bml_transpose_new_ellsort_single_real(
-    bml_matrix_ellsort_t * A);
+bml_matrix_ellsort_t
+    * bml_transpose_new_ellsort_single_real(bml_matrix_ellsort_t * A);
 
-bml_matrix_ellsort_t *bml_transpose_new_ellsort_double_real(
-    bml_matrix_ellsort_t * A);
+bml_matrix_ellsort_t
+    * bml_transpose_new_ellsort_double_real(bml_matrix_ellsort_t * A);
 
-bml_matrix_ellsort_t *bml_transpose_new_ellsort_single_complex(
-    bml_matrix_ellsort_t * A);
+bml_matrix_ellsort_t
+    * bml_transpose_new_ellsort_single_complex(bml_matrix_ellsort_t * A);
 
-bml_matrix_ellsort_t *bml_transpose_new_ellsort_double_complex(
-    bml_matrix_ellsort_t * A);
+bml_matrix_ellsort_t
+    * bml_transpose_new_ellsort_double_complex(bml_matrix_ellsort_t * A);
 
 void bml_transpose_ellsort(
     bml_matrix_ellsort_t * A);

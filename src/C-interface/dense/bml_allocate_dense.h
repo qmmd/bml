@@ -34,13 +34,17 @@ bml_matrix_dense_t *bml_zero_matrix_dense_double_real(
     bml_matrix_dimension_t matrix_dimension,
     bml_distribution_mode_t distrib_mode);
 
-bml_matrix_dense_t *bml_zero_matrix_dense_single_complex(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_dense_t
+    * bml_zero_matrix_dense_single_complex(bml_matrix_dimension_t
+                                           matrix_dimension,
+                                           bml_distribution_mode_t
+                                           distrib_mode);
 
-bml_matrix_dense_t *bml_zero_matrix_dense_double_complex(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_dense_t
+    * bml_zero_matrix_dense_double_complex(bml_matrix_dimension_t
+                                           matrix_dimension,
+                                           bml_distribution_mode_t
+                                           distrib_mode);
 
 bml_matrix_dense_t *bml_banded_matrix_dense(
     bml_matrix_precision_t matrix_precision,

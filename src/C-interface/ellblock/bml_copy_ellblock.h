@@ -12,11 +12,11 @@ bml_matrix_ellblock_t *bml_copy_ellblock_new_single_real(
 bml_matrix_ellblock_t *bml_copy_ellblock_new_double_real(
     bml_matrix_ellblock_t * A);
 
-bml_matrix_ellblock_t *bml_copy_ellblock_new_single_complex(
-    bml_matrix_ellblock_t * A);
+bml_matrix_ellblock_t
+    * bml_copy_ellblock_new_single_complex(bml_matrix_ellblock_t * A);
 
-bml_matrix_ellblock_t *bml_copy_ellblock_new_double_complex(
-    bml_matrix_ellblock_t * A);
+bml_matrix_ellblock_t
+    * bml_copy_ellblock_new_double_complex(bml_matrix_ellblock_t * A);
 
 void bml_copy_ellblock(
     bml_matrix_ellblock_t * A,

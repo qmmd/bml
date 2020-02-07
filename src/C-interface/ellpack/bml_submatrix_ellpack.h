@@ -197,29 +197,29 @@ bml_matrix_ellpack_t *bml_group_matrix_ellpack(
     int ngroups,
     double threshold);
 
-bml_matrix_ellpack_t *bml_group_matrix_ellpack_single_real(
-    bml_matrix_ellpack_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellpack_t
+    * bml_group_matrix_ellpack_single_real(bml_matrix_ellpack_t * A,
+                                           int *hindex,
+                                           int ngroups,
+                                           double threshold);
 
-bml_matrix_ellpack_t *bml_group_matrix_ellpack_double_real(
-    bml_matrix_ellpack_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellpack_t
+    * bml_group_matrix_ellpack_double_real(bml_matrix_ellpack_t * A,
+                                           int *hindex,
+                                           int ngroups,
+                                           double threshold);
 
-bml_matrix_ellpack_t *bml_group_matrix_ellpack_single_complex(
-    bml_matrix_ellpack_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellpack_t
+    * bml_group_matrix_ellpack_single_complex(bml_matrix_ellpack_t * A,
+                                              int *hindex,
+                                              int ngroups,
+                                              double threshold);
 
-bml_matrix_ellpack_t *bml_group_matrix_ellpack_double_complex(
-    bml_matrix_ellpack_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellpack_t
+    * bml_group_matrix_ellpack_double_complex(bml_matrix_ellpack_t * A,
+                                              int *hindex,
+                                              int ngroups,
+                                              double threshold);
 
 void bml_adjacency_ellpack(
     bml_matrix_ellpack_t * A,

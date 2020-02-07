@@ -65,10 +65,11 @@ void TYPED_FUNC(
  *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
-bml_matrix_ellpack_t *TYPED_FUNC(
-    bml_noinit_matrix_ellpack) (
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode)
+bml_matrix_ellpack_t
+    * TYPED_FUNC(bml_noinit_matrix_ellpack) (bml_matrix_dimension_t
+                                             matrix_dimension,
+                                             bml_distribution_mode_t
+                                             distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         bml_noinit_allocate_memory(sizeof(bml_matrix_ellpack_t));

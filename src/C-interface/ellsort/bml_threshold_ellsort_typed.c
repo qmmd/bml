@@ -25,10 +25,9 @@
  *  \param threshold Threshold value
  *  \return the thresholded A
  */
-bml_matrix_ellsort_t *TYPED_FUNC(
-    bml_threshold_new_ellsort) (
-    bml_matrix_ellsort_t * A,
-    double threshold)
+bml_matrix_ellsort_t
+    * TYPED_FUNC(bml_threshold_new_ellsort) (bml_matrix_ellsort_t * A,
+                                             double threshold)
 {
     int N = A->N;
     int M = A->M;

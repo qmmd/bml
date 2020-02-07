@@ -400,12 +400,10 @@ void *TYPED_FUNC(
  * \param ngroups Number of groups
  * \param threshold Threshold for graph
  */
-bml_matrix_ellpack_t *TYPED_FUNC(
-    bml_group_matrix_ellpack) (
-    bml_matrix_ellpack_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold)
+bml_matrix_ellpack_t
+    * TYPED_FUNC(bml_group_matrix_ellpack) (bml_matrix_ellpack_t * A,
+                                            int *hindex, int ngroups,
+                                            double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;

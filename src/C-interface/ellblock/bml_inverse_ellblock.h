@@ -12,10 +12,10 @@ bml_matrix_ellblock_t *bml_inverse_ellblock_single_real(
 bml_matrix_ellblock_t *bml_inverse_ellblock_double_real(
     bml_matrix_ellblock_t * A);
 
-bml_matrix_ellblock_t *bml_inverse_ellblock_single_complex(
-    bml_matrix_ellblock_t * A);
+bml_matrix_ellblock_t
+    * bml_inverse_ellblock_single_complex(bml_matrix_ellblock_t * A);
 
-bml_matrix_ellblock_t *bml_inverse_ellblock_double_complex(
-    bml_matrix_ellblock_t * A);
+bml_matrix_ellblock_t
+    * bml_inverse_ellblock_double_complex(bml_matrix_ellblock_t * A);
 
 #endif

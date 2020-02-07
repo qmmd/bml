@@ -38,10 +38,11 @@ void TYPED_FUNC(
     memset(A->nnzb, 0, A->NB * sizeof(int));
 }
 
-bml_matrix_ellblock_t *TYPED_FUNC(
-    bml_noinit_matrix_ellblock) (
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode)
+bml_matrix_ellblock_t
+    * TYPED_FUNC(bml_noinit_matrix_ellblock) (bml_matrix_dimension_t
+                                              matrix_dimension,
+                                              bml_distribution_mode_t
+                                              distrib_mode)
 {
     int N = matrix_dimension.N_rows;
 

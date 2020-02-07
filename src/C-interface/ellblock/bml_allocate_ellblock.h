@@ -26,21 +26,29 @@ bml_matrix_ellblock_t *bml_noinit_matrix_ellblock(
     bml_matrix_dimension_t matrix_dimension,
     bml_distribution_mode_t distrib_mode);
 
-bml_matrix_ellblock_t *bml_noinit_matrix_ellblock_single_real(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellblock_t
+    * bml_noinit_matrix_ellblock_single_real(bml_matrix_dimension_t
+                                             matrix_dimension,
+                                             bml_distribution_mode_t
+                                             distrib_mode);
 
-bml_matrix_ellblock_t *bml_noinit_matrix_ellblock_double_real(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellblock_t
+    * bml_noinit_matrix_ellblock_double_real(bml_matrix_dimension_t
+                                             matrix_dimension,
+                                             bml_distribution_mode_t
+                                             distrib_mode);
 
-bml_matrix_ellblock_t *bml_noinit_matrix_ellblock_single_complex(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellblock_t
+    * bml_noinit_matrix_ellblock_single_complex(bml_matrix_dimension_t
+                                                matrix_dimension,
+                                                bml_distribution_mode_t
+                                                distrib_mode);
 
-bml_matrix_ellblock_t *bml_noinit_matrix_ellblock_double_complex(
-    bml_matrix_dimension_t matrix_dimension,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellblock_t
+    * bml_noinit_matrix_ellblock_double_complex(bml_matrix_dimension_t
+                                                matrix_dimension,
+                                                bml_distribution_mode_t
+                                                distrib_mode);
 
 bml_matrix_ellblock_t *bml_zero_matrix_ellblock(
     bml_matrix_precision_t matrix_precision,

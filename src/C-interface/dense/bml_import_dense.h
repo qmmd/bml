@@ -23,17 +23,19 @@ bml_matrix_dense_t *bml_import_from_dense_dense_double_real(
     void *A,
     bml_distribution_mode_t distrib_mode);
 
-bml_matrix_dense_t *bml_import_from_dense_dense_single_complex(
-    bml_dense_order_t order,
-    int N,
-    void *A,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_dense_t
+    * bml_import_from_dense_dense_single_complex(bml_dense_order_t order,
+                                                 int N,
+                                                 void *A,
+                                                 bml_distribution_mode_t
+                                                 distrib_mode);
 
-bml_matrix_dense_t *bml_import_from_dense_dense_double_complex(
-    bml_dense_order_t order,
-    int N,
-    void *A,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_dense_t
+    * bml_import_from_dense_dense_double_complex(bml_dense_order_t order,
+                                                 int N,
+                                                 void *A,
+                                                 bml_distribution_mode_t
+                                                 distrib_mode);
 
 void *bml_export_to_dense_dense(
     bml_matrix_dense_t * A,

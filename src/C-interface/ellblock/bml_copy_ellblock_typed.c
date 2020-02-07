@@ -19,9 +19,8 @@
  *  \param A The matrix to be copied
  *  \return A copy of matrix A.
  */
-bml_matrix_ellblock_t *TYPED_FUNC(
-    bml_copy_ellblock_new) (
-    bml_matrix_ellblock_t * A)
+bml_matrix_ellblock_t
+    * TYPED_FUNC(bml_copy_ellblock_new) (bml_matrix_ellblock_t * A)
 {
     bml_matrix_ellblock_t *B =
         TYPED_FUNC(bml_block_matrix_ellblock) (A->NB, A->MB, A->bsize,

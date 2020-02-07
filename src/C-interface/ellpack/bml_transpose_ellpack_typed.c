@@ -24,9 +24,8 @@
  *  \param A The matrix to be transposed
  *  \return the transposed A
  */
-bml_matrix_ellpack_t *TYPED_FUNC(
-    bml_transpose_new_ellpack) (
-    bml_matrix_ellpack_t * A)
+bml_matrix_ellpack_t
+    * TYPED_FUNC(bml_transpose_new_ellpack) (bml_matrix_ellpack_t * A)
 {
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
 

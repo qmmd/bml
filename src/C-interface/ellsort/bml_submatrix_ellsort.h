@@ -197,29 +197,29 @@ bml_matrix_ellsort_t *bml_group_matrix_ellsort(
     int ngroups,
     double threshold);
 
-bml_matrix_ellsort_t *bml_group_matrix_ellsort_single_real(
-    bml_matrix_ellsort_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellsort_t
+    * bml_group_matrix_ellsort_single_real(bml_matrix_ellsort_t * A,
+                                           int *hindex,
+                                           int ngroups,
+                                           double threshold);
 
-bml_matrix_ellsort_t *bml_group_matrix_ellsort_double_real(
-    bml_matrix_ellsort_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellsort_t
+    * bml_group_matrix_ellsort_double_real(bml_matrix_ellsort_t * A,
+                                           int *hindex,
+                                           int ngroups,
+                                           double threshold);
 
-bml_matrix_ellsort_t *bml_group_matrix_ellsort_single_complex(
-    bml_matrix_ellsort_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellsort_t
+    * bml_group_matrix_ellsort_single_complex(bml_matrix_ellsort_t * A,
+                                              int *hindex,
+                                              int ngroups,
+                                              double threshold);
 
-bml_matrix_ellsort_t *bml_group_matrix_ellsort_double_complex(
-    bml_matrix_ellsort_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold);
+bml_matrix_ellsort_t
+    * bml_group_matrix_ellsort_double_complex(bml_matrix_ellsort_t * A,
+                                              int *hindex,
+                                              int ngroups,
+                                              double threshold);
 
 void bml_adjacency_ellsort(
     bml_matrix_ellsort_t * A,

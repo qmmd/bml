@@ -12,36 +12,40 @@ bml_matrix_ellpack_t *bml_import_from_dense_ellpack(
     int M,
     bml_distribution_mode_t distrib_mode);
 
-bml_matrix_ellpack_t *bml_import_from_dense_ellpack_single_real(
-    bml_dense_order_t order,
-    int N,
-    void *A,
-    double threshold,
-    int M,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellpack_t
+    * bml_import_from_dense_ellpack_single_real(bml_dense_order_t order,
+                                                int N,
+                                                void *A,
+                                                double threshold,
+                                                int M,
+                                                bml_distribution_mode_t
+                                                distrib_mode);
 
-bml_matrix_ellpack_t *bml_import_from_dense_ellpack_double_real(
-    bml_dense_order_t order,
-    int N,
-    void *A,
-    double threshold,
-    int M,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellpack_t
+    * bml_import_from_dense_ellpack_double_real(bml_dense_order_t order,
+                                                int N,
+                                                void *A,
+                                                double threshold,
+                                                int M,
+                                                bml_distribution_mode_t
+                                                distrib_mode);
 
-bml_matrix_ellpack_t *bml_import_from_dense_ellpack_single_complex(
-    bml_dense_order_t order,
-    int N,
-    void *A,
-    double threshold,
-    int M,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellpack_t
+    * bml_import_from_dense_ellpack_single_complex(bml_dense_order_t order,
+                                                   int N,
+                                                   void *A,
+                                                   double threshold,
+                                                   int M,
+                                                   bml_distribution_mode_t
+                                                   distrib_mode);
 
-bml_matrix_ellpack_t *bml_import_from_dense_ellpack_double_complex(
-    bml_dense_order_t order,
-    int N,
-    void *A,
-    double threshold,
-    int M,
-    bml_distribution_mode_t distrib_mode);
+bml_matrix_ellpack_t
+    * bml_import_from_dense_ellpack_double_complex(bml_dense_order_t order,
+                                                   int N,
+                                                   void *A,
+                                                   double threshold,
+                                                   int M,
+                                                   bml_distribution_mode_t
+                                                   distrib_mode);
 
 #endif
