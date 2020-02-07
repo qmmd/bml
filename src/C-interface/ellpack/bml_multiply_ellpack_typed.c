@@ -157,7 +157,7 @@ void *TYPED_FUNC(
 
         memset(ix, 0, X_N * sizeof(int));
 #endif
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
         __assume_aligned(X_nnz, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(X_index, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(X_value, INTEL_MALLOC_ALIGNMENT);
@@ -193,7 +193,7 @@ void *TYPED_FUNC(
             LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
         }
 
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
         __assume_aligned(X2_nnz, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(X2_index, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(X2_value, INTEL_MALLOC_ALIGNMENT);

@@ -42,7 +42,7 @@ int TYPED_FUNC(
     switch (matrix_precision)
     {
         case single_real:
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(float));
 
 #pragma omp parallel for simd
@@ -57,7 +57,7 @@ int TYPED_FUNC(
 #endif
             break;
         case double_real:
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(double));
 #pragma omp parallel for simd
 #pragma vector aligned
@@ -71,7 +71,7 @@ int TYPED_FUNC(
 #endif
             break;
         case single_complex:
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(float complex));
 #pragma omp parallel for simd
 #pragma vector aligned
@@ -85,7 +85,7 @@ int TYPED_FUNC(
 #endif
             break;
         case double_complex:
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(double complex));
 #pragma omp parallel for simd
 #pragma vector aligned

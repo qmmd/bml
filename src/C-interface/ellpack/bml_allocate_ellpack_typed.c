@@ -32,7 +32,7 @@ void TYPED_FUNC(
 #pragma vector aligned
     for (int i = 0; i < (A->N * A->M); i++)
     {
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
         __assume_aligned(A->index, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(A_value, INTEL_MALLOC_ALIGNMENT);
 #endif
@@ -44,7 +44,7 @@ void TYPED_FUNC(
 #pragma vector aligned
     for (int i = 0; i < A->N; i++)
     {
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
         __assume_aligned(A->nnz, INTEL_MALLOC_ALIGNMENT);
 #endif
         A->nnz[i] = 0;
@@ -247,7 +247,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
         __assume_aligned(A_value, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(A_index, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(A_nnz, INTEL_MALLOC_ALIGNMENT);

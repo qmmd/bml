@@ -42,7 +42,7 @@ void *
 bml_allocate_memory(
     size_t size)
 {
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
     char *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
 
 #pragma omp parallel for simd
@@ -75,7 +75,7 @@ void *
 bml_noinit_allocate_memory(
     size_t size)
 {
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
     void *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
 #else
     void *ptr = malloc(size);
@@ -97,7 +97,7 @@ void
 bml_free_memory(
     void *ptr)
 {
-#ifdef __INTEL_COMPILER
+#ifdef INTEL_OPT
     _mm_free(ptr);
 #else
     free(ptr);

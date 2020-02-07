@@ -71,6 +71,7 @@ EOF
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
     echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
+    echo "INTEL_OPT              {yes, no}                   (default is ${INTEL_OPT})"
 }
 
 set_defaults() {
@@ -102,6 +103,7 @@ set_defaults() {
     : ${BML_MAGMA:=no}
     : ${BML_XSMM:=no}
     : ${CUDA_TOOLKIT_ROOT_DIR:=}
+    : ${INTEL_OPT:=no}
 }
 
 die() {
@@ -175,6 +177,7 @@ configure() {
         -DBML_MAGMA="${BML_MAGMA}" \
         -DBML_XSMM="${BML_XSMM}" \
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
+        -DINTEL_OPT="${INTEL_OPT:=no}" \
         | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
