@@ -43,7 +43,14 @@ bml_allocate_memory(
     size_t size)
 {
 #ifdef __INTEL_COMPILER
-    void *ptr = _mm_malloc(size, 64);
+    char *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
+
+#pragma omp parallel for
+    for (size_t i = 0; i < size; i++)
+    {
+        __assume_aligned(A_dense, 64);
+        ptr[i] = 0;
+    }
 #else
     void *ptr = calloc(1, size);
 #endif
@@ -53,7 +60,7 @@ bml_allocate_memory(
         LOG_ERROR("error allocating memory of size %d: %s\n", size,
                   strerror(errno));
     }
-    return ptr;
+    return (void *) ptr;
 }
 
 /** Allocate a chunk of memory without initialization.
@@ -68,7 +75,7 @@ bml_noinit_allocate_memory(
     size_t size)
 {
 #ifdef __INTEL_COMPILER
-    void *ptr = _mm_malloc(size, 64);
+    void *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
 #else
     void *ptr = malloc(size);
 #endif
