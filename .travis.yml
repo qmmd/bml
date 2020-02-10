@@ -1,6 +1,6 @@
 language: python
 rvm: 2.0
-sudo: required
+os: linux
 
 cache:
   directories:
