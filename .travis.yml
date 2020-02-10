@@ -83,7 +83,7 @@ stages:
 jobs:
   fast_finish: true
   allow_failures:
-    - env: CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R fortran-.*-single_real"    BML_VALGRIND=yes packages="valgrind"
+    - env: OMP_NUM_THREADS=4 CMAKE_BUILD_TYPE=Debug VERBOSE_MAKEFILE=yes PARALLEL_TEST_JOBS=2 DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev" CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R fortran-.*-single_real"    BML_VALGRIND=yes packages="valgrind"
   include:
     - stage: linter
       name: "Linter"
