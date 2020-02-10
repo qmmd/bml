@@ -74,6 +74,7 @@ script:
 stages:
   - name: linter
     if: branch != coverty_scan
+  - name: test
   - name: coverage
     if: branch != coverty_scan
   - name: docs
