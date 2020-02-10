@@ -83,6 +83,8 @@ stages:
     if: branch = coverty_scan
 
 jobs:
+  allow_failures:
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R fortran-.*-single_real"    BML_VALGRIND=yes packages="valgrind"
   include:
     - stage: linter
       name: "Linter"
@@ -95,9 +97,6 @@ jobs:
         - bundle exec danger
         - packages="indent emacs26" ./install_packages.sh
         - BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
-    - stage: test
-      allow_failures:
-        - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R fortran-.*-single_real"    BML_VALGRIND=yes packages="valgrind"
     - stage: docs
       name: "Build Docs"
       env:
