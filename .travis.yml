@@ -67,7 +67,7 @@ env:
 
 script:
   - ./install_packages.sh
-  - ./build.sh testing
+  - ./build.sh --debug testing
 
 stages:
   - name: linter
