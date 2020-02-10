@@ -83,6 +83,7 @@ stages:
     if: branch = coverty_scan
 
 jobs:
+  fast_finish: true
   allow_failures:
     - env: CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  TESTING_EXTRA_ARGS="-R fortran-.*-single_real"    BML_VALGRIND=yes packages="valgrind"
   include:
