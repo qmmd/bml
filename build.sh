@@ -216,15 +216,15 @@ testing() {
     readarray -t SKIPPED_TESTS < <(sed -E '0,/The following tests did not run:.*$/d; s/^\s*[0-9]+\s-\s([^ ]+) .*/\1/' "${LOG_FILE}")
     if (( ${#SKIPPED_TESTS[@]} > 0 )); then
         echo "Found skipped tests: ${SKIPPED[@]}"
-    fi
-    local skipped
-    for skipped in "${SKIPPED_TESTS[@]}"; do
-        echo "Re-running skipped test ${skipped}"
-        ctest --verbose \
+        local skipped
+        for skipped in "${SKIPPED_TESTS[@]}"; do
+          echo "Re-running skipped test ${skipped}"
+          ctest --verbose \
             ${TESTING_EXTRA_ARGS} \
             --tests-regex "${skipped}" \
             2>&1 | tee --append "${LOG_FILE}"
-    done
+        done
+    fi
     cd "${TOP_DIR}"
 }
 
