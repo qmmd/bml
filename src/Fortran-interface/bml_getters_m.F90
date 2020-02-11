@@ -117,6 +117,7 @@ contains
     ptr = bml_get_row_C(a%ptr, i - 1)
     call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
     row = row_ptr
+    deallocate(row_ptr)
 
   end subroutine bml_get_row_single_real
 
