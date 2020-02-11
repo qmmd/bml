@@ -183,12 +183,16 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     int mb = bml_get_mb();
     int nb = bml_get_nb();
 
+    printf("N = %d, M = %d, len(bsize) = %d\n", N, M, nb);
+
     bml_matrix_ellblock_t *A =
         TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, bsize, distrib_mode);
 
     //now fill with random values
     int NB = A->NB;
     int MB = A->MB;
+
+    printf("NB = %d, MB = %d\n", NB, MB);
 
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     int *A_indexb = A->indexb;
@@ -201,6 +205,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
             int ind = ROWMAJOR(ib, jp, NB, MB);
             A_indexb[ind] = jp;
             int jb = A_indexb[ind];
+
+            printf("ind = %d, jp = %d, ib = %d, jb = %d\n", ind, jp, ib, jb);
 
             //allocate storage
             int nelements = bsize[ib] * bsize[jb];

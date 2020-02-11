@@ -57,16 +57,16 @@ bml_get_block_sizes(
         s_nb = N / s_default_block_dim;
         if (s_nb * s_default_block_dim < N)
             s_nb++;
-        printf("s_nb = %d\n", s_nb);
+        printf("N = %d, s_nb = %d\n", N, s_nb);
 
         s_mb = M / s_default_block_dim;
         if (s_mb * s_default_block_dim < M)
             s_mb++;
         if (s_mb < 4)
             s_mb = 4;
-        printf("s_mb = %d\n", s_mb);
+        printf("M = %d, s_mb = %d\n", M, s_mb);
 
-        s_default_bsize = malloc(s_nb * sizeof(int));
+        s_default_bsize = bml_noinit_allocate_memory(s_nb * sizeof(int));
         for (int ib = 0; ib < s_nb - 1; ib++)
         {
             s_default_bsize[ib] = s_default_block_dim;
@@ -78,14 +78,14 @@ bml_get_block_sizes(
 
 int
 bml_get_mb(
-    )
+    void)
 {
     return s_mb;
 }
 
 int
 bml_get_nb(
-    )
+    void)
 {
     return s_nb;
 }

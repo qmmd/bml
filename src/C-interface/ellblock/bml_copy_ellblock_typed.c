@@ -49,7 +49,9 @@ bml_matrix_ellblock_t
             int ind = ROWMAJOR(ib, jp, NB, MB);
             int jb = B_indexb[ind];
             B_ptr_value[ind]
-                = bml_noinit_allocate_memory(A->bsize[ib] * A->bsize[jb] * sizeof(REAL_T));
+                =
+                bml_noinit_allocate_memory(A->bsize[ib] * A->bsize[jb] *
+                                           sizeof(REAL_T));
 
             memcpy(B_ptr_value[ind], A_ptr_value[ind],
                    A->bsize[ib] * A->bsize[jb] * sizeof(REAL_T));
