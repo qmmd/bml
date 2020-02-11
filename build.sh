@@ -212,12 +212,13 @@ testing() {
     check_pipe_error
 
     # Get skipped tests and re-run them with verbose output.
-    local SKIPPED
-    readarray -t SKIPPED < <(sed -E '0,/The following tests did not run:.*$/d; s/^\s*[0-9]+\s-\s([^ ]+) .*/\1/' "${LOG_FILE}")
-    if (( ${#SKIPPED[@]} > 0 )); then
+    local SKIPPED_TESTS
+    readarray -t SKIPPED_TESTS < <(sed -E '0,/The following tests did not run:.*$/d; s/^\s*[0-9]+\s-\s([^ ]+) .*/\1/' "${LOG_FILE}")
+    if (( ${#SKIPPED_TESTS[@]} > 0 )); then
         echo "Found skipped tests: ${SKIPPED[@]}"
     fi
-    for skipped in "${SKIPPED[@]}"; do
+    local skipped
+    for skipped in "${SKIPPED_TESTS[@]}"; do
         echo "Re-running skipped test ${skipped}"
         ctest --verbose \
             ${TESTING_EXTRA_ARGS} \
