@@ -215,7 +215,7 @@ testing() {
     local SKIPPED_TESTS
     readarray -t SKIPPED_TESTS < <(sed -E '0,/The following tests did not run:.*$/d; s/^\s*[0-9]+\s-\s([^ ]+) .*/\1/' "${LOG_FILE}")
     if (( ${#SKIPPED_TESTS[@]} > 0 )); then
-        echo "Found skipped tests: ${SKIPPED[@]}"
+        echo "Found skipped tests: ${SKIPPED_TESTS[*]}"
         local skipped
         for skipped in "${SKIPPED_TESTS[@]}"; do
           echo "Re-running skipped test ${skipped}"
