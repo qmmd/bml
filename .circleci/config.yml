@@ -1,14 +1,12 @@
 version: 2.1
 
-workflows:
+jobs:
   lint:
-    jobs:
-      lint:
-        docker:
-          - image: ubuntu/xenial
-        steps:
-          - checkout
-          - run:
-              name: "First steps"
-              command: >-
-                ls -lh
+    docker:
+      - image: ubuntu/xenial
+    steps:
+      - checkout
+      - run:
+          name: "First steps"
+          command: >-
+            ls -lh
