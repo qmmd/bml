@@ -9,4 +9,5 @@ RUN apt-get install --assume-yes --no-install-recommends gcc-4.7 g++-4.7 gfortra
 RUN apt-get install --assume-yes --no-install-recommends gcc-9 g++-9 gfortran-9
 RUN apt-get install --assume-yes --no-install-recommends git-core
 RUN apt-get install --assume-yes --no-install-recommends openssh-client
+RUN apt-get install --assume-yes --no-install-recommends python
 RUN apt-get install --assume-yes --no-install-recommends valgrind
