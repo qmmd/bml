@@ -6,7 +6,7 @@ jobs:
       - image: ubuntu:xenial
     steps:
       - checkout
-      - run: sudo apt-get install git
+      - run: apt-get install git
       - run: ls -lh
 
 workflows:
