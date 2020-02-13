@@ -1,16 +1,27 @@
 version: 2.0
 
 jobs:
-  build: &base-template
-    <<: *base-template
+  build: &build-template
     docker:
-      - image: nicolasbock/bml-ci:1.0
+      - image: nicolasbock/bml-ci-build:1.0
     steps:
       - checkout
       - run: ls -lh
 
+  lint:
+    docker:
+      - image: nicolasbock/bml-ci-lint:1.0
+    steps:
+      - checkout
+      - run: bundle install
+      - run: bundle exec danger || true
+      - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
+
 workflows:
   version: 2
+  lint:
+    jobs:
+      - lint
   build:
     jobs:
       - build
