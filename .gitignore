@@ -1,6 +1,6 @@
 *~
-build.log
-build
-install
-tags
-TAGS
+/build.log
+/build
+/install
+/tags
+/TAGS
