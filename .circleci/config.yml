@@ -6,11 +6,8 @@ jobs:
       - image: ubuntu:xenial
     steps:
       - checkout
-      - sudo apt-get install git
-      - run:
-          name: "First steps"
-          command: >-
-            ls -lh
+      - run: sudo apt-get install git
+      - run: ls -lh
 
 workflows:
   version: 2
