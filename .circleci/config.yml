@@ -3,7 +3,7 @@ version: 2.0
 jobs:
   basejob: &base-template
     docker:
-      - image: ubuntu:xenial
+      - image: nicolasbock:bml-ci
     steps:
       - run: apt-get update
       - run: apt-get install --assume-yes git-core
