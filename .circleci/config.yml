@@ -7,6 +7,7 @@ jobs:
     steps:
       - checkout
       - run: ls -lh
+      - run: pwd
       - run:
           environment:
             OMP_NUM_THREADS: 4
@@ -19,7 +20,6 @@ jobs:
             BUILD_SHARED_LIBS: yes
             BML_OPENMP: no
             BML_INTERNAL_BLAS: no
-          working_directory: ~/bml
           command: ./build.sh testing
 
   lint:
