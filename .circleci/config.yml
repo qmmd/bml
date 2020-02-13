@@ -1,19 +1,11 @@
 version: 2.0
 
 jobs:
-  basejob: &base-template
-    docker:
-      - image: nicolasbock:bml-ci
-    steps:
-      - run: apt-get update
-      - run: apt-get install --assume-yes git-core
-      - checkout
-
-  build:
+  build: &base-template
     <<: *base-template
+    docker:
+      - image: nicolasbock/bml-ci:1.0
     steps:
-      - run: apt-get update
-      - run: apt-get install --assume-yes git-core
       - checkout
       - run: ls -lh
 
