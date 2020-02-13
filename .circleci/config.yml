@@ -6,8 +6,6 @@ jobs:
       - image: nicolasbock/bml-ci-build:1.0
     steps:
       - checkout
-      - run: ls -lh
-      - run: pwd
       - run:
           environment:
             OMP_NUM_THREADS: 4
