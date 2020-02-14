@@ -93,13 +93,6 @@ jobs:
     steps:
       - checkout
 
-  # docs:
-  #   docker:
-  #     -image: nicolasbock/bml-ci-docs:1.0
-  #   steps:
-  #     - checkout
-  #     - run: ./build.sh docs
-
 workflows:
   version: 2
   lint:
