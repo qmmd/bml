@@ -87,6 +87,12 @@ jobs:
       - run: bundle exec danger || true
       - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
 
+  docs:
+    docker:
+      - image: nicolasbock/bml-ci-docs:1.0
+    steps:
+      - checkout
+
   # docs:
   #   docker:
   #     -image: nicolasbock/bml-ci-docs:1.0
