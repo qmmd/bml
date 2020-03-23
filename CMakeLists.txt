@@ -220,7 +220,7 @@ if(BML_OPENCL)
   include(FindOpenCL)
 endif()
 
-include(FindPythonInterp)
+find_package(PythonInterp 3.2 REQUIRED)
 if(NOT PYTHONINTERP_FOUND)
   message(FATAL "Could not find Python interpreter")
 endif()
