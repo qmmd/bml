@@ -220,11 +220,6 @@ if(BML_OPENCL)
   include(FindOpenCL)
 endif()
 
-find_package(PythonInterp 3.2 REQUIRED)
-if(NOT PYTHONINTERP_FOUND)
-  message(FATAL "Could not find Python interpreter")
-endif()
-
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 set(BML_MAGMA FALSE CACHE BOOL "Whether to use MAGMA library")
@@ -615,6 +610,13 @@ if(TAR AND GIT)
 else()
   add_custom_target(dist)
 endif()
+
+include(FindPythonInterp)
+if(NOT PYTHONINTERP_FOUND)
+  message(FATAL "Could not find Python interpreter")
+endif()
+configure_file(${CMAKE_SOURCE_DIR}/scripts/convert-template.in
+  ${CMAKE_BINARY_DIR}/convert-template)
 
 message(STATUS "When building executables with the bml library, please use the following link flags")
 

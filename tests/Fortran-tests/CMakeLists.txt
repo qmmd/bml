@@ -69,7 +69,7 @@ foreach(T ${TYPES})
 
     add_custom_command(OUTPUT ${S_TYPED}
       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
-      COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+      COMMAND ${CMAKE_BINARY_DIR}/convert-template
       -DDUMMY_KIND=${FORMATED_KIND}
       -DDUMMY_PREC=${FORMATED_PREC}
       -D_MP=${NUMBER_PREC}

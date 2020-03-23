@@ -47,7 +47,7 @@ foreach(i RANGE ${NUMBER_TYPES_MAX})
     get_filename_component(S_TYPED ${S_TYPED} NAME)
     add_custom_command(OUTPUT ${S_TYPED}
       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
-      COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+      COMMAND ${CMAKE_BINARY_DIR}/convert-template
       -DMATRIX_TYPE=${MATRIX_TYPE}
       -DREAL_TYPE="${REAL_TYPE}"
       -DREAL_KIND=${REAL_KIND}
