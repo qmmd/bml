@@ -220,6 +220,8 @@ if(BML_OPENCL)
   include(FindOpenCL)
 endif()
 
+find_package(PythonInterp 3.2 REQUIRED)
+
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 set(BML_MAGMA FALSE CACHE BOOL "Whether to use MAGMA library")
