@@ -1,4 +1,4 @@
-language: python3
+language: python
 rvm: 2.0
 os: linux
 

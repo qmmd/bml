@@ -15,5 +15,4 @@ RUN apt-get install --assume-yes --no-install-recommends cmake cmake-data libbla
 RUN apt-get install --assume-yes --no-install-recommends gcc-4.7 g++-4.7 gfortran-4.7
 RUN apt-get install --assume-yes --no-install-recommends gcc-9 g++-9 gfortran-9
 RUN apt-get install --assume-yes --no-install-recommends clang-9 libomp-9-dev
-RUN apt-get install --assume-yes --no-install-recommends python3
 RUN apt-get install --assume-yes --no-install-recommends valgrind

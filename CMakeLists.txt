@@ -220,7 +220,10 @@ if(BML_OPENCL)
   include(FindOpenCL)
 endif()
 
-find_package(PythonInterp 3.2 REQUIRED)
+include(FindPythonInterp)
+if(NOT PYTHONINTERP_FOUND)
+  message(FATAL "Could not find Python interpreter")
+endif()
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
