@@ -41,13 +41,18 @@ else()
 endif()
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
-  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99)
-set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
-set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
+  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99
+  -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
+set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG
+  -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
+set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG
+  -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
-  -ffree-line-length-none)
-set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
-set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
+  -ffree-line-length-none -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
+set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none
+  -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
+set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none
+  -DNDEBUG -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
   -traceback -qopt-report=5)
