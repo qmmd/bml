@@ -27,8 +27,13 @@ void TYPED_FUNC(
         LOG_ERROR("A is not intialized\n");
     }
 
+#ifdef BML_USE_MAGMA
+    MAGMA(setvector) (N, sizeof(REAL_T), (MAGMA_T *) value, 1,
+                      (MAGMA_T *) A->matrix + i * A->ld + j, 1, A->queue);
+#else
     REAL_T *A_matrix = A->matrix;
     A_matrix[ROWMAJOR(i, j, N, N)] = *((REAL_T *) value);
+#endif
 }
 
 void TYPED_FUNC(
@@ -46,7 +51,7 @@ void TYPED_FUNC(
     }
 
 #ifdef BML_USE_MAGMA
-    MAGMA(setvector) (N, (MAGMA_T *) row, 1,
+    MAGMA(setvector) (N, sizeof(REAL_T), (MAGMA_T *) row, 1,
                       (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
 #else
     REAL_T *A_matrix = A->matrix;

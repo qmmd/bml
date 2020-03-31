@@ -112,16 +112,30 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dimension_t matrix_dimension = { N, N, M };
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
+#ifdef BML_USE_MAGMA
+    MAGMA_T *A_dense = calloc(N * N, sizeof(REAL_T));
+#else
     REAL_T *A_dense = A->matrix;
+#endif
+
 #pragma omp parallel for shared(A_dense)
     for (int i = 0; i < N; i++)
     {
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
              j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
         {
+#ifdef BML_USE_MAGMA
+            A_dense[ROWMAJOR(i, j, N, N)] =
+                MAGMACOMPLEX(MAKE) (rand() / (double) RAND_MAX, 0.);
+#else
             A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
+#endif
         }
     }
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, A->queue);
+    free(A_dense);
+#endif
     return A;
 }
 

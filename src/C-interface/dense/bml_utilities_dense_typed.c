@@ -36,7 +36,11 @@ void TYPED_FUNC(
 
     int N = A->N;
 
+#ifdef BML_USE_MAGMA
+    REAL_T *A_value = calloc(N * N, sizeof(REAL_T));
+#else
     REAL_T *A_value = A->matrix;
+#endif
 
     matrix_file = fopen(filename, "r");
 
@@ -101,6 +105,12 @@ void TYPED_FUNC(
 #endif
     }
 
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (N, N, (MAGMA_T *) A_value, N, A->matrix, A->ld,
+                      A->queue);
+    free(A_value);
+#endif
+
     fclose(matrix_file);
 }
 
@@ -123,7 +133,13 @@ void TYPED_FUNC(
     int N = A->N;
     int msum = N * N;
 
+#ifdef BML_USE_MAGMA
+    REAL_T *A_value = calloc(N * N, sizeof(REAL_T));
+    MAGMA(getmatrix) (N, N, A->matrix, A->ld, (MAGMA_T *) A_value, N,
+                      A->queue);
+#else
     REAL_T *A_value = A->matrix;
+#endif
 
     matrix_file = fopen(filename, "w");
 
@@ -163,6 +179,10 @@ void TYPED_FUNC(
 #endif
         }
     }
+
+#ifdef BML_USE_MAGMA
+    free(A_value);
+#endif
     fclose(matrix_file);
 }
 
