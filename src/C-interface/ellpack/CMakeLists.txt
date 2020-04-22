@@ -81,7 +81,7 @@ set(SOURCES-ELLPACK-TYPED
   bml_transpose_ellpack_typed.c
   bml_utilities_ellpack_typed.c)
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellpack single_real "${SOURCES-ELLPACK-TYPED}")
 bml_add_typed_library(bml-ellpack double_real "${SOURCES-ELLPACK-TYPED}")
 bml_add_typed_library(bml-ellpack single_complex "${SOURCES-ELLPACK-TYPED}")

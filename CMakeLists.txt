@@ -220,7 +220,7 @@ if(BML_OPENCL)
   include(FindOpenCL)
 endif()
 
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 set(BML_MAGMA FALSE CACHE BOOL "Whether to use MAGMA library")
 if(BML_MAGMA)
@@ -384,7 +384,7 @@ if(NOT (LAPACK_FOUND OR NOBLAS))
   endif()
 endif()
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
 if(MAGMA_FOUND)
   set(CMAKE_REQUIRED_LIBRARIES
     ${MAGMA_LIBRARIES})
@@ -491,7 +491,7 @@ set(BML_COMPLEX TRUE
   CACHE BOOL "Whether to build complex types")
 
 if(BML_COMPLEX)
-  try_compile(SUPPORTS_COMPLEX ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/test_complex.c
+  try_compile(SUPPORTS_COMPLEX ${CMAKE_BINARY_DIR} ${PROJECT_SOURCE_DIR}/cmake/test_complex.c
     OUTPUT_VARIABLE COMPLEX_OUTPUT
     )
   message(STATUS "Compile output: ${COMPLEX_OUTPUT}")
@@ -551,17 +551,17 @@ include(FindDoxygen)
 if(DOXYGEN_FOUND)
   if(BML_OLD)
     set(DOXYGEN_INPUT
-      ${CMAKE_SOURCE_DIR}/src-old
+      ${PROJECT_SOURCE_DIR}/src-old
       ${CMAKE_BINARY_DIR}/src-old)
   else()
     set(DOXYGEN_INPUT
-      ${CMAKE_SOURCE_DIR}/src/C-interface
-      ${CMAKE_SOURCE_DIR}/src/Fortran-interface)
+      ${PROJECT_SOURCE_DIR}/src/C-interface
+      ${PROJECT_SOURCE_DIR}/src/Fortran-interface)
   endif()
   string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
   configure_file(documentation/Doxyfile.in Doxyfile)
   add_custom_target(docs
-    COMMAND rm -rvf ${CMAKE_SOURCE_DIR}/docs/API/*
+    COMMAND rm -rvf ${PROJECT_SOURCE_DIR}/docs/API/*
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
 else()
   add_custom_target(docs)
@@ -597,6 +597,7 @@ find_program(GIT git)
 if(TAR AND GIT)
   execute_process(COMMAND ${GIT} status
     RESULT_VARIABLE IS_GIT_REPOSITORY
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     OUTPUT_QUIET
     ERROR_QUIET)
   if(NOT IS_GIT_REPOSITORY EQUAL 0)
@@ -609,7 +610,7 @@ if(TAR AND GIT)
       --prefix=bml-${PROJECT_VERSION}/
       --output=${CMAKE_BINARY_DIR}/bml-${PROJECT_VERSION}.tar.gz
       master
-      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+      WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
   endif()
 else()
   add_custom_target(dist)
@@ -619,7 +620,7 @@ include(FindPythonInterp)
 if(NOT PYTHONINTERP_FOUND)
   message(FATAL "Could not find Python interpreter")
 endif()
-configure_file(${CMAKE_SOURCE_DIR}/scripts/convert-template.in
+configure_file(${PROJECT_SOURCE_DIR}/scripts/convert-template.in
   ${CMAKE_BINARY_DIR}/convert-template)
 
 message(STATUS "When building executables with the bml library, please use the following link flags")

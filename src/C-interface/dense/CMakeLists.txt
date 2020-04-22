@@ -80,7 +80,7 @@ set(SOURCES-DENSE-TYPED
   bml_transpose_triangle_dense_typed.c
   bml_utilities_dense_typed.c)
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-dense single_real "${SOURCES-DENSE-TYPED}")
 bml_add_typed_library(bml-dense double_real "${SOURCES-DENSE-TYPED}")
 bml_add_typed_library(bml-dense single_complex "${SOURCES-DENSE-TYPED}")

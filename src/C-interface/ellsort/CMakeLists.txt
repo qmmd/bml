@@ -75,7 +75,7 @@ set(SOURCES-ELLSORT-TYPED
   bml_transpose_ellsort_typed.c
   bml_utilities_ellsort_typed.c)
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellsort single_real "${SOURCES-ELLSORT-TYPED}")
 bml_add_typed_library(bml-ellsort double_real "${SOURCES-ELLSORT-TYPED}")
 bml_add_typed_library(bml-ellsort single_complex "${SOURCES-ELLSORT-TYPED}")

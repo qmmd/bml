@@ -1,6 +1,6 @@
 include_directories(${BML_INCLUDEDIR})
 include_directories(${CMAKE_BINARY_DIR}/src/Fortran-interface)
-include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 
 # Adding the low-level source for each test
 set(FORTRAN-SOURCES-TYPED
@@ -82,7 +82,7 @@ endforeach()
 
 # Setting link flags
 #set(FORTRAN_TEST_LINK_FLAGS
-#-L${CMAKE_SOURCE_DIR}/build/src -lbml_fortran -lbml
+#-L${PROJECT_SOURCE_DIR}/build/src -lbml_fortran -lbml
 #${OpenMP_Fortran_FLAGS}
 #${BLAS_LIBRARIES}
 #${LINK_LIBRARIES}

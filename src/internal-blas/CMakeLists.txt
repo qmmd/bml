@@ -6,7 +6,7 @@ install(FILES ${HEADERS-C} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 set(SOURCES-INTERNAL-BLAS
   bml_gemm.c)
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-internal-blas single_real "${SOURCES-INTERNAL-BLAS}")
 bml_add_typed_library(bml-internal-blas double_real "${SOURCES-INTERNAL-BLAS}")
 bml_add_typed_library(bml-internal-blas single_complex "${SOURCES-INTERNAL-BLAS}")

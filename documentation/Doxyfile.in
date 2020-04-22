@@ -687,7 +687,7 @@ LAYOUT_FILE            =
 # LATEX_BIB_STYLE. To use this feature you need bibtex and perl available in the
 # search path. See also \cite for info how to create references.
 
-CITE_BIB_FILES         = @CMAKE_SOURCE_DIR@/docs/references.bib
+CITE_BIB_FILES         = @PROJECT_SOURCE_DIR@/docs/references.bib
 
 #---------------------------------------------------------------------------
 # Configuration options related to warning and progress messages
@@ -809,7 +809,7 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = @CMAKE_SOURCE_DIR@/src/*generic*.F90
+EXCLUDE_PATTERNS       = @PROJECT_SOURCE_DIR@/src/*generic*.F90
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1042,7 +1042,7 @@ GENERATE_HTML          = YES
 # The default directory is: html.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_OUTPUT            = ${CMAKE_SOURCE_DIR}/docs/API
+HTML_OUTPUT            = ${PROJECT_SOURCE_DIR}/docs/API
 
 # The HTML_FILE_EXTENSION tag can be used to specify the file extension for each
 # generated HTML page (for example: .htm, .php, .asp).

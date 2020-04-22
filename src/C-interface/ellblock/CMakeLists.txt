@@ -74,7 +74,7 @@ set(SOURCES-ELLBLOCK-TYPED
   bml_utilities_ellblock_typed.c
 )
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellblock single_real "${SOURCES-ELLBLOCK-TYPED}")
 bml_add_typed_library(bml-ellblock double_real "${SOURCES-ELLBLOCK-TYPED}")
 bml_add_typed_library(bml-ellblock single_complex "${SOURCES-ELLBLOCK-TYPED}")

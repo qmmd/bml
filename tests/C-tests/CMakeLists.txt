@@ -1,4 +1,4 @@
-include_directories(${CMAKE_SOURCE_DIR}/src/C-interface)
+include_directories(${PROJECT_SOURCE_DIR}/src/C-interface)
 
 set(SOURCES_TYPED
   add_matrix_typed.c
@@ -30,7 +30,7 @@ set(SOURCES_TYPED
   trace_matrix_typed.c
   transpose_matrix_typed.c)
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bmltests single_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests double_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests single_complex "${SOURCES_TYPED}")

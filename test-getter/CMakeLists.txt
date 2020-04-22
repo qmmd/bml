@@ -1,8 +1,8 @@
 project(ptr C Fortran)
 cmake_minimum_required(VERSION 3.0)
 
-include_directories(${CMAKE_SOURCE_DIR}/../install/include)
-link_directories(${CMAKE_SOURCE_DIR}/../install/lib64)
+include_directories(${PROJECT_SOURCE_DIR}/../install/include)
+link_directories(${PROJECT_SOURCE_DIR}/../install/lib64)
 
 add_executable(ptr-F ptr.F90)
 target_link_libraries(ptr-F bml m)

@@ -39,7 +39,7 @@ set(FORTRAN-SOURCES-PRIVATE
 set(FORTRAN-SOURCES-TYPED
   bml_utilities_typed_m.F90)
 
-include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 foreach(i RANGE ${NUMBER_TYPES_MAX})
   get_Fortran_types(${i} MATRIX_TYPE PRECISION_NAME REAL_TYPE REAL_KIND REAL_NAME)
   foreach(S ${FORTRAN-SOURCES-TYPED})
