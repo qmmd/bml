@@ -32,6 +32,7 @@ set_target_properties(bml
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
+target_include_directories(bml PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}>)
 
 add_library(bml_fortran
   $<TARGET_OBJECTS:bml-fortran>)
@@ -39,7 +40,13 @@ set_target_properties(bml_fortran
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
+target_include_directories(bml_fortran PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}>)
 
-install(TARGETS bml bml_fortran
+install(TARGETS bml bml_fortran EXPORT BML_Targets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(EXPORT BML_Targets FILE BML_Targets.cmake NAMESPACE BML:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BML)
+include(CMakePackageConfigHelpers)
+configure_file(BMLConfig.cmakein ${CMAKE_CURRENT_BINARY_DIR}/BMLConfig.cmake @ONLY)
+write_basic_package_version_file("BMLConfigVersion.cmake" VERSION ${PROJECT_VERSION} COMPATIBILITY ExactVersion)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/BMLConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/BMLConfigVersion.cmake" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BML)

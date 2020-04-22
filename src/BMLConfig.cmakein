@@ -1,0 +1,5 @@
+include(CMakeFindDependencyMacro)
+if(@OPENMP_FOUND@)
+  find_dependency(OpenMP REQUIRED)
+endif()
+include("${CMAKE_CURRENT_LIST_DIR}/BML_Targets.cmake")
