@@ -43,7 +43,7 @@ set_target_properties(bml_fortran
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
-target_include_directories(bml_fortran PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_include_directories(bml_fortran PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/Fortran-interface>)
 if(OPENMP_FOUND)
   target_link_libraries(bml_fortran PUBLIC OpenMP::OpenMP_Fortran)
 endif()
