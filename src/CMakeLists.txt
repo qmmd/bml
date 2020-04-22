@@ -33,6 +33,9 @@ set_target_properties(bml
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
 target_include_directories(bml PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+if(OPENMP_FOUND)
+  target_link_libraries(bml PUBLIC OpenMP::OpenMP_Fortran)
+endif()
 
 add_library(bml_fortran
   $<TARGET_OBJECTS:bml-fortran>)
@@ -41,6 +44,9 @@ set_target_properties(bml_fortran
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
 target_include_directories(bml_fortran PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+if(OPENMP_FOUND)
+  target_link_libraries(bml_fortran PUBLIC OpenMP::OpenMP_Fortran)
+endif()
 
 install(TARGETS bml bml_fortran EXPORT BML_Targets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
