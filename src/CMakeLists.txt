@@ -32,7 +32,7 @@ set_target_properties(bml
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
-target_include_directories(bml PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}>)
+target_include_directories(bml PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 add_library(bml_fortran
   $<TARGET_OBJECTS:bml-fortran>)
@@ -40,7 +40,7 @@ set_target_properties(bml_fortran
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
-target_include_directories(bml_fortran PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_LIBDIR}>)
+target_include_directories(bml_fortran PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 install(TARGETS bml bml_fortran EXPORT BML_Targets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
