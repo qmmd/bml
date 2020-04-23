@@ -36,6 +36,7 @@ target_include_directories(bml PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUD
 if(OPENMP_FOUND)
   target_link_libraries(bml PUBLIC OpenMP::OpenMP_C)
 endif()
+target_link_libraries(bml PRIVATE ${LINK_LIBRARIES})
 
 add_library(bml_fortran
   $<TARGET_OBJECTS:bml-fortran>)
