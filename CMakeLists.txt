@@ -9,7 +9,7 @@ if(BML_BUILD_FORTRAN_INTERFACE)
   list(APPEND LANGUAGES Fortran)
 endif()
 
-project(bml ${LANGUAGES})
+project(bml ${LANGUAGES}) # don't move this line as it changes PROJECT_SOURCE_DIR
 
 # The library version is versioned off the major version. If the API
 # changes, the library version should be bumped.
