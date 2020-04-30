@@ -54,6 +54,7 @@ bml_allocate_memory(
 #elif defined(HAVE_POSIX_MEMALIGN)
     char *ptr;
     posix_memalign((void **) &ptr, MALLOC_ALIGNMENT, size);
+    #pragma omp parallel for simd
     for (size_t i = 0; i < size; i++)
     {
         ptr[i] = 0;
