@@ -1,12 +1,15 @@
 FROM ubuntu:xenial
+
 RUN apt-get update
 RUN apt-get install --assume-yes --no-install-recommends apt-transport-https ca-certificates wget
+
 COPY clang.list /etc/apt/sources.list.d
+RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
 COPY cmake.list /etc/apt/sources.list.d
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4
 COPY toolchain.list /etc/apt/sources.list.d
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 60C317803A41BA51845E371A1E9377A2BA9EF27F
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+
 RUN apt-get update
 RUN ln -fs /usr/share/zoneinfo/UTC /etc/localtime
 RUN apt-get install --assume-yes tzdata

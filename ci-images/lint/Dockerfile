@@ -1,6 +1,8 @@
 FROM ubuntu:xenial
+
 COPY emacs.list /etc/apt/sources.list.d
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 873503A090750CDAEB0754D93FF0E01EEAAFC9CD
+
 RUN apt-get update
 RUN ln -fs /usr/share/zoneinfo/UTC /etc/localtime
 RUN apt-get install --assume-yes tzdata
