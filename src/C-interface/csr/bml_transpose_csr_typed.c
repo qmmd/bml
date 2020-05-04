@@ -26,13 +26,14 @@
  *  \param A The matrix to be transposed
  *  \return the transposed A
  */
-bml_matrix_csr_t * TYPED_FUNC(bml_transpose_new_csr) (bml_matrix_csr_t * A)
+bml_matrix_csr_t *TYPED_FUNC(
+    bml_transpose_new_csr) (
+    bml_matrix_csr_t * A)
 {
     bml_matrix_dimension_t matrix_dimension = { A->N_, A->N_, A->NZMAX_ };
 
     bml_matrix_csr_t *B = TYPED_FUNC(bml_noinit_matrix_csr) (matrix_dimension,
-                                                             A->
-                                                             distribution_mode);
+                                                             A->distribution_mode);
 
 #ifdef _OPENMP
     omp_lock_t *row_lock =
