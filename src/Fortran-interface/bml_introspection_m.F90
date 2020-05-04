@@ -97,6 +97,8 @@ contains
       bml_get_type = "ellblock"
     case(4)
       bml_get_type = "ellsort"
+    case(5)
+      bml_get_type = "csr"
     case default
       stop 'Unknown matrix type in bml_get_type'
     end select
