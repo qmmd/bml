@@ -22,7 +22,7 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
 
     if (matrix_type == dense || matrix_type == ellsort
-        || matrix_type == ellblock)
+        || matrix_type == ellblock || matrix_type == csr)
     {
         LOG_INFO("adjungate triangle matrix test not available\n");
         return 0;

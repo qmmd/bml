@@ -140,17 +140,16 @@ foreach(N
     trace_mult
     transpose
   )
-  set(formats dense ellpack ellsort ellblock)
-
+  set(formats dense ellpack ellsort ellblock csr)
   # Setting specific formats for a particular bml function
   if(${N} MATCHES diagonalize)
-    set(formats dense ellpack ellblock)
+    set(formats dense ellpack ellblock csr)
   endif()
   if(${N} MATCHES inverse)
-    set(formats dense ellpack ellblock)
+    set(formats dense ellpack ellblock csr)
   endif()
   if(${N} MATCHES set_element)
-    set(formats dense ellpack ellsort ellblock)
+    set(formats dense ellpack ellsort ellblock csr)
   endif()
 
   test_formats(${formats})

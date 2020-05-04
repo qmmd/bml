@@ -36,7 +36,7 @@ int TYPED_FUNC(
     double threshold2 = 0.2;
     double threshold3 = 0.3;
 
-    if (matrix_type == dense || matrix_type == ellblock)
+    if (matrix_type == dense || matrix_type == ellblock || matrix_type == csr)
     {
         LOG_INFO("submatrix matrix test not available\n");
         return 0;

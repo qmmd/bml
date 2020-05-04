@@ -1,4 +1,4 @@
-#define _POSIX_C_SOURCE 200809L
+#define _POSIX_C_SOURCE 200112L
 
 #include "bml.h"
 #include "../macros.h"
