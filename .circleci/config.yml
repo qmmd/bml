@@ -250,14 +250,37 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=app --tag nicolasbock/bml-ci-lint:1.0 ci-images/lint
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app.tar
 
 workflows:
-  ci:
-    jobs:
-      - build_ci_image
   build:
     jobs:
-      - lint
+      - build_ci_image
+      - lint:
+          requires:
+            - build_ci_image
       - docs:
           requires:
             - build-gcc-4_7-shared-serial-external
