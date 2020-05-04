@@ -256,25 +256,32 @@ jobs:
           keys:
             - v1-{{ .Branch }}
           paths:
-            - /caches/app.tar
+            - /caches/lint.tar
+            - /caches/build.tar
+            - /caches/docs.tar
       - run:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
             docker load -i /caches/lint.tar | true
+            docker load -i /caches/build.tar | true
+            docker load -i /caches/docs.tar | true
       - run:
           name: Build application Docker image
-          command: |
-            docker build --cache-from=lint --tag nicolasbock/bml-ci-lint:1.0 ci-images/lint
+          command: ./refresh-ci-images.sh
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
             docker save -o /caches/lint.tar nicolasbock/bml-ci-lint:1.0
+            docker save -o /caches/build.tar nicolasbock/bml-ci-build:1.0
+            docker save -o /caches/docs.tar nicolasbock/bml-ci-docs:1.0
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
-            - /caches/app.tar
+            - /caches/lint.tar
+            - /caches/build.tar
+            - /caches/docs.tar
 
 workflows:
   build:
