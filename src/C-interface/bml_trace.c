@@ -5,6 +5,7 @@
 #include "ellpack/bml_trace_ellpack.h"
 #include "ellsort/bml_trace_ellsort.h"
 #include "ellblock/bml_trace_ellblock.h"
+#include "csr/bml_trace_csr.h"
 
 #include <stdlib.h>
 /** Calculate trace of a matrix.
@@ -31,6 +32,9 @@ bml_trace(
             break;
         case ellblock:
             return bml_trace_ellblock(A);
+            break;
+        case csr:
+            return bml_trace_csr(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -65,6 +69,9 @@ bml_trace_mult(
             break;
         case ellblock:
             return bml_trace_mult_ellblock(A, B);
+            break;
+        case csr:
+            return bml_trace_mult_csr(A, B);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

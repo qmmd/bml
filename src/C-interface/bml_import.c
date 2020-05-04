@@ -5,6 +5,7 @@
 #include "ellpack/bml_import_ellpack.h"
 #include "ellsort/bml_import_ellsort.h"
 #include "ellblock/bml_import_ellblock.h"
+#include "csr/bml_import_csr.h"
 
 #include <stdlib.h>
 
@@ -50,6 +51,9 @@ bml_import_from_dense(
             return bml_import_from_dense_ellblock(matrix_precision, order, N,
                                                   A, threshold, M,
                                                   distrib_mode);
+        case csr:
+            return bml_import_from_dense_csr(matrix_precision, order, N,
+                                             A, threshold, M, distrib_mode);
         default:
             LOG_ERROR("unknown matrix type\n");
     }

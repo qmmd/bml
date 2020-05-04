@@ -5,6 +5,7 @@
 #include "ellpack/bml_multiply_ellpack.h"
 #include "ellsort/bml_multiply_ellsort.h"
 #include "ellblock/bml_multiply_ellblock.h"
+#include "csr/bml_multiply_csr.h"
 
 #include <stdlib.h>
 
@@ -44,6 +45,9 @@ bml_multiply(
         case ellblock:
             bml_multiply_ellblock(A, B, C, alpha, beta, threshold);
             break;
+        case csr:
+            bml_multiply_csr(A, B, C, alpha, beta, threshold);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -79,6 +83,9 @@ bml_multiply_x2(
             break;
         case ellblock:
             return bml_multiply_x2_ellblock(X, X2, threshold);
+            break;
+        case csr:
+            return bml_multiply_x2_csr(X, X2, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -119,6 +126,9 @@ bml_multiply_AB(
         case ellblock:
             bml_multiply_AB_ellblock(A, B, C, threshold);
             break;
+        case csr:
+            bml_multiply_AB_csr(A, B, C, threshold);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -156,6 +166,9 @@ bml_multiply_adjust_AB(
             break;
         case ellblock:
             bml_multiply_adjust_AB_ellblock(A, B, C, threshold);
+            break;
+        case csr:
+            bml_multiply_adjust_AB_csr(A, B, C, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

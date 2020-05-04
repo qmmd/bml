@@ -5,6 +5,7 @@
 #include "ellpack/bml_setters_ellpack.h"
 #include "ellsort/bml_setters_ellsort.h"
 #include "ellblock/bml_setters_ellblock.h"
+#include "csr/bml_setters_csr.h"
 
 void
 bml_set_element_new(
@@ -26,6 +27,9 @@ bml_set_element_new(
             break;
         case ellblock:
             bml_set_element_new_ellblock(A, i, j, value);
+            break;
+        case csr:
+            bml_set_element_new_csr(A, i, j, value);
             break;
         default:
             LOG_ERROR("unknown matrix type in bml_set_new\n");
@@ -55,6 +59,9 @@ bml_set_element(
         case ellblock:
             bml_set_element_ellblock(A, i, j, value);
             break;
+        case csr:
+            bml_set_element_csr(A, i, j, value);
+            break;
         default:
             LOG_ERROR("unknown matrix type in bml_set\n");
             break;
@@ -82,6 +89,9 @@ bml_set_row(
         case ellblock:
             bml_set_row_ellblock(A, i, row, threshold);
             break;
+        case csr:
+            bml_set_row_csr(A, i, row, threshold);
+            break;
         default:
             LOG_ERROR("unknown matrix type in bml_set_row\n");
             break;
@@ -107,6 +117,9 @@ bml_set_diagonal(
             break;
         case ellblock:
             bml_set_diagonal_ellblock(A, diagonal, threshold);
+            break;
+        case csr:
+            bml_set_diagonal_csr(A, diagonal, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type in bml_set_diagonal\n");

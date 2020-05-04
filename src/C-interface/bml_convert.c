@@ -4,6 +4,7 @@
 #include "ellpack/bml_convert_ellpack.h"
 #include "ellsort/bml_convert_ellsort.h"
 #include "ellblock/bml_convert_ellblock.h"
+#include "csr/bml_convert_csr.h"
 
 #include <stdlib.h>
 
@@ -35,6 +36,9 @@ bml_convert(
             break;
         case ellblock:
             return bml_convert_ellblock(A, matrix_precision, M, distrib_mode);
+            break;
+        case csr:
+            return bml_convert_csr(A, matrix_precision, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

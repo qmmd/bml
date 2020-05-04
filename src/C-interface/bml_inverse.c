@@ -6,6 +6,7 @@
 #include "dense/bml_inverse_dense.h"
 #include "ellpack/bml_inverse_ellpack.h"
 #include "ellblock/bml_inverse_ellblock.h"
+#include "csr/bml_inverse_csr.h"
 
 bml_matrix_t *
 bml_inverse(
@@ -26,6 +27,9 @@ bml_inverse(
             break;
         case ellblock:
             B = bml_inverse_ellblock(A);
+            break;
+        case csr:
+            B = bml_inverse_csr(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

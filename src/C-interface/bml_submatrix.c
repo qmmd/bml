@@ -49,6 +49,9 @@ bml_matrix2submatrix_index(
         case ellblock:
             LOG_ERROR("bml_matrix2submatrix_index_ellblock NOT available\n");
             break;
+        case csr:
+            LOG_ERROR("bml_matrix2submatrix_index_csr NOT available\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -95,6 +98,9 @@ bml_matrix2submatrix_index_graph(
         case ellblock:
             LOG_ERROR("bml_matrix2submatrix_index_ellblock NOT available\n");
             break;
+        case csr:
+            LOG_ERROR("bml_matrix2submatrix_index_csr NOT available\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -131,6 +137,9 @@ bml_group_matrix(
             break;
         case ellblock:
             LOG_ERROR("bml_group_matrix_ellblock NOT available\n");
+            break;
+        case csr:
+            LOG_ERROR("bml_group_matrix_csr NOT available\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -169,6 +178,9 @@ bml_matrix2submatrix(
             break;
         case ellblock:
             LOG_ERROR("bml_matrix2submatrix_ellblock NOT available\n");
+            break;
+        case csr:
+            LOG_ERROR("bml_matrix2submatrix_csr NOT available\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -213,6 +225,9 @@ bml_submatrix2matrix(
         case ellblock:
             LOG_ERROR("bml_submatrix2matrix_ellblock NOT available\n");
             break;
+        case csr:
+            LOG_ERROR("bml_submatrix2matrix_csr NOT available\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -250,6 +265,9 @@ bml_adjacency(
         case ellblock:
             LOG_ERROR
                 ("bml_adjacency routine is not implemented for ellblock\n");
+            break;
+        case csr:
+            LOG_ERROR("bml_adjacency routine is not implemented for csr\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -295,6 +313,10 @@ bml_adjacency_group(
         case ellblock:
             LOG_ERROR
                 ("bml_adjacency_group routine is not implemented for ellblock\n");
+            break;
+        case csr:
+            LOG_ERROR
+                ("bml_adjacency_group routine is not implemented for csr\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

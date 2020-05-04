@@ -5,6 +5,7 @@
 #include "ellpack/bml_normalize_ellpack.h"
 #include "ellsort/bml_normalize_ellsort.h"
 #include "ellblock/bml_normalize_ellblock.h"
+#include "csr/bml_normalize_csr.h"
 
 #include <stdlib.h>
 
@@ -35,6 +36,9 @@ bml_normalize(
             break;
         case ellblock:
             bml_normalize_ellblock(A, mineval, maxeval);
+            break;
+        case csr:
+            bml_normalize_csr(A, mineval, maxeval);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -67,6 +71,9 @@ bml_gershgorin(
             break;
         case ellblock:
             return bml_gershgorin_ellblock(A);
+            break;
+        case csr:
+            return bml_gershgorin_csr(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -102,6 +109,9 @@ bml_gershgorin_partial(
             break;
         case ellblock:
             LOG_ERROR("bml_gershgorin_partial_ellblock not implemented\n");
+            break;
+        case csr:
+            return bml_gershgorin_partial_csr(A, nrows);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
