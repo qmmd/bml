@@ -218,7 +218,6 @@ void TYPED_FUNC(
     double threshold)
 {
     const int A_N = A->N_;
-    const int B_N = B->N_;
     const int C_N = C->N_;
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
@@ -232,7 +231,7 @@ void TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
-    shared(A_N, B_N, C_N)
+    shared(A_N, C_N)
 #else
 #pragma omp parallel for                       \
     firstprivate(ix, jx, x)
