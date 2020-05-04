@@ -268,8 +268,6 @@ jobs:
             docker load -i /caches/docs.tar | true
       - run:
           name: Build application Docker image
-          environment:
-            IMAGE_VERSION: {{ .Branch }}
           command: ./refresh-ci-images.sh
       - run:
           name: Save Docker image layer cache
