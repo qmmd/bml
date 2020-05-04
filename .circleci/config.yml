@@ -244,15 +244,17 @@ jobs:
       - checkout
       - run: ./build.sh docs
 
+  build_ci_image:
+    docker:
+      - image: ubuntu:focal
+    steps:
+      - checkout
+      - setup_remote_docker
+
 workflows:
   ci:
     jobs:
-      - build:
-          docker:
-            - image: ubuntu:focal
-          steps:
-            - checkout
-            - setup_remote_docker
+      - build_ci_image
   build:
     jobs:
       - lint
