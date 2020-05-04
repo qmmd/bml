@@ -247,6 +247,8 @@ jobs:
   build_ci_image:
     docker:
       - image: ubuntu:focal
+    environment:
+      IMAGE_VERSION: {{ .Branch }}
     steps:
       - checkout
       - setup_remote_docker
