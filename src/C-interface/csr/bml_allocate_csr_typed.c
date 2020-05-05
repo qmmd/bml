@@ -127,10 +127,10 @@ bml_matrix_csr_t *TYPED_FUNC(
 //       A->table_ = csr_noinit_table(N);
     }
     /** end allocate hash table **/
-
+/*
     A->domain = bml_default_domain(A->N_, A->NZMAX_, distrib_mode);
     A->domain2 = bml_default_domain(A->N_, A->NZMAX_, distrib_mode);
-
+*/
     return A;
 }
 
@@ -208,10 +208,10 @@ bml_matrix_csr_t *TYPED_FUNC(
         A->table_ = NULL;
 //       A->table_ = csr_noinit_table(N);
     }
-
+/*
     A->domain = bml_default_domain(N, M, distrib_mode);
     A->domain2 = bml_default_domain(N, M, distrib_mode);
-
+*/
     return A;
 }
 
