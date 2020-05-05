@@ -1,6 +1,7 @@
 #include "bml_getters_csr.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_allocate.h"
 #include "bml_types_csr.h"
 #include "../../macros.h"
 #include "../../typed.h"
@@ -159,7 +160,7 @@ void *TYPED_FUNC(
     int *cols = TYPED_FUNC(csr_get_column_indexes) (A->data_[i]);
     REAL_T *vals = TYPED_FUNC(csr_get_column_entries) (A->data_[i]);
 
-    REAL_T *row = calloc(A_N, sizeof(REAL_T));
+    REAL_T *row = bml_allocate_memory(sizeof(REAL_T) * A_N);
 
     // loop over column entries to copy row data
     for (int j = 0; j < nnz; j++)
