@@ -33,13 +33,7 @@ contains
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: b_dense(:, :)
 
-    ! MEW Replace pid stamp with time stamp, for Intel compiler compat.
-    ! 5/4/2020
-    ! pid = getpid()
-    ! write(pid_char,*)pid
     call date_and_time(date,time,zone,values)
-    call date_and_time(DATE=date,ZONE=zone)
-    call date_and_time(TIME=time)
     write(tstamp_char,'(a,a,a)')date, time, zone
     write(fname,*)"ftest_matrix",trim(adjustl(tstamp_char)),".mtx"
 
