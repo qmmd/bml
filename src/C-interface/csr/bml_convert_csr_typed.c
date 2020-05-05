@@ -4,6 +4,7 @@
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
 #include "../bml_setters.h"
+#include "../bml_allocate.h"
 #include "bml_allocate_csr.h"
 #include "bml_types_csr.h"
 
