@@ -17,3 +17,7 @@ RUN apt-get install --assume-yes --no-install-recommends python-pip
 RUN apt-get install --assume-yes --no-install-recommends python-setuptools
 RUN apt-get install --assume-yes --no-install-recommends python-wheel
 RUN pip install proselint
+RUN groupadd --system ci
+RUN useradd --system --gid ci --create-home ci
+WORKDIR /home/ci
+USER ci
