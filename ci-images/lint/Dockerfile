@@ -17,10 +17,11 @@ RUN apt-get install --assume-yes --no-install-recommends \
         openssh-client \
         python-pip \
         python-setuptools \
-        python-wheel
+        python-wheel \
+        sudo
 
 RUN pip install proselint
 RUN groupadd --system ci
-RUN useradd --system --gid ci --create-home ci
+RUN useradd --system --gid ci --groups sudo --create-home ci
 WORKDIR /home/ci
 USER ci

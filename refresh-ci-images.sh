@@ -3,7 +3,7 @@
 set -x -e
 
 : ${IMAGE_TAG:=bml-ci}
-: ${IMAGE_VERSION:=1}
+: ${IMAGE_VERSION:=2}
 : ${PUSH_IMAGE:=no}
 
 for workflow in build lint docs; do
