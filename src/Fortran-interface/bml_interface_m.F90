@@ -34,13 +34,13 @@ module bml_interface_m
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
   !!
-  !! Matrix type is ellblock.
+  !! Matrix type is ellsort.
   integer, parameter :: bml_matrix_type_ellsort_enum_id = 4
 
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
   !!
-  !! Matrix type is ellblock.
+  !! Matrix type is csr.
   integer, parameter :: bml_matrix_type_csr_enum_id = 5
 
   !> The enum values of the C API. Keep this synchronized with the

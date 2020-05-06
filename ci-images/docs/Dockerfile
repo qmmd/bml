@@ -1,6 +1,10 @@
 FROM ubuntu:focal
 RUN apt-get update
+RUN ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+RUN apt-get install --assume-yes tzdata
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --frontend noninteractive tzdata
 RUN apt-get install --assume-yes --no-install-recommends apt-utils
+RUN apt-get install --assume-yes --no-install-recommends ca-certificates
 RUN apt-get install --assume-yes --no-install-recommends build-essential
 RUN apt-get install --assume-yes --no-install-recommends git-core openssh-client
 RUN apt-get install --assume-yes --no-install-recommends cmake cmake-data libblas-dev liblapack-dev

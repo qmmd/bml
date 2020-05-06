@@ -130,6 +130,7 @@ print_usage(
     printf("  ellpack\n");
     printf("  ellsort\n");
     printf("  ellblock\n");
+    printf("  csr\n");
     printf("\n");
     printf("Recognized precisions:\n");
     printf("\n");
@@ -232,6 +233,10 @@ main(
                 else if (strcasecmp(optarg, "ellblock") == 0)
                 {
                     matrix_type = ellblock;
+                }
+                else if (strcasecmp(optarg, "csr") == 0)
+                {
+                    matrix_type = csr;
                 }
                 else
                 {

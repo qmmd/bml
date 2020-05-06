@@ -5,6 +5,7 @@
 #include "ellpack/bml_export_ellpack.h"
 #include "ellsort/bml_export_ellsort.h"
 #include "ellblock/bml_export_ellblock.h"
+#include "csr/bml_export_csr.h"
 
 #include <stdlib.h>
 
@@ -45,6 +46,8 @@ bml_export_to_dense(
             return bml_export_to_dense_ellsort(A, order);
         case ellblock:
             return bml_export_to_dense_ellblock(A, order);
+        case csr:
+            return bml_export_to_dense_csr(A, order);
         case type_uninitialized:
             return NULL;
             break;

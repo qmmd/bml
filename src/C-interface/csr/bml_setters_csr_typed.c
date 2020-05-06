@@ -85,7 +85,7 @@ void TYPED_FUNC(
     }
 }
 
-/** Set row entries
+/** Set row entries from dense array
  *
  *  \ingroup setters
  *
@@ -101,7 +101,6 @@ void TYPED_FUNC(
     csr_set_row) (
     csr_sparse_row_t * arow,
     const int count,
-    const int *cols,
     void *rowvals,
     const double threshold)
 {
@@ -125,7 +124,7 @@ void TYPED_FUNC(
     {
         if (ABS(vals[j]) > threshold)
         {
-            index[arow->NNZ_] = cols[j];
+            index[arow->NNZ_] = j;
             data[arow->NNZ_++] = vals[j];
         }
     }
@@ -202,16 +201,12 @@ void TYPED_FUNC(
     const double threshold)
 {
     const int A_N = A->N_;
-    int *cols = bml_noinit_allocate_memory(sizeof(int) * A_N);
     csr_sparse_row_t *arow = A->data_[i];
     // reset nnz row count to zero (in case row is not empty)
     arow->NNZ_ = 0;
-    for (int j = 0; j < A_N; j++)
-    {
-        cols[j] = j;
-    }
+
     // set row values
-    TYPED_FUNC(csr_set_row) (arow, A_N, cols, rowvals, threshold);
+    TYPED_FUNC(csr_set_row) (arow, A_N, rowvals, threshold);
 }
 
 /** Set diagonal of matrix A.
@@ -239,6 +234,53 @@ void TYPED_FUNC(
     }
 }
 
+/** Set (sparse) row entries
+ *
+ *  \ingroup setters
+ *
+ *  \param arow The row to be set
+ *  \param count The number of entries to set
+ *  \param cols The column indexes
+ *  \param vals The row entries
+ *  \WARNING sets a row from scratch
+ *
+ *
+ */
+void TYPED_FUNC(
+    csr_set_sparse_row) (
+    csr_sparse_row_t * arow,
+    const int count,
+    const int *cols,
+    void *rowvals,
+    const double threshold)
+{
+    int *index = arow->cols_;
+    REAL_T *vals = rowvals;
+    REAL_T *data = (REAL_T *) arow->vals_;
+    // reallocate memory if needed
+    if (count > arow->alloc_size_)
+    {
+        arow->alloc_size_ = count;
+        arow->cols_ =
+            bml_reallocate_memory(index, sizeof(int) * arow->alloc_size_);
+        arow->vals_ =
+            bml_reallocate_memory(data, sizeof(REAL_T) * arow->alloc_size_);
+        index = arow->cols_;
+        data = (REAL_T *) arow->vals_;
+    }
+    // set entries
+    arow->NNZ_ = 0;
+    for (int j = 0; j < count; j++)
+    {
+        if (ABS(vals[j]) > threshold)
+        {
+            index[arow->NNZ_] = cols[j];
+            data[arow->NNZ_++] = vals[j];
+        }
+    }
+}
+
+
 /** Set row i of matrix A.
  *
  *  \ingroup setters
@@ -262,6 +304,7 @@ void TYPED_FUNC(
 {
 
     // set row entries
-    TYPED_FUNC(csr_set_row) (A->data_[i], count, cols, vals, threshold);
+    TYPED_FUNC(csr_set_sparse_row) (A->data_[i], count, cols, vals,
+                                    threshold);
 
 }

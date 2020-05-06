@@ -5,6 +5,7 @@
 #include "ellpack/bml_introspection_ellpack.h"
 #include "ellsort/bml_introspection_ellsort.h"
 #include "ellblock/bml_introspection_ellblock.h"
+#include "csr/bml_introspection_csr.h"
 
 #include <stdlib.h>
 
@@ -57,6 +58,9 @@ bml_get_precision(
         case ellblock:
             return bml_get_precision_ellblock(A);
             break;
+        case csr:
+            return bml_get_precision_csr(A);
+            break;
         default:
             LOG_ERROR("unknown precision");
             break;
@@ -89,6 +93,9 @@ bml_get_N(
             break;
         case ellblock:
             return bml_get_N_ellblock(A);
+            break;
+        case csr:
+            return bml_get_N_csr(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -123,6 +130,9 @@ bml_get_M(
         case ellblock:
             return bml_get_M_ellblock(A);
             break;
+        case csr:
+            return bml_get_M_csr(A);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -150,6 +160,9 @@ bml_get_NB(
             break;
         case ellblock:
             return bml_get_NB_ellblock(A);
+            break;
+        case csr:
+            return 1;
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -184,6 +197,9 @@ bml_get_row_bandwidth(
         case ellsort:
             return bml_get_row_bandwidth_ellsort(A, i);
             break;
+        case csr:
+            return bml_get_row_bandwidth_csr(A, i);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -211,6 +227,9 @@ bml_get_bandwidth(
         case ellsort:
             return bml_get_bandwidth_ellsort(A);
             break;
+        case csr:
+            return bml_get_bandwidth_csr(A);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -237,6 +256,9 @@ bml_get_distribution_mode(
             break;
         case ellsort:
             return bml_get_distribution_mode_ellsort(A);
+            break;
+        case csr:
+            return bml_get_distribution_mode_csr(A);
             break;
         default:
             LOG_ERROR("unknown matrix type in bml_get_distribution_mode\n");
@@ -269,6 +291,9 @@ bml_get_sparsity(
             break;
         case ellblock:
             return bml_get_sparsity_ellblock(A, threshold);
+            break;
+        case csr:
+            return bml_get_sparsity_csr(A, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type in bml_get_sparsity\n");

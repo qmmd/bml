@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-gcc-4_7-shared-serial-external: &build-template
     docker:
-      - image: nicolasbock/bml-ci-build:1.0
+      - image: nicolasbock/bml-ci-build:1
     environment:
       OMP_NUM_THREADS: 4
       CMAKE_BUILD_TYPE: Debug
@@ -230,7 +230,7 @@ jobs:
 
   lint:
     docker:
-      - image: nicolasbock/bml-ci-lint:1.0
+      - image: nicolasbock/bml-ci-lint:1
     steps:
       - checkout
       - run: bundle install
@@ -239,7 +239,7 @@ jobs:
 
   docs:
     docker:
-      - image: nicolasbock/bml-ci-docs:1.0
+      - image: nicolasbock/bml-ci-docs:1
     steps:
       - checkout
       - run: ./build.sh docs

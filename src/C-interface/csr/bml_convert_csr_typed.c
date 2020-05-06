@@ -4,6 +4,7 @@
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
 #include "../bml_setters.h"
+#include "../bml_allocate.h"
 #include "bml_allocate_csr.h"
 #include "bml_types_csr.h"
 
@@ -35,7 +36,9 @@ bml_matrix_csr_t *TYPED_FUNC(
 
     for (int i = 0; i < N; i++)
     {
-        bml_set_row(B, i, bml_get_row(A, i), 0.0);
+        REAL_T *row = bml_get_row(A, i);
+        bml_set_row(B, i, row, 0.0);
+        bml_free_memory(row);
     }
 
     return B;

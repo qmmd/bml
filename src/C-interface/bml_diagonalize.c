@@ -6,6 +6,7 @@
 #include "dense/bml_diagonalize_dense.h"
 #include "ellpack/bml_diagonalize_ellpack.h"
 #include "ellblock/bml_diagonalize_ellblock.h"
+#include "csr/bml_diagonalize_csr.h"
 
 void
 bml_diagonalize(
@@ -26,6 +27,9 @@ bml_diagonalize(
             break;
         case ellblock:
             bml_diagonalize_ellblock(A, eigenvalues, eigenvectors);
+            break;
+        case csr:
+            bml_diagonalize_csr(A, eigenvalues, eigenvectors);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

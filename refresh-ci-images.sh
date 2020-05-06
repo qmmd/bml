@@ -3,7 +3,7 @@
 set -x
 
 : ${IMAGE_TAG:=bml-ci}
-: ${IMAGE_VERSION:=1.0}
+: ${IMAGE_VERSION:=1}
 
 for workflow in build lint docs; do
   docker build --tag nicolasbock/${IMAGE_TAG}-${workflow}:${IMAGE_VERSION} ci-images/${workflow}

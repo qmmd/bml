@@ -175,12 +175,12 @@ foreach(N
     trace
     transpose
     )
-  set(formats dense ellpack ellsort ellblock)
+  set(formats dense ellpack ellsort ellblock csr)
   # Setting specific formats for a particular bml function
   if(${N} MATCHES get_bandwidth)
     set(formats dense ellpack ellsort)
   elseif(${N} MATCHES inverse)
-    set(formats dense ellpack ellblock)
+    set(formats dense ellpack ellblock csr)
   elseif(${N} MATCHES threshold)
     set(formats dense ellpack ellsort)
   elseif(${N} MATCHES multiply)

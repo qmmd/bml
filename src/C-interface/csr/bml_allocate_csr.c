@@ -28,7 +28,7 @@ csr_noinit_table(
         65536, 131072, 262144
     };
     for (i = 1; lwr = (powersof2[i] * 2) / 3, lwr < alloc_size; i++);
-    const int space = powersof2[i - 1];
+    const int space = powersof2[i];
     const int space_minus1 = space - 1;
 
   /** create table object */
@@ -75,7 +75,8 @@ csr_table_insert(
     const int key)
 {
     const int size = table->size_;
-    //reallocate storage if needed
+    //reallocate storage if needed (not used yet - DOK)
+/*
     if ((size & table->space_minus1_) == 0)
     {
         table->slot_storage_space_ += table->capacity_;
@@ -87,6 +88,7 @@ csr_table_insert(
         table->slot_storage_ = newstorage;
         table->slot_ptr_ = &newstorage[size];
     }
+*/
     csr_hash_slot_t *slot_ptr = table->slot_ptr_;
 
     slot_ptr->key = key;
@@ -175,6 +177,8 @@ bml_deallocate_csr(
     }
     bml_free_memory(A->data_);
 //    bml_free_memory(A->lvarsgid_);
+//    bml_deallocate_domain(A->domain);
+//    bml_deallocate_domain(A->domain2);
     bml_free_memory(A);
 }
 

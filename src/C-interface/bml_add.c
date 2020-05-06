@@ -5,6 +5,7 @@
 #include "ellpack/bml_add_ellpack.h"
 #include "ellsort/bml_add_ellsort.h"
 #include "ellblock/bml_add_ellblock.h"
+#include "csr/bml_add_csr.h"
 
 #include <stdlib.h>
 
@@ -41,6 +42,9 @@ bml_add(
             break;
         case ellblock:
             bml_add_ellblock(A, B, alpha, beta, threshold);
+            break;
+        case csr:
+            bml_add_csr(A, B, alpha, beta, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -84,6 +88,9 @@ bml_add_norm(
         case ellsort:
             return bml_add_norm_ellsort(A, B, alpha, beta, threshold);
             break;
+        case csr:
+            return bml_add_norm_csr(A, B, alpha, beta, threshold);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -120,6 +127,9 @@ bml_add_identity(
             break;
         case ellsort:
             bml_add_identity_ellsort(A, beta, threshold);
+            break;
+        case csr:
+            bml_add_identity_csr(A, beta, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -158,6 +168,9 @@ bml_scale_add_identity(
             break;
         case ellsort:
             bml_scale_add_identity_ellsort(A, alpha, beta, threshold);
+            break;
+        case csr:
+            bml_scale_add_identity_csr(A, alpha, beta, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

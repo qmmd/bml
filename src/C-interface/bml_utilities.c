@@ -9,6 +9,7 @@
 #include "ellpack/bml_utilities_ellpack.h"
 #include "ellsort/bml_utilities_ellsort.h"
 #include "ellblock/bml_utilities_ellblock.h"
+#include "csr/bml_utilities_csr.h"
 
 #include <complex.h>
 #include <stdio.h>
@@ -138,6 +139,50 @@ bml_print_bml_matrix(
             }
             break;
         case ellblock:
+            switch (bml_get_precision(A))
+            {
+                case single_real:
+                {
+                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), single_real,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    bml_free_memory(A_dense);
+                    break;
+                }
+                case double_real:
+                {
+                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), double_real,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    bml_free_memory(A_dense);
+                    break;
+                }
+                case single_complex:
+                {
+                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), single_complex,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    bml_free_memory(A_dense);
+                    break;
+                }
+                case double_complex:
+                {
+                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), double_complex,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    bml_free_memory(A_dense);
+                    break;
+                }
+                default:
+                    LOG_ERROR("unknown precision\n");
+                    break;
+            }
+            break;
+        case csr:
             switch (bml_get_precision(A))
             {
                 case single_real:
@@ -443,6 +488,9 @@ bml_read_bml_matrix(
         case ellblock:
             bml_read_bml_matrix_ellblock(A, filename);
             break;
+        case csr:
+            bml_read_bml_matrix_csr(A, filename);
+            break;
         default:
             LOG_ERROR("unknown type (%d)\n", bml_get_type(A));
             break;
@@ -472,6 +520,9 @@ bml_write_bml_matrix(
             break;
         case ellblock:
             bml_write_bml_matrix_ellblock(A, filename);
+            break;
+        case csr:
+            bml_write_bml_matrix_csr(A, filename);
             break;
         default:
             LOG_ERROR("unknown type (%d)\n", bml_get_type(A));

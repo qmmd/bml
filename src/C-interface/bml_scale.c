@@ -5,6 +5,7 @@
 #include "ellpack/bml_scale_ellpack.h"
 #include "ellsort/bml_scale_ellsort.h"
 #include "ellblock/bml_scale_ellblock.h"
+#include "csr/bml_scale_csr.h"
 
 #include <stdlib.h>
 
@@ -36,6 +37,9 @@ bml_scale_new(
             break;
         case ellblock:
             B = bml_scale_ellblock_new(scale_factor, A);
+            break;
+        case csr:
+            B = bml_scale_csr_new(scale_factor, A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -72,6 +76,9 @@ bml_scale(
         case ellblock:
             bml_scale_ellblock(scale_factor, A, B);
             break;
+        case csr:
+            bml_scale_csr(scale_factor, A, B);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -103,6 +110,9 @@ bml_scale_inplace(
             break;
         case ellblock:
             bml_scale_inplace_ellblock(scale_factor, A);
+            break;
+        case csr:
+            bml_scale_inplace_csr(scale_factor, A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

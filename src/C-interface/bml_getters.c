@@ -5,6 +5,7 @@
 #include "ellpack/bml_getters_ellpack.h"
 #include "ellsort/bml_getters_ellsort.h"
 #include "ellblock/bml_getters_ellblock.h"
+#include "csr/bml_getters_csr.h"
 
 #include <stdio.h>
 
@@ -34,6 +35,9 @@ bml_get_element(
             break;
         case ellblock:
             return bml_get_element_ellblock(A, i, j);
+            break;
+        case csr:
+            return bml_get_csr(A, i, j);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -67,6 +71,9 @@ bml_get_row(
         case ellblock:
             return bml_get_row_ellblock(A, i);
             break;
+        case csr:
+            return bml_get_row_csr(A, i);
+            break;
         default:
             LOG_ERROR("unknown matrix type in bml_get_row\n");
             break;
@@ -96,6 +103,9 @@ bml_get_diagonal(
             break;
         case ellblock:
             return bml_get_diagonal_ellblock(A);
+            break;
+        case csr:
+            return bml_get_diagonal_csr(A);
             break;
         default:
             LOG_ERROR("unknown matrix type in bml_get_diagonal\n");

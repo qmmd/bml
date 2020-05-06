@@ -28,7 +28,8 @@ void TYPED_FUNC(
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol;
-    REAL_T val;
+    double real_part, imaginary_part;
+    REAL_T value;
 
     hFile = fopen(filename, "r");
 
@@ -39,6 +40,9 @@ void TYPED_FUNC(
         LOG_ERROR("read error on header\n");
     }
 
+    LOG_DEBUG("Read: %s %s %s %s %s\n", header1, header2, header3, header4,
+              header5);
+
     int symflag = strcmp(header5, "symmetric");
 
     // Read N, N, # of non-zeroes
@@ -47,41 +51,52 @@ void TYPED_FUNC(
         LOG_ERROR("read error\n");
     }
 
-    char *FMT = "";
-    switch (A->matrix_precision)
-    {
-        case single_real:
-            FMT = "%d %d %g\n";
-            break;
-        case double_real:
-            FMT = "%d %d %lg\n";
-            break;
-        case single_complex:
-            FMT = "%d %d %g\n";
-            break;
-        case double_complex:
-            FMT = "%d %d %lg\n";
-            break;
-        default:
-            LOG_ERROR("unknown precision\n");
-            break;
-    }
+    LOG_DEBUG("hdimx = %d, nnz = %d\n", hdimx, nnz);
 
     // Read in values
     for (int i = 0; i < nnz; i++)
     {
-        if (fscanf(hFile, FMT, &irow, &icol, &val) != 3)
+#if defined(SINGLE_REAL)
+        if (fscanf(hFile, "%d %d %f\n", &irow, &icol, &value) != 3)
         {
             LOG_ERROR("read error\n");
         }
+#elif defined(DOUBLE_REAL)
+        if (fscanf(hFile, "%d %d %lf\n", &irow, &icol, &value) != 3)
+        {
+            LOG_ERROR("read error\n");
+        }
+#elif defined(SINGLE_COMPLEX)
+        if (fscanf
+            (hFile, "%d %d %lf %lf\n", &irow, &icol, &real_part,
+             &imaginary_part) != 4)
+        {
+            LOG_ERROR("read error\n");
+        }
+        value = real_part + I * imaginary_part;
+        LOG_DEBUG("read: %d %d %e %e %e\n", irow, icol, real_part,
+                  imaginary_part, value);
+#elif defined(DOUBLE_COMPLEX)
+        if (fscanf
+            (hFile, "%d %d %lf %lf\n", &irow, &icol, &real_part,
+             &imaginary_part) != 4)
+        {
+            LOG_ERROR("read error\n");
+        }
+        value = real_part + I * imaginary_part;
+#else
+        LOG_ERROR("unknown precision\n");
+#endif
+
         irow--;
         icol--;
         // set new element
-        TYPED_FUNC(csr_set_row_element_new) (A->data_[irow], icol, &val);
+        TYPED_FUNC(csr_set_row_element_new) (A->data_[irow], icol, &value);
         // Set symmetric value if necessary
         if (symflag == 0 && icol != irow)
         {
-            TYPED_FUNC(csr_set_row_element_new) (A->data_[icol], irow, &val);
+            TYPED_FUNC(csr_set_row_element_new) (A->data_[icol], irow,
+                                                 &value);
         }
     }
 
@@ -115,7 +130,11 @@ void TYPED_FUNC(
     mFile = fopen(filename, "w");
 
     // Write header
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
     fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate real general\n");
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate complex general\n");
+#endif
 
     // Collect number of non-zero elements
     // Write out matrix size as dense and number of non-zero elements
@@ -134,8 +153,23 @@ void TYPED_FUNC(
         const int annz = A->data_[i]->NNZ_;
         for (int pos = 0; pos < annz; pos++)
         {
-            fprintf(mFile, "%d %d %20.15e\n", i + 1,
+#if defined(SINGLE_REAL)
+            fprintf(mFile, "%d %d %20.15g\n", i + 1,
+                    cols[pos] + 1, vals[pos]);
+#elif defined(DOUBLE_REAL)
+            fprintf(mFile, "%d %d %20.15lg\n", i + 1,
                     cols[pos] + 1, REAL_PART(vals[pos]));
+#elif defined(SINGLE_COMPLEX)
+            fprintf(mFile, "%d %d %20.15g %20.15g\n", i + 1,
+                    cols[pos] + 1, REAL_PART(vals[pos]),
+                    IMAGINARY_PART(vals[pos]));
+#elif defined(DOUBLE_COMPLEX)
+            fprintf(mFile, "%d %d %20.15lg %20.15lg\n", i + 1,
+                    cols[pos] + 1, REAL_PART(vals[pos]),
+                    IMAGINARY_PART(vals[pos]));
+#else
+            LOG_ERROR("unknown precision\n");
+#endif
         }
     }
 
