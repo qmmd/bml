@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.1.0
+        with:
+          fetch_depth: 2
       - run: cat /etc/passwd
       - run: cat /etc/os-release
       - run: id
