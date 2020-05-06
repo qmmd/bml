@@ -233,7 +233,7 @@ jobs:
       - image: nicolasbock/bml-ci-lint:1.0
     steps:
       - checkout
-      - run: sudo bundle install
+      - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
 
