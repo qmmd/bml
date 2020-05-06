@@ -16,6 +16,8 @@ jobs:
     container:
       image: nicolasbock/bml-ci-lint:1.0
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.1.0
       - run: cat /etc/passwd
       - run: cat /etc/os-release
       - run: id
