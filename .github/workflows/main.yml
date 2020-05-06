@@ -18,6 +18,8 @@ jobs:
     steps:
       - run: cat /etc/passwd
       - run: cat /etc/os-release
+      - run: id
+      - run: pwd
       - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
