@@ -93,7 +93,8 @@ jobs:
         - bundle install
         - pip install proselint
         - bundle exec danger || true
-        - packages="indent emacs26" ./install_packages.sh
+        - packages="indent emacs26 tox" ./install_packages.sh
+        - tox
         - BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
     - stage: docs
       name: "Build Docs"
