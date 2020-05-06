@@ -1,5 +1,6 @@
 module bml_getters_m
 
+  use bml_allocate_m
   use bml_c_interface_m
   use bml_types_m
 
@@ -41,6 +42,7 @@ contains
     ptr = bml_get_diagonal_C(a%ptr)
     call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
     diagonal = diagonal_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_diagonal_single_real
 
@@ -59,6 +61,7 @@ contains
     ptr = bml_get_diagonal_C(a%ptr)
     call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
     diagonal = diagonal_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_diagonal_double_real
 
@@ -77,6 +80,7 @@ contains
     ptr = bml_get_diagonal_C(a%ptr)
     call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
     diagonal = diagonal_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_diagonal_single_complex
 
@@ -95,6 +99,7 @@ contains
     ptr = bml_get_diagonal_C(a%ptr)
     call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
     diagonal = diagonal_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_diagonal_double_complex
 
@@ -117,6 +122,7 @@ contains
     ptr = bml_get_row_C(a%ptr, i - 1)
     call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
     row = row_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_row_single_real
 
@@ -137,6 +143,7 @@ contains
     ptr = bml_get_row_C(a%ptr, i - 1)
     call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
     row = row_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_row_double_real
 
@@ -157,6 +164,7 @@ contains
     ptr = bml_get_row_C(a%ptr, i - 1)
     call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
     row = row_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_row_single_complex
 
@@ -177,6 +185,7 @@ contains
     ptr = bml_get_row_C(a%ptr, i - 1)
     call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
     row = row_ptr
+    call bml_free(ptr)
 
   end subroutine bml_get_row_double_complex
 
