@@ -313,6 +313,7 @@ bml_block_matrix(
     bml_matrix_precision_t matrix_precision,
     int NB,
     int MB,
+    int M,
     int *bsizes,
     bml_distribution_mode_t distrib_mode)
 {
@@ -321,11 +322,11 @@ bml_block_matrix(
     {
         case ellpack:
             return bml_block_matrix_ellblock(matrix_precision,
-                                             NB, MB, bsizes, distrib_mode);
+                                             NB, MB, M, bsizes, distrib_mode);
             break;
         case ellblock:
             return bml_block_matrix_ellblock(matrix_precision,
-                                             NB, MB, bsizes, distrib_mode);
+                                             NB, MB, M, bsizes, distrib_mode);
             break;
         default:
             LOG_ERROR("unsupported matrix type (type ID %d)\n", matrix_type);

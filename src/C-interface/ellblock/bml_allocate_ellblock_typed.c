@@ -17,6 +17,70 @@
 #include <omp.h>
 #endif
 
+void *TYPED_FUNC(
+    bml_allocate_block_ellblock) (
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb)
+{
+    void *allocation = A->memory_pool_ptr[ib];
+    assert(allocation != NULL);
+    //memset(allocation, 0, nelements * sizeof(REAL_T));
+
+    // update block row ib pointer for next call
+    int nelements = A->bsize[ib] * A->bsize[jb];
+
+    A->memory_pool_ptr[ib] = ((REAL_T **) A->memory_pool_ptr)[ib] + nelements;
+
+    return allocation;
+}
+
+void TYPED_FUNC(
+    bml_free_block_ellblock) (
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb)
+{
+    int shift = 0;
+    REAL_T *ptr1;
+    REAL_T *ptr2;
+    int nelements = 0;
+    // loop over allocated blocks in row
+    for (int jp = 0; jp < A->nnzb[ib]; jp++)
+    {
+        int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
+        int j = A->indexb[ind];
+        // shift pointers when block to be freed is reached
+        if (j == jb)
+        {
+            shift = 1;
+            // simply set pointer to NULL if last allocated block in row
+            if (jp == A->nnzb[ib] - 1)
+            {
+                A->ptr_value[ind] = NULL;
+                break;
+            }
+            // save pointers to beginning and end of memory
+            // to be freed
+            ptr1 = A->ptr_value[ind];
+            ptr2 = A->ptr_value[ind + 1];
+        }
+        if (shift)
+        {
+            A->ptr_value[ind] = A->ptr_value[ind + 1];
+            A->indexb[ind] = A->indexb[ind + 1];
+            // count elements to be shifted in memory
+            nelements += A->bsize[ib] * A->bsize[j];
+        }
+    }
+    // make sure we found block to deallocate
+    assert(shift == 1);
+    A->nnzb[ib]--;
+
+    // move data in memory to reflect shift in pointers
+    memmove(ptr1, ptr2, nelements * sizeof(REAL_T));
+}
+
 /** Clear a matrix.
  *
  * Numbers of non-zeroes, indeces, and values are set to zero.
@@ -30,11 +94,9 @@ void TYPED_FUNC(
     bml_matrix_ellblock_t * A)
 {
     for (int ib = 0; ib < A->NB; ib++)
-        for (int jp = 0; jp < A->nnzb[ib]; jp++)
-        {
-            int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
-            bml_free_memory(A->ptr_value[ind]);
-        }
+        A->memory_pool_ptr[ib] =
+            (REAL_T *) A->memory_pool + A->memory_pool_offsets[ib];
+
     memset(A->nnzb, 0, A->NB * sizeof(int));
 }
 
@@ -45,9 +107,11 @@ bml_matrix_ellblock_t
                                               distrib_mode)
 {
     int N = matrix_dimension.N_rows;
+    int M = matrix_dimension.N_nz_max;
 
     return TYPED_FUNC(bml_block_matrix_ellblock) (bml_get_nb(), bml_get_mb(),
-                                                  bml_get_block_sizes(N, 0),
+                                                  M, bml_get_block_sizes(N,
+                                                                         0),
                                                   distrib_mode);
 }
 
@@ -70,6 +134,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     bml_block_matrix_ellblock) (
     int NB,
     int MB,
+    int M,
     int *bsize,
     bml_distribution_mode_t distrib_mode)
 {
@@ -77,6 +142,11 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     assert(MB > 0);
     for (int ib = 0; ib < NB; ib++)
         assert(bsize[ib] < 1e6);
+
+    int N = 0;
+    for (int ib = 0; ib < NB; ib++)
+        N += bsize[ib];
+    assert(N >= M);
 
     bml_matrix_ellblock_t *A =
         bml_allocate_memory(sizeof(bml_matrix_ellblock_t));
@@ -86,15 +156,28 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     A->MB = MB;
     A->bsize = bml_allocate_memory(sizeof(int) * NB);
     memcpy(A->bsize, bsize, NB * sizeof(int));
+
     A->distribution_mode = distrib_mode;
     A->indexb = bml_allocate_memory(sizeof(int) * NB * MB);
     A->nnzb = bml_allocate_memory(sizeof(int) * NB);
-    A->ptr_value = bml_allocate_memory(sizeof(REAL_T *) * NB * MB);
 
-    int N = 0;
+    // allocate memory for matrix elements
+    A->memory_pool = (REAL_T *) bml_allocate_memory(sizeof(REAL_T) * N * M);
+    A->memory_pool_offsets = (int *) bml_allocate_memory(sizeof(int) * NB);
+    A->memory_pool_offsets[0] = 0;
+    for (int ib = 1; ib < NB; ib++)
+        A->memory_pool_offsets[ib] = A->memory_pool_offsets[ib - 1]
+            + bsize[ib - 1] * M;
+    A->memory_pool_ptr = bml_allocate_memory(sizeof(REAL_T *) * NB);
     for (int ib = 0; ib < NB; ib++)
-        N += bsize[ib];
+        A->memory_pool_ptr[ib] =
+            (REAL_T *) (A->memory_pool) + A->memory_pool_offsets[ib];
+    A->ptr_value = bml_allocate_memory(sizeof(REAL_T *) * NB * MB);
+    for (int i = 0; i < NB * MB; i++)
+        A->ptr_value[i] = NULL;
+
     A->N = N;
+    A->M = M;
     //printf("bml_block_matrix_ellblock %d %d\n",NB,MB);
     if (bml_get_mb() == 0)
     {
@@ -115,7 +198,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     int nb = bml_get_nb();
 
     bml_matrix_ellblock_t *A =
-        TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, bsize, distrib_mode);
+        TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, M, bsize,
+                                               distrib_mode);
 
     return A;
 }
@@ -184,7 +268,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     int nb = bml_get_nb();
 
     bml_matrix_ellblock_t *A =
-        TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, bsize, distrib_mode);
+        TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, M, bsize,
+                                               distrib_mode);
 
     //now fill with random values
     int NB = A->NB;
@@ -203,9 +288,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
             int jb = A_indexb[ind];
 
             //allocate storage
-            int nelements = bsize[ib] * bsize[jb];
-            A_ptr_value[ind]
-                = bml_noinit_allocate_memory(nelements * sizeof(REAL_T));
+            A_ptr_value[ind] =
+                TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, jb);
 
             REAL_T *A_value = A_ptr_value[ind];
             assert(A_value != NULL);
@@ -249,7 +333,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     assert(mb > 0);
 
     bml_matrix_ellblock_t *A =
-        TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, bsize, distrib_mode);
+        TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, M, bsize,
+                                               distrib_mode);
 
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
 
@@ -258,9 +343,11 @@ bml_matrix_ellblock_t *TYPED_FUNC(
 
     for (int ib = 0; ib < NB; ib++)
     {
-        int nelements = bsize[ib] * bsize[ib];
         int ind = ROWMAJOR(ib, 0, NB, MB);
-        A_ptr_value[ind] = bml_allocate_memory(nelements * sizeof(REAL_T));
+
+        A_ptr_value[ind] =
+            TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, ib);
+
         REAL_T *A_value = A_ptr_value[ind];
         for (int ii = 0; ii < bsize[ib]; ii++)
         {

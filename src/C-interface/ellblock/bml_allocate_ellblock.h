@@ -158,30 +158,35 @@ bml_matrix_ellblock_t *bml_block_matrix_ellblock(
     bml_matrix_precision_t matrix_precision,
     int NB,
     int MB,
+    int M,
     int *bsizes,
     bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellblock_t *bml_block_matrix_ellblock_single_real(
     int NB,
     int MB,
+    int M,
     int *bsizes,
     bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellblock_t *bml_block_matrix_ellblock_double_real(
     int NB,
     int MB,
+    int M,
     int *bsizes,
     bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellblock_t *bml_block_matrix_ellblock_single_complex(
     int NB,
     int MB,
+    int M,
     int *bsizes,
     bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellblock_t *bml_block_matrix_ellblock_double_complex(
     int NB,
     int MB,
+    int M,
     int *bsizes,
     bml_distribution_mode_t distrib_mode);
 
@@ -204,4 +209,38 @@ int bml_get_nb(
     );
 int count_nelements(
     bml_matrix_ellblock_t * A);
+
+void *bml_allocate_block_ellblock_single_real(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
+void *bml_allocate_block_ellblock_double_real(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
+void *bml_allocate_block_ellblock_single_complex(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
+void *bml_allocate_block_ellblock_double_complex(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
+
+void bml_free_block_ellblock_single_real(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
+void bml_free_block_ellblock_double_real(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
+void bml_free_block_ellblock_single_complex(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
+void bml_free_block_ellblock_double_complex(
+    bml_matrix_ellblock_t * A,
+    const int ib,
+    const int jb);
 #endif

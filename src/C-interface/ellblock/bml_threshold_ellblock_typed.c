@@ -35,7 +35,7 @@ bml_matrix_ellblock_t
     int *bsize = A->bsize;
 
     bml_matrix_ellblock_t *B =
-        TYPED_FUNC(bml_block_matrix_ellblock) (NB, MB, bsize,
+        TYPED_FUNC(bml_block_matrix_ellblock) (NB, MB, A->M, bsize,
                                                A->distribution_mode);
 
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
@@ -61,7 +61,7 @@ bml_matrix_ellblock_t
                 int nelements = bsize[ib] * bsize[jb];
                 int indB = ROWMAJOR(ib, B_nnzb[ib], NB, MB);
                 B_ptr_value[indB]
-                    = bml_noinit_allocate_memory(nelements * sizeof(REAL_T));
+                    = TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
                 REAL_T *B_value = B_ptr_value[indB];
                 memcpy(B_value, A_value, nelements * sizeof(REAL_T));
                 for (int ii = 0; ii < bsize[ib]; ii++)
@@ -140,7 +140,7 @@ void TYPED_FUNC(
             }
             else
             {
-                free(A_ptr_value[ind]);
+                TYPED_FUNC(bml_free_block_ellblock) (A, ib, jb);
             }
         }
         A_nnzb[ib] = rlen;

@@ -32,7 +32,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     int nb = bml_get_nb();
 
     bml_matrix_ellblock_t *B =
-        TYPED_FUNC(bml_block_matrix_ellblock) (nb, nb, bsize, distrib_mode);
+        TYPED_FUNC(bml_block_matrix_ellblock) (nb, nb, M, bsize,
+                                               distrib_mode);
 
     int NB = B->NB;
     int *offset = malloc(NB * sizeof(int));
@@ -50,7 +51,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
             int nelements = bsize[ib] * bsize[jb];
             int ind = ROWMAJOR(ib, jb, NB, NB);
             B_ptr_value[ind]
-                = bml_noinit_allocate_memory(nelements * sizeof(REAL_T));;
+                = TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
             B->indexb[ind] = jb;
 
             REAL_T *block = malloc(nelements * sizeof(REAL_T));

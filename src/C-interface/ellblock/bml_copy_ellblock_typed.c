@@ -23,7 +23,7 @@ bml_matrix_ellblock_t
     * TYPED_FUNC(bml_copy_ellblock_new) (bml_matrix_ellblock_t * A)
 {
     bml_matrix_ellblock_t *B =
-        TYPED_FUNC(bml_block_matrix_ellblock) (A->NB, A->MB, A->bsize,
+        TYPED_FUNC(bml_block_matrix_ellblock) (A->NB, A->MB, A->M, A->bsize,
                                                A->distribution_mode);
 
     int NB = A->NB;
@@ -36,21 +36,22 @@ bml_matrix_ellblock_t
     REAL_T **B_ptr_value = (REAL_T **) B->ptr_value;
 
     memcpy(B->nnzb, A->nnzb, sizeof(int) * A->NB);
-    memcpy(B->bsize, A->bsize, sizeof(int) * A->NB);
-
     memcpy(B_indexb, A_indexb, NB * MB * sizeof(int));
 
 #pragma omp parallel for
     for (int ib = 0; ib < NB; ib++)
     {
+        assert(B->bsize[ib] > 0);
+        assert(B->bsize[ib] < 10);
         for (int jp = 0; jp < A->nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, NB, MB);
             int jb = B_indexb[ind];
+            assert(jb < NB);
+            assert(B_ptr_value[ind] == NULL);
             B_ptr_value[ind] =
-                bml_noinit_allocate_memory(A->bsize[ib] * A->bsize[jb] *
-                                           sizeof(REAL_T));
-
+                TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
+            assert(B_ptr_value[ind] != NULL);
             memcpy(B_ptr_value[ind], A_ptr_value[ind],
                    A->bsize[ib] * A->bsize[jb] * sizeof(REAL_T));
         }
@@ -96,7 +97,8 @@ void TYPED_FUNC(
             int nelements = A->bsize[ib] * A->bsize[jb];
             if (B_ptr_value[ind] == NULL)
                 B_ptr_value[ind]
-                    = bml_noinit_allocate_memory(nelements * sizeof(REAL_T));
+                    = TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
+            assert(B_ptr_value[ind] != NULL);
             memcpy(B_ptr_value[ind], A_ptr_value[ind],
                    nelements * sizeof(REAL_T));
         }

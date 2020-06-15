@@ -6,6 +6,7 @@
 #include "../bml_utilities.h"
 #include "bml_types_ellblock.h"
 #include "bml_utilities_ellblock.h"
+#include "bml_allocate_ellblock.h"
 
 #include <complex.h>
 #include <math.h>
@@ -30,7 +31,6 @@ void TYPED_FUNC(
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol;
-    double real_part, imaginary_part;
     REAL_T value;
 
     int NB = A->NB;
@@ -71,6 +71,7 @@ void TYPED_FUNC(
             LOG_ERROR("read error\n");
         }
 #elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+        double real_part, imaginary_part;
         if (fscanf
             (hFile, "%d %d %le %le\n", &irow, &icol, &real_part,
              &imaginary_part) != 4)
@@ -118,11 +119,11 @@ void TYPED_FUNC(
         {
             //printf("Add new block %d, %d\n",ib, jb);
             assert(A_nnzb[ib] < MB);
-            int nelements = A_bsize[ib] * A_bsize[jb];
             int ind = ROWMAJOR(ib, A_nnzb[ib], NB, MB);
             A_indexb[ind] = jb;
             A_nnzb[ib]++;
-            A_ptr_value[ind] = calloc(nelements, sizeof(REAL_T));
+            A_ptr_value[ind] =
+                TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, jb);
             REAL_T *A_value = A_ptr_value[ind];
             assert(A_value != NULL);
             A_value[ROWMAJOR(irow, icol, A_bsize[ib], A_bsize[jb])] = value;

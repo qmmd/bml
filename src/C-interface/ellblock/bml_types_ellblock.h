@@ -20,6 +20,12 @@ struct bml_matrix_ellblock_t
     int NB;
     /** The max. number of blocks per row. */
     int MB;
+    /** Storage for matrix elements/blocks. */
+    void *memory_pool;
+    /** offsets for storage of row blocks */
+    int *memory_pool_offsets;
+    /** Ptr to last stored block in row block */
+    void **memory_pool_ptr;
     /** Pointers to blocks of values */
     void **ptr_value;
     /** The block index matrix. */

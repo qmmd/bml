@@ -33,9 +33,10 @@ bml_matrix_ellblock_t
     int *bsize = A->bsize;
     bml_distribution_mode_t distmode = A->distribution_mode;
 
-    bml_matrix_ellblock_t *B = TYPED_FUNC(bml_block_matrix_ellblock) (NB, MB,
-                                                                      bsize,
-                                                                      distmode);
+    bml_matrix_ellblock_t *B =
+        TYPED_FUNC(bml_block_matrix_ellblock) (NB, MB, A->M,
+                                               bsize,
+                                               distmode);
 
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     int *A_indexb = A->indexb;
@@ -52,11 +53,10 @@ bml_matrix_ellblock_t
             int indA = ROWMAJOR(ib, jp, NB, MB);
             int jb = A_indexb[indA];
             int indB = ROWMAJOR(jb, B_nnzb[jb], NB, MB);
-            int nelements = bsize[ib] * bsize[jb];
             //add a new block in B
             B_indexb[indB] = ib;
             B_ptr_value[indB] =
-                bml_noinit_allocate_memory(nelements * sizeof(REAL_T));
+                TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
             B_nnzb[jb]++;
             //transpose block
             REAL_T *B_value = B_ptr_value[indB];

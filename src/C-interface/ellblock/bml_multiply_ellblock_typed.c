@@ -62,7 +62,8 @@ void TYPED_FUNC(
     else
     {
         bml_matrix_ellblock_t *A2 =
-            TYPED_FUNC(bml_block_matrix_ellblock) (C->NB, C->MB, C->bsize,
+            TYPED_FUNC(bml_block_matrix_ellblock) (C->NB, C->MB, C->M,
+                                                   C->bsize,
                                                    C->distribution_mode);
 
         if (A != NULL && A == B)
@@ -238,7 +239,8 @@ void *TYPED_FUNC(
                 int ind = ROWMAJOR(ib, ll, NB, MB);
                 assert(ind < NB * MB);
                 if (X2_ptr_value[ind] == NULL)
-                    X2_ptr_value[ind] = malloc(nelements * sizeof(REAL_T));
+                    X2_ptr_value[ind] =
+                        TYPED_FUNC(bml_allocate_block_ellblock) (X2, ib, jp);
                 REAL_T *X2_value = X2_ptr_value[ind];
                 assert(X2_value != NULL);
                 memcpy(X2_value, xtmp, nelements * sizeof(REAL_T));
@@ -394,7 +396,7 @@ void TYPED_FUNC(
                 int nelements = bsize[ib] * bsize[jp];
                 int ind = ROWMAJOR(ib, ll, NB, C->MB);
                 C_ptr_value[ind]
-                    = bml_noinit_allocate_memory(nelements * sizeof(REAL_T));
+                    = TYPED_FUNC(bml_allocate_block_ellblock) (C, ib, jp);
                 memcpy(C_ptr_value[ind], xtmp, nelements * sizeof(REAL_T));
                 C_indexb[ind] = jp;
                 ll++;
