@@ -159,15 +159,26 @@ bml_matrix_ellblock_t *TYPED_FUNC(
 
     A->distribution_mode = distrib_mode;
     A->indexb = bml_allocate_memory(sizeof(int) * NB * MB);
+    memset(A->indexb, -1, sizeof(int) * NB * MB);
     A->nnzb = bml_allocate_memory(sizeof(int) * NB);
 
     // allocate memory for matrix elements
-    A->memory_pool = (REAL_T *) bml_allocate_memory(sizeof(REAL_T) * N * M);
+    // we make sure we have enough memory for at least 3 blocks/row
+    int maxbsize = 0;
+    for (int ib = 0; ib < NB; ib++)
+        maxbsize = MAX(maxbsize, bsize[ib]);
+    int ncols_storage = M;
+    if (ncols_storage < 3 * maxbsize)
+        ncols_storage = 3 * maxbsize;
+    A->memory_pool =
+        (REAL_T *) bml_allocate_memory(sizeof(REAL_T) * N * ncols_storage);
+
+    // allocate memory for pointers to allocated blocks
     A->memory_pool_offsets = (int *) bml_allocate_memory(sizeof(int) * NB);
     A->memory_pool_offsets[0] = 0;
     for (int ib = 1; ib < NB; ib++)
         A->memory_pool_offsets[ib] = A->memory_pool_offsets[ib - 1]
-            + bsize[ib - 1] * M;
+            + bsize[ib - 1] * ncols_storage;
     A->memory_pool_ptr = bml_allocate_memory(sizeof(REAL_T *) * NB);
     for (int ib = 0; ib < NB; ib++)
         A->memory_pool_ptr[ib] =
