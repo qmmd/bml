@@ -156,7 +156,9 @@ void TYPED_FUNC(
                 if (A_ptr_value[kb] == NULL)
                 {
                     A_ptr_value[kb]
-                        = TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, jb);
+                        =
+                        TYPED_FUNC(bml_allocate_block_ellblock) (A, ib,
+                                                                 nelements);
                 }
                 for (int kk = 0; kk < nelements; kk++)
                 {

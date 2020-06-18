@@ -80,8 +80,9 @@ void TYPED_FUNC(
         assert(A_ptr_value[ind] == NULL);
 
         // printf("allocate new block ib=%d, ind=%d\n", ib, ind);
+        int nelements = A_bsize[ib] * A_bsize[jb];
         A_ptr_value[ind] =
-            TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, jb);
+            TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelements);
         A_indexb[ind] = jb;
 
         REAL_T *A_value = A_ptr_value[ind];
@@ -179,8 +180,11 @@ void TYPED_FUNC(
             if (block_found == 0)
             {
                 int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
+                int nelements = A_bsize[ib] * A_bsize[jb];
                 A_ptr_value[ind]
-                    = TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, jb);
+                    =
+                    TYPED_FUNC(bml_allocate_block_ellblock) (A, ib,
+                                                             nelements);
                 REAL_T *A_value = A_ptr_value[ind];
                 assert(A_value != NULL);
                 A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])] = row[k];
@@ -258,8 +262,9 @@ void TYPED_FUNC(
             if (normdiag > threshold)
             {
                 int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
+                int nelemnts = A_bsize[ib] * A_bsize[ib];
                 A_ptr_value[ind] =
-                    TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, ib);
+                    TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelemnts);
                 A_indexb[ind] = ib;
 
                 REAL_T *A_value = A_ptr_value[ind];

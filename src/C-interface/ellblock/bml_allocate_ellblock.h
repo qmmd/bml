@@ -213,19 +213,19 @@ int count_nelements(
 void *bml_allocate_block_ellblock_single_real(
     bml_matrix_ellblock_t * A,
     const int ib,
-    const int jb);
+    const int nelements);
 void *bml_allocate_block_ellblock_double_real(
     bml_matrix_ellblock_t * A,
     const int ib,
-    const int jb);
+    const int nelements);
 void *bml_allocate_block_ellblock_single_complex(
     bml_matrix_ellblock_t * A,
     const int ib,
-    const int jb);
+    const int nelements);
 void *bml_allocate_block_ellblock_double_complex(
     bml_matrix_ellblock_t * A,
     const int ib,
-    const int jb);
+    const int nelements);
 
 void bml_free_block_ellblock_single_real(
     bml_matrix_ellblock_t * A,

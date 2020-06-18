@@ -86,7 +86,8 @@ bml_matrix_ellblock_t
             {
                 int ind = ROWMAJOR(ib, A_nnzb[ib], NB, MB);
                 A_bml->ptr_value[ind] =
-                    TYPED_FUNC(bml_allocate_block_ellblock) (A_bml, ib, jb);
+                    TYPED_FUNC(bml_allocate_block_ellblock) (A_bml, ib,
+                                                             nelements);
                 REAL_T *A_value = A_bml->ptr_value[ind];
                 assert(A_value != NULL);
                 memcpy(A_value, A_ij, nelements * sizeof(REAL_T));

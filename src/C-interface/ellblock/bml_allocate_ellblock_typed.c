@@ -21,15 +21,13 @@ void *TYPED_FUNC(
     bml_allocate_block_ellblock) (
     bml_matrix_ellblock_t * A,
     const int ib,
-    const int jb)
+    const int nelements)
 {
     void *allocation = A->memory_pool_ptr[ib];
     assert(allocation != NULL);
     //memset(allocation, 0, nelements * sizeof(REAL_T));
 
     // update block row ib pointer for next call
-    int nelements = A->bsize[ib] * A->bsize[jb];
-
     A->memory_pool_ptr[ib] = ((REAL_T **) A->memory_pool_ptr)[ib] + nelements;
 
     return allocation;
@@ -299,8 +297,9 @@ bml_matrix_ellblock_t *TYPED_FUNC(
             int jb = A_indexb[ind];
 
             //allocate storage
+            int nelements = bsize[ib] * bsize[jb];
             A_ptr_value[ind] =
-                TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, jb);
+                TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelements);
 
             REAL_T *A_value = A_ptr_value[ind];
             assert(A_value != NULL);
@@ -355,9 +354,9 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
     {
         int ind = ROWMAJOR(ib, 0, NB, MB);
-
+        int nelements = bsize[ib] * bsize[ib];
         A_ptr_value[ind] =
-            TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, ib);
+            TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelements);
 
         REAL_T *A_value = A_ptr_value[ind];
         for (int ii = 0; ii < bsize[ib]; ii++)

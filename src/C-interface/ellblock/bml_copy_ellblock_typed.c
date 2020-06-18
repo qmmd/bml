@@ -49,11 +49,12 @@ bml_matrix_ellblock_t
             int jb = B_indexb[ind];
             assert(jb < NB);
             assert(B_ptr_value[ind] == NULL);
+            int nelements = A->bsize[ib] * A->bsize[jb];
             B_ptr_value[ind] =
-                TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
+                TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, nelements);
             assert(B_ptr_value[ind] != NULL);
             memcpy(B_ptr_value[ind], A_ptr_value[ind],
-                   A->bsize[ib] * A->bsize[jb] * sizeof(REAL_T));
+                   nelements * sizeof(REAL_T));
         }
     }
 
@@ -97,7 +98,9 @@ void TYPED_FUNC(
             int nelements = A->bsize[ib] * A->bsize[jb];
             if (B_ptr_value[ind] == NULL)
                 B_ptr_value[ind]
-                    = TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
+                    =
+                    TYPED_FUNC(bml_allocate_block_ellblock) (B, ib,
+                                                             nelements);
             assert(B_ptr_value[ind] != NULL);
             memcpy(B_ptr_value[ind], A_ptr_value[ind],
                    nelements * sizeof(REAL_T));

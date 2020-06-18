@@ -51,7 +51,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
             int nelements = bsize[ib] * bsize[jb];
             int ind = ROWMAJOR(ib, jb, NB, NB);
             B_ptr_value[ind]
-                = TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
+                = TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, nelements);
             B->indexb[ind] = jb;
 
             REAL_T *block = malloc(nelements * sizeof(REAL_T));

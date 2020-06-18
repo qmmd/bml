@@ -55,8 +55,9 @@ bml_matrix_ellblock_t
             int indB = ROWMAJOR(jb, B_nnzb[jb], NB, MB);
             //add a new block in B
             B_indexb[indB] = ib;
+            int nelements = bsize[ib] * bsize[jb];
             B_ptr_value[indB] =
-                TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, jb);
+                TYPED_FUNC(bml_allocate_block_ellblock) (B, ib, nelements);
             B_nnzb[jb]++;
             //transpose block
             REAL_T *B_value = B_ptr_value[indB];

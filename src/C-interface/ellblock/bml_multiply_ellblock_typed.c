@@ -240,7 +240,8 @@ void *TYPED_FUNC(
                 assert(ind < NB * MB);
                 if (X2_ptr_value[ind] == NULL)
                     X2_ptr_value[ind] =
-                        TYPED_FUNC(bml_allocate_block_ellblock) (X2, ib, jp);
+                        TYPED_FUNC(bml_allocate_block_ellblock) (X2, ib,
+                                                                 nelements);
                 REAL_T *X2_value = X2_ptr_value[ind];
                 assert(X2_value != NULL);
                 memcpy(X2_value, xtmp, nelements * sizeof(REAL_T));
@@ -396,7 +397,9 @@ void TYPED_FUNC(
                 int nelements = bsize[ib] * bsize[jp];
                 int ind = ROWMAJOR(ib, ll, NB, C->MB);
                 C_ptr_value[ind]
-                    = TYPED_FUNC(bml_allocate_block_ellblock) (C, ib, jp);
+                    =
+                    TYPED_FUNC(bml_allocate_block_ellblock) (C, ib,
+                                                             nelements);
                 memcpy(C_ptr_value[ind], xtmp, nelements * sizeof(REAL_T));
                 C_indexb[ind] = jp;
                 ll++;
