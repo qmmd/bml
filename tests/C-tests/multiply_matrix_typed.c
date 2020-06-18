@@ -9,6 +9,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef _OPENMP
+#include<omp.h>
+#else
+#include<time.h>
+#endif
+
 static void TYPED_FUNC(
     ref_multiply) (
     const int N,
@@ -155,7 +161,24 @@ int TYPED_FUNC(
     REAL_T *D_dense = bml_export_to_dense(C, dense_row_major);
 
     LOG_INFO("bml_multiply\n");
+
+    double ts,te;
+    
+#ifdef _OPENMP
+    ts = omp_get_wtime();
+#else
+    ts = ((double)clock())/CLOCKS_PER_SEC;
+#endif
+
     bml_multiply(A, B, C, alpha, beta, threshold);
+
+#ifdef _OPENMP
+    te = omp_get_wtime();
+#else
+    te = ((double)clock())/CLOCKS_PER_SEC;
+#endif
+
+    LOG_INFO("TIMING: bml_multiply = %g secs\n",te-ts);
 
     LOG_INFO("bml_export_to_dense\n");
     REAL_T *E_dense = bml_export_to_dense(C, dense_row_major);

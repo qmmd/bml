@@ -37,4 +37,11 @@
  */
 #define MAX(a, b) ((a) > (b) ? a : b)
 
+/** Number of teams for OpenMP distribute pragmas
+ */
+
+#ifndef BML_TEAMS
+#define BML_TEAMS 64
+#endif
+
 #endif

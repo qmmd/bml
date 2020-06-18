@@ -57,87 +57,86 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#if !(defined(__IBMC__) || defined(__ibmxl__))
-    int ix[N], jx[N];
-    REAL_T x[N];
+    int nteams = MIN(BML_TEAMS, rowMax - rowMin + 1);
 
-    memset(ix, 0, N * sizeof(int));
-    memset(jx, 0, N * sizeof(int));
-    memset(x, 0.0, N * sizeof(REAL_T));
-#endif
+    int all_ix[N * nteams], all_jx[N * nteams];
+    REAL_T all_x[N * nteams];
+
+    memset(all_ix, 0, N * nteams * sizeof(int));
+    memset(all_jx, 0, N * nteams * sizeof(int));
+    memset(all_x, 0.0, N * nteams * sizeof(REAL_T));
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
+#pragma omp target map(to:all_ix[0:N*nteams], \
+		       all_jx[0:N*nteams],    \
+		       all_x[0:N*nteams],     \
+		       alpha,beta,threshold)
 #endif
     {                           // begin target region
-#if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
-    shared(rowMin, rowMax)                \
-    shared(A_index, A_value, A_nnz)       \
-    shared(B_index, B_value, B_nnz)
-#else
+
 #pragma omp parallel for                  \
     shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
-    shared(B_index, B_value, B_nnz)       \
-    firstprivate(ix, jx, x)
-#endif
-
-        for (int i = rowMin; i < rowMax; i++)
+    shared(B_index, B_value, B_nnz)
+        for (int t = 0; t < nteams; t++)
         {
+	    int *ix, *jx;
+            REAL_T *x;
 
-#if defined(__IBMC__) || defined(__ibmxl__)
-            int ix[N], jx[N];
-            REAL_T x[N];
+            ix = &all_ix[t * N];
+            jx = &all_jx[t * N];
+            x = &all_x[t * N];
 
-            memset(ix, 0, N * sizeof(int));
-#endif
-
-            int l = 0;
-            if (alpha > (double) 0.0 || alpha < (double) 0.0)
-                for (int jp = 0; jp < A_nnz[i]; jp++)
-                {
-                    int k = A_index[ROWMAJOR(i, jp, N, A_M)];
-                    if (ix[k] == 0)
-                    {
-                        x[k] = 0.0;
-                        ix[k] = i + 1;
-                        jx[l] = k;
-                        l++;
-                    }
-                    x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
-                }
-
-            if (beta > (double) 0.0 || beta < (double) 0.0)
-                for (int jp = 0; jp < B_nnz[i]; jp++)
-                {
-                    int k = B_index[ROWMAJOR(i, jp, N, B_M)];
-                    if (ix[k] == 0)
-                    {
-                        x[k] = 0.0;
-                        ix[k] = i + 1;
-                        jx[l] = k;
-                        l++;
-                    }
-                    x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
-                }
-            A_nnz[i] = l;
-
-            int ll = 0;
-            for (int jp = 0; jp < l; jp++)
+            for (int i = rowMin + t; i < rowMax; i = i + nteams)
             {
-                int jind = jx[jp];
-                REAL_T xTmp = x[jind];
-                if (is_above_threshold(xTmp, threshold))
+
+                int l = 0;
+                if (alpha > (double) 0.0 || alpha < (double) 0.0)
+                    for (int jp = 0; jp < A_nnz[i]; jp++)
+                    {
+                        int k = A_index[ROWMAJOR(i, jp, N, A_M)];
+                        if (ix[k] == 0)
+                        {
+                            x[k] = 0.0;
+                            ix[k] = i + 1;
+                            jx[l] = k;
+                            l++;
+                        }
+                        x[k] =
+                            x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
+                    }
+
+                if (beta > (double) 0.0 || beta < (double) 0.0)
+                    for (int jp = 0; jp < B_nnz[i]; jp++)
+                    {
+                        int k = B_index[ROWMAJOR(i, jp, N, B_M)];
+                        if (ix[k] == 0)
+                        {
+                            x[k] = 0.0;
+                            ix[k] = i + 1;
+                            jx[l] = k;
+                            l++;
+                        }
+                        x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
+                    }
+                A_nnz[i] = l;
+
+                int ll = 0;
+                for (int jp = 0; jp < l; jp++)
                 {
-                    A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
-                    A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
-                    ll++;
+                    int jind = jx[jp];
+                    REAL_T xTmp = x[jind];
+                    if (is_above_threshold(xTmp, threshold))
+                    {
+                        A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
+                        A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
+                        ll++;
+                    }
+                    x[jind] = 0.0;
+                    ix[jind] = 0;
                 }
-                x[jind] = 0.0;
-                ix[jind] = 0;
+                A_nnz[i] = ll;
             }
-            A_nnz[i] = ll;
         }
     }                           // end target region
 }

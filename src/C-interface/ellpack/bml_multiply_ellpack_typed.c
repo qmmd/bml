@@ -128,112 +128,107 @@ void *TYPED_FUNC(
     int rowMin = X_localRowMin[myRank];
     int rowMax = X_localRowMax[myRank];
 
-#if !(defined(__IBMC__) || defined(__ibmxl__))
-    int ix[X_N], jx[X_N];
-    REAL_T x[X_N];
+    int nteams = MIN(BML_TEAMS, rowMax - rowMin + 1);
 
-    memset(ix, 0, X_N * sizeof(int));
-    memset(jx, 0, X_N * sizeof(int));
-    memset(x, 0.0, X_N * sizeof(REAL_T));
-#endif
+    int all_ix[X_N * nteams], all_jx[X_N * nteams];
+    REAL_T all_x[X_N * nteams];
+
+    memset(all_ix, 0, X_N * nteams * sizeof(int));
+    memset(all_jx, 0, X_N * nteams * sizeof(int));
+    memset(all_x, 0.0, X_N * nteams * sizeof(REAL_T));
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
+#pragma omp target map(to:all_ix[0:X_N*nteams],all_jx[0:X_N*nteams],all_x[0:X_N*nteams])
 #endif
 
-#if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                               \
     shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
     shared(rowMin, rowMax)                             \
     reduction(+: traceX, traceX2)
-#else
-#ifndef CRAY_SDK
+#if !(defined(CRAY_SDK) || defined(INTEL_SDK))
 #pragma vector aligned
 #endif
-#pragma omp parallel for                               \
-    shared(X_N, X_M, X_index, X_nnz, X_value)  \
-    shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
-    shared(rowMin, rowMax)                             \
-    firstprivate(ix,jx, x)                             \
-    reduction(+: traceX, traceX2)
-#endif
 
-    for (int i = rowMin; i < rowMax; i++)
+    for (int t = 0; t < nteams; t++)
     {
+        int *ix, *jx;
+        REAL_T *x;
 
-#if defined(__IBMC__) || defined(__ibmxl__)
-        int ix[X_N], jx[X_N];
-        REAL_T x[X_N];
-
-        memset(ix, 0, X_N * sizeof(int));
-#endif
-#ifdef INTEL_OPT
-        __assume_aligned(X_nnz, MALLOC_ALIGNMENT);
-        __assume_aligned(X_index, MALLOC_ALIGNMENT);
-        __assume_aligned(X_value, MALLOC_ALIGNMENT);
-#endif
-        int l = 0;
-        for (int jp = 0; jp < X_nnz[i]; jp++)
+        ix = &all_ix[t * X_N];
+        jx = &all_jx[t * X_N];
+        x = &all_x[t * X_N];
+	
+        for (int i = rowMin + t; i < rowMax; i = i + nteams)
         {
-            REAL_T a = X_value[ROWMAJOR(i, jp, X_N, X_M)];
-            int j = X_index[ROWMAJOR(i, jp, X_N, X_M)];
-            if (j == i)
+
+#ifdef INTEL_OPT
+            __assume_aligned(X_nnz, MALLOC_ALIGNMENT);
+            __assume_aligned(X_index, MALLOC_ALIGNMENT);
+            __assume_aligned(X_value, MALLOC_ALIGNMENT);
+#endif
+            int l = 0;
+            for (int jp = 0; jp < X_nnz[i]; jp++)
             {
-                traceX = traceX + a;
-            }
-            for (int kp = 0; kp < X_nnz[j]; kp++)
-            {
-                int k = X_index[ROWMAJOR(j, kp, X_N, X_M)];
-                if (ix[k] == 0)
+                REAL_T a = X_value[ROWMAJOR(i, jp, X_N, X_M)];
+                int j = X_index[ROWMAJOR(i, jp, X_N, X_M)];
+                if (j == i)
                 {
-                    x[k] = 0.0;
-                    //X2_index[ROWMAJOR(i, l, N, M)] = k;
-                    jx[l] = k;
-                    ix[k] = i + 1;
-                    l++;
+                    traceX = traceX + a;
                 }
-                // TEMPORARY STORAGE VECTOR LENGTH FULL N
-                x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, X_N, X_M)];
+                for (int kp = 0; kp < X_nnz[j]; kp++)
+                {
+                    int k = X_index[ROWMAJOR(j, kp, X_N, X_M)];
+                    if (ix[k] == 0)
+                    {
+                        x[k] = 0.0;
+                        //X2_index[ROWMAJOR(i, l, N, M)] = k;
+                        jx[l] = k;
+                        ix[k] = i + 1;
+                        l++;
+                    }
+                    // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                    x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, X_N, X_M)];
+                }
             }
-        }
 
-        // Check for number of non-zeroes per row exceeded
-        if (l > X2_M)
-        {
+            // Check for number of non-zeroes per row exceeded
+            if (l > X2_M)
+            {
 #ifndef USE_OMP_OFFLOAD
-            LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
+                LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
 #endif
-        }
+            }
 
 #ifdef INTEL_OPT
-        __assume_aligned(X2_nnz, MALLOC_ALIGNMENT);
-        __assume_aligned(X2_index, MALLOC_ALIGNMENT);
-        __assume_aligned(X2_value, MALLOC_ALIGNMENT);
+            __assume_aligned(X2_nnz, MALLOC_ALIGNMENT);
+            __assume_aligned(X2_index, MALLOC_ALIGNMENT);
+            __assume_aligned(X2_value, MALLOC_ALIGNMENT);
 #endif
-        int ll = 0;
-        for (int j = 0; j < l; j++)
-        {
-            //int jp = X2_index[ROWMAJOR(i, j, N, M)];
-            int jp = jx[j];
-            REAL_T xtmp = x[jp];
-            if (jp == i)
+            int ll = 0;
+            for (int j = 0; j < l; j++)
             {
-                traceX2 = traceX2 + xtmp;
-                X2_value[ROWMAJOR(i, ll, X2_N, X2_M)] = xtmp;
-                X2_index[ROWMAJOR(i, ll, X2_N, X2_M)] = jp;
-                ll++;
+                //int jp = X2_index[ROWMAJOR(i, j, N, M)];
+                int jp = jx[j];
+                REAL_T xtmp = x[jp];
+                if (jp == i)
+                {
+                    traceX2 = traceX2 + xtmp;
+                    X2_value[ROWMAJOR(i, ll, X2_N, X2_M)] = xtmp;
+                    X2_index[ROWMAJOR(i, ll, X2_N, X2_M)] = jp;
+                    ll++;
+                }
+                else if (is_above_threshold(xtmp, threshold))
+                {
+                    X2_value[ROWMAJOR(i, ll, X2_N, X2_M)] = xtmp;
+                    X2_index[ROWMAJOR(i, ll, X2_N, X2_M)] = jp;
+                    ll++;
+                }
+                ix[jp] = 0;
+                x[jp] = 0.0;
             }
-            else if (is_above_threshold(xtmp, threshold))
-            {
-                X2_value[ROWMAJOR(i, ll, X2_N, X2_M)] = xtmp;
-                X2_index[ROWMAJOR(i, ll, X2_N, X2_M)] = jp;
-                ll++;
-            }
-            ix[jp] = 0;
-            x[jp] = 0.0;
+            X2_nnz[i] = ll;
         }
-        X2_nnz[i] = ll;
     }
 
     trace[0] = traceX;
@@ -285,96 +280,91 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#if !(defined(__IBMC__) || defined(__ibmxl__))
-    int ix[C->N], jx[C->N];
-    REAL_T x[C->N];
+    int nteams = MIN(BML_TEAMS, rowMax - rowMin + 1);
 
-    memset(ix, 0, C->N * sizeof(int));
-    memset(jx, 0, C->N * sizeof(int));
-    memset(x, 0.0, C->N * sizeof(REAL_T));
-#endif
+    int all_ix[C->N * nteams], all_jx[C->N * nteams];
+    REAL_T all_x[C->N * nteams];
+
+    memset(all_ix, 0, C->N * nteams * sizeof(int));
+    memset(all_jx, 0, C->N * nteams * sizeof(int));
+    memset(all_x, 0.0, C->N * nteams * sizeof(REAL_T));
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
+#pragma omp target map(to:all_ix[0:C_N*nteams],all_jx[0:C_N*nteams],all_x[0:C_N*nteams])
 #endif
 
-#if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)
-#else
-#pragma omp parallel for                       \
-    shared(A_N, A_M, A_nnz, A_index, A_value)  \
-    shared(A_localRowMin, A_localRowMax)       \
-    shared(B_N, B_M, B_nnz, B_index, B_value)  \
-    shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    firstprivate(ix, jx, x)
-#endif
 
     //for (int i = 0; i < A_N; i++)
-    for (int i = rowMin; i < rowMax; i++)
+    for (int t = 0; t < nteams; t++)
     {
-#if defined(__IBMC__) || defined(__ibmxl__)
-        int ix[C_N], jx[C_N];
-        REAL_T x[C_N];
 
-        memset(ix, 0, C_N * sizeof(int));
-#endif
+        int *ix, *jx;
+        REAL_T *x;
 
-        int l = 0;
-        for (int jp = 0; jp < A_nnz[i]; jp++)
+        ix = &all_ix[t * C_N];
+        jx = &all_jx[t * C_N];
+        x = &all_x[t * C_N];
+
+        for (int i = rowMin + t; i < rowMax; i = i + nteams)
         {
-            REAL_T a = A_value[ROWMAJOR(i, jp, A_N, A_M)];
-            int j = A_index[ROWMAJOR(i, jp, A_N, A_M)];
-
-            for (int kp = 0; kp < B_nnz[j]; kp++)
+            int l = 0;
+            for (int jp = 0; jp < A_nnz[i]; jp++)
             {
-                int k = B_index[ROWMAJOR(j, kp, B_N, B_M)];
-                if (ix[k] == 0)
+                REAL_T a = A_value[ROWMAJOR(i, jp, A_N, A_M)];
+                int j = A_index[ROWMAJOR(i, jp, A_N, A_M)];
+
+                for (int kp = 0; kp < B_nnz[j]; kp++)
                 {
-                    x[k] = 0.0;
-                    //C_index[ROWMAJOR(i, l, N, M)] = k;
-                    jx[l] = k;
-                    ix[k] = i + 1;
-                    l++;
+                    int k = B_index[ROWMAJOR(j, kp, B_N, B_M)];
+                    if (ix[k] == 0)
+                    {
+                        x[k] = 0.0;
+                        //C_index[ROWMAJOR(i, l, N, M)] = k;
+                        jx[l] = k;
+                        ix[k] = i + 1;
+                        l++;
+                    }
+                    // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                    x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, B_N, B_M)];
                 }
-                // TEMPORARY STORAGE VECTOR LENGTH FULL N
-                x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, B_N, B_M)];
             }
-        }
 
-        // Check for number of non-zeroes per row exceeded
-        if (l > C_M)
-        {
+            // Check for number of non-zeroes per row exceeded
+            if (l > C_M)
+            {
 #ifndef USE_OMP_OFFLOAD
-            LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
+                LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
 #endif
-        }
+            }
 
-        int ll = 0;
-        for (int j = 0; j < l; j++)
-        {
-            //int jp = C_index[ROWMAJOR(i, j, N, M)];
-            int jp = jx[j];
-            REAL_T xtmp = x[jp];
-            if (jp == i)
+            int ll = 0;
+            for (int j = 0; j < l; j++)
             {
-                C_value[ROWMAJOR(i, ll, C_N, C_M)] = xtmp;
-                C_index[ROWMAJOR(i, ll, C_N, C_M)] = jp;
-                ll++;
+                //int jp = C_index[ROWMAJOR(i, j, N, M)];
+                int jp = jx[j];
+                REAL_T xtmp = x[jp];
+                if (jp == i)
+                {
+                    C_value[ROWMAJOR(i, ll, C_N, C_M)] = xtmp;
+                    C_index[ROWMAJOR(i, ll, C_N, C_M)] = jp;
+                    ll++;
+                }
+                else if (is_above_threshold(xtmp, threshold))
+                {
+                    C_value[ROWMAJOR(i, ll, C_N, C_M)] = xtmp;
+                    C_index[ROWMAJOR(i, ll, C_N, C_M)] = jp;
+                    ll++;
+                }
+                ix[jp] = 0;
+                x[jp] = 0.0;
             }
-            else if (is_above_threshold(xtmp, threshold))
-            {
-                C_value[ROWMAJOR(i, ll, C_N, C_M)] = xtmp;
-                C_index[ROWMAJOR(i, ll, C_N, C_M)] = jp;
-                ll++;
-            }
-            ix[jp] = 0;
-            x[jp] = 0.0;
+            C_nnz[i] = ll;
         }
-        C_nnz[i] = ll;
     }
 }
 

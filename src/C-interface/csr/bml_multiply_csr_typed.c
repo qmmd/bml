@@ -125,7 +125,9 @@ void *TYPED_FUNC(
     shared(X_N)  \
     reduction(+: traceX, traceX2)
 #else
+#if !(defined(CRAY_SDK) || defined(INTEL_SDK))
 #pragma vector aligned
+#endif
 #pragma omp parallel for                               \
     shared(X_N)  \
     firstprivate(ix,jx, x)                             \
