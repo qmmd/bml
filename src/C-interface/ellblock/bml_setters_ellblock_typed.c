@@ -87,6 +87,7 @@ void TYPED_FUNC(
 
         REAL_T *A_value = A_ptr_value[ind];
         assert(A_value != NULL);
+        memset(A_value, 0, nelements * sizeof(REAL_T));
         A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])]
             = *((REAL_T *) element);
         A_nnzb[ib]++;
@@ -268,6 +269,7 @@ void TYPED_FUNC(
                 A_indexb[ind] = ib;
 
                 REAL_T *A_value = A_ptr_value[ind];
+                memset(A_value, 0, nelemnts * sizeof(REAL_T));
                 for (int ii = 0; ii < A_bsize[ib]; ii++)
                 {
                     A_value[ROWMAJOR(ii, ii, A_bsize[ib], A_bsize[ib])]

@@ -121,9 +121,11 @@ bml_deallocate_ellblock(
     bml_matrix_ellblock_t * A)
 {
     bml_free_memory(A->ptr_value);
+#ifdef BML_ELLBLOCK_USE_MEMPOOL
     bml_free_memory(A->memory_pool_offsets);
     bml_free_memory(A->memory_pool_ptr);
     bml_free_memory(A->memory_pool);
+#endif
     bml_free_memory(A->indexb);
     bml_free_memory(A->nnzb);
     bml_free_memory(A->bsize);
