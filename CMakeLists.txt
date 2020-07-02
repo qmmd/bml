@@ -519,6 +519,11 @@ if(NOT (NOBLAS))
   endif()
 endif()
 
+if(BML_ELLBLOCK_MEMPOOL)
+  message(STATUS "Use memory pool for elllock")
+  add_definitions(-DBML_ELLBLOCK_USE_MEMPOOL)
+endif()
+
 add_definitions(-D_POSIX_C_SOURCE=200112L)
 
 check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
