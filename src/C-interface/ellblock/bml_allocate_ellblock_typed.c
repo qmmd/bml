@@ -112,6 +112,13 @@ void TYPED_FUNC(
     for (int ib = 0; ib < A->NB; ib++)
         A->memory_pool_ptr[ib] =
             (REAL_T *) A->memory_pool + A->memory_pool_offsets[ib];
+#else
+    for (int ib = 0; ib < A->NB; ib++)
+        for (int jp = 0; jp < A->nnzb[ib]; jp++)
+        {
+            int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
+            bml_free_memory(A->ptr_value[ind]);
+        }
 #endif
     memset(A->nnzb, 0, A->NB * sizeof(int));
 }

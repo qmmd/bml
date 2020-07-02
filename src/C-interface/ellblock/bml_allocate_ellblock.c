@@ -120,12 +120,19 @@ void
 bml_deallocate_ellblock(
     bml_matrix_ellblock_t * A)
 {
-    bml_free_memory(A->ptr_value);
 #ifdef BML_ELLBLOCK_USE_MEMPOOL
     bml_free_memory(A->memory_pool_offsets);
     bml_free_memory(A->memory_pool_ptr);
     bml_free_memory(A->memory_pool);
+#else
+    for (int ib = 0; ib < A->NB; ib++)
+        for (int jp = 0; jp < A->nnzb[ib]; jp++)
+        {
+            int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
+            bml_free_memory(A->ptr_value[ind]);
+        }
 #endif
+    bml_free_memory(A->ptr_value);
     bml_free_memory(A->indexb);
     bml_free_memory(A->nnzb);
     bml_free_memory(A->bsize);

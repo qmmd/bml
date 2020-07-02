@@ -187,6 +187,7 @@ void TYPED_FUNC(
                     TYPED_FUNC(bml_allocate_block_ellblock) (A, ib,
                                                              nelements);
                 REAL_T *A_value = A_ptr_value[ind];
+                memset(A_value, 0, nelements * sizeof(REAL_T));
                 assert(A_value != NULL);
                 A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])] = row[k];
                 A_nnzb[ib]++;
