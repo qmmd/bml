@@ -105,7 +105,7 @@ set_defaults() {
     : ${BML_MAGMA:=no}
     : ${BML_CUSOLVER:=no}
     : ${BML_XSMM:=no}
-    : ${BML_ELLBLOCK_MEMPOOL:=no}
+    : ${BML_ELLBLOCK_MEMPOOL:=yes}
     : ${CUDA_TOOLKIT_ROOT_DIR:=}
     : ${INTEL_OPT:=no}
 }
