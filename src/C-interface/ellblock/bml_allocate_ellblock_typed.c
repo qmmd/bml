@@ -56,7 +56,7 @@ void TYPED_FUNC(
         // shift pointers when block to be freed is reached
         if (j == jb)
         {
-            shift = 1;
+            shift = A->bsize[ib] * A->bsize[jb];;
             // simply set pointer to NULL if last allocated block in row
             if (jp == A->nnzb[ib] - 1)
             {
@@ -67,13 +67,18 @@ void TYPED_FUNC(
             // to be freed
             ptr1 = A->ptr_value[ind];
             ptr2 = A->ptr_value[ind + 1];
-        }
-        if (shift)
-        {
-            A->ptr_value[ind] = A->ptr_value[ind + 1];
-            A->indexb[ind] = A->indexb[ind + 1];
-            // count elements to be shifted in memory
-            nelements += A->bsize[ib] * A->bsize[j];
+
+            // shift pointers for subsequent blocks
+            for (int jpp = jp; jpp < A->nnzb[ib] - 1; jpp++)
+            {
+                int ind = ROWMAJOR(ib, jpp, A->NB, A->MB);
+                A->indexb[ind] = A->indexb[ind + 1];
+                A->ptr_value[ind] = (REAL_T *) A->ptr_value[ind] - shift;
+                int jb = A->indexb[ind];
+                // count elements to be shifted in memory
+                nelements += A->bsize[ib] * A->bsize[j];
+            }
+            break;
         }
     }
     // make sure we found block to deallocate
