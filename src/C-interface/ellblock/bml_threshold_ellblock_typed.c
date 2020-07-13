@@ -109,7 +109,6 @@ void TYPED_FUNC(
 
     for (int ib = 0; ib < NB; ib++)
     {
-        rlen = 0;
         for (int jp = 0; jp < A_nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, NB, MB);
@@ -120,13 +119,6 @@ void TYPED_FUNC(
 
             if (is_above_threshold(normA, threshold))
             {
-                if (rlen < jp)
-                {
-                    ind = ROWMAJOR(ib, rlen, NB, MB);
-                    A_ptr_value[ind] = A_ptr_value[ROWMAJOR(ib, jp, NB, MB)];
-                    A_indexb[ind] = A_indexb[ROWMAJOR(ib, jp, NB, MB)];
-                    jb = A_indexb[ind];
-                }
                 //apply thresholding within block
                 REAL_T *B_value = A_ptr_value[ind];
                 for (int ii = 0; ii < bsize[ib]; ii++)
@@ -138,13 +130,13 @@ void TYPED_FUNC(
                             B_value[index] = 0.;
                         }
                     }
-                rlen++;
             }
             else
             {
+                //printf("remove block %d %d\n",ib,jb);
                 TYPED_FUNC(bml_free_block_ellblock) (A, ib, jb);
+                jp--;
             }
         }
-        A_nnzb[ib] = rlen;
     }
 }

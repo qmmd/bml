@@ -45,8 +45,8 @@ void TYPED_FUNC(
 {
 #ifdef BML_ELLBLOCK_USE_MEMPOOL
     int shift = 0;
-    REAL_T *ptr1;
-    REAL_T *ptr2;
+    REAL_T *dst = NULL;
+    REAL_T *src = NULL;
     int nelements = 0;
     // loop over allocated blocks in row
     for (int jp = 0; jp < A->nnzb[ib]; jp++)
@@ -56,7 +56,8 @@ void TYPED_FUNC(
         // shift pointers when block to be freed is reached
         if (j == jb)
         {
-            shift = A->bsize[ib] * A->bsize[jb];;
+            shift = A->bsize[ib] * A->bsize[jb];
+            //printf("Remove block %d %d %d\n", ib, jb, shift);
             // simply set pointer to NULL if last allocated block in row
             if (jp == A->nnzb[ib] - 1)
             {
@@ -65,27 +66,31 @@ void TYPED_FUNC(
             }
             // save pointers to beginning and end of memory
             // to be freed
-            ptr1 = A->ptr_value[ind];
-            ptr2 = A->ptr_value[ind + 1];
+            dst = A->ptr_value[ind];
+            src = A->ptr_value[ind + 1];
 
             // shift pointers for subsequent blocks
-            for (int jpp = jp; jpp < A->nnzb[ib] - 1; jpp++)
+            for (int jpp = jp + 1; jpp < A->nnzb[ib]; jpp++)
             {
                 int ind = ROWMAJOR(ib, jpp, A->NB, A->MB);
-                A->indexb[ind] = A->indexb[ind + 1];
-                A->ptr_value[ind] = (REAL_T *) A->ptr_value[ind] - shift;
-                int jb = A->indexb[ind];
+
                 // count elements to be shifted in memory
-                nelements += A->bsize[ib] * A->bsize[j];
+                int jbb = A->indexb[ind];
+                nelements += A->bsize[ib] * A->bsize[jbb];
+                //printf("%d <- %d\n", ind-1, ind);
+                A->indexb[ind - 1] = A->indexb[ind];
+                A->ptr_value[ind - 1] = (REAL_T *) A->ptr_value[ind] - shift;
             }
+            A->ptr_value[A->nnzb[ib] - 1] = NULL;
             break;
         }
     }
     // make sure we found block to deallocate
-    assert(shift == 1);
+    assert(shift > 0);
 
     // move data in memory to reflect shift in pointers
-    memmove(ptr1, ptr2, nelements * sizeof(REAL_T));
+    if (nelements > 0)
+        memmove(dst, src, nelements * sizeof(REAL_T));
 #else
     for (int jp = 0; jp < A->nnzb[ib]; jp++)
     {
@@ -94,6 +99,13 @@ void TYPED_FUNC(
         if (j == jb)
         {
             bml_free_memory(A->ptr_value[ind]);
+            for (int jpp = jp + 1; jpp < A->nnzb[ib]; jpp++)
+            {
+                int ind = ROWMAJOR(ib, jpp, A->NB, A->MB);
+                A->indexb[ind - 1] = A->indexb[ind];
+                A->ptr_value[ind - 1] = A->ptr_value[ind];
+            }
+            A->ptr_value[A->nnzb[ib] - 1] = NULL;
             break;
         }
     }
