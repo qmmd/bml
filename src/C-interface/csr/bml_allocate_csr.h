@@ -10,6 +10,9 @@ csr_row_index_hash_t *csr_noinit_table(
 void csr_deallocate_table(
     csr_row_index_hash_t * table);
 
+void csr_reset_table(
+    csr_row_index_hash_t * table);
+
 void csr_table_insert(
     csr_row_index_hash_t * table,
     const int key);

@@ -143,6 +143,25 @@ csr_deallocate_table(
     bml_free_memory(table);
 }
 
+/** Reset hash table.
+ *
+ * \ingroup allocate_group
+ *
+ * \param table - the hash table.
+ */
+void
+csr_reset_table(
+    csr_row_index_hash_t * table)
+{
+    /** delete allocated slots */
+    for (int i = 0; i < table->space_; i++)
+    {
+        table->Slots_[i] = NULL;
+    }
+    table->size_ = 0;
+    table->slot_ptr_ = &table->slot_storage_[0];
+}
+
 /** Deallocate csr row.
  *
  * \ingroup allocate_group

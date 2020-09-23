@@ -7,6 +7,7 @@
 #include "bml_add_ellpack.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_types_ellpack.h"
+#include "bml_scale_ellpack.h"
 
 #include <complex.h>
 #include <math.h>
@@ -297,15 +298,87 @@ void TYPED_FUNC(
     double beta,
     double threshold)
 {
-    REAL_T alpha = (REAL_T) 1.0;
+    int N = A->N;
+    int A_M = A->M;
 
-    bml_matrix_ellpack_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M,
-                                                 A->distribution_mode);
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    REAL_T *A_value = (REAL_T *) A->value;
 
-    TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int jx[A_M];
+    REAL_T x[A_M];
 
-    bml_deallocate_ellpack(Id);
+    memset(jx, 0, A_M * sizeof(int));
+    memset(x, 0.0, A_M * sizeof(REAL_T));
+#endif
+
+#if defined (USE_OMP_OFFLOAD)
+#pragma omp target
+#endif
+    {                           // begin target region
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel for \
+  shared(N, A_M)           \
+    shared(A_index, A_value, A_nnz)
+#else
+#pragma omp parallel for                  \
+  shared(N, A_M)           \
+    shared(A_index, A_value, A_nnz)       \
+    firstprivate(jx, x)
+#endif
+
+        for (int i = 0; i < N; i++)
+        {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
+            int jx[A_M];
+            REAL_T x[A_M];
+#endif
+
+            int l = 0;
+            int diag = -1;
+
+            for (int jp = 0; jp < A_nnz[i]; jp++)
+            {
+                int k = A_index[ROWMAJOR(i, jp, N, A_M)];
+                if (k == i)
+                    diag = jp;
+                x[jp] = A_value[ROWMAJOR(i, jp, N, A_M)];
+                jx[jp] = k;
+                l++;
+            }
+                
+            if (beta > (double) 0.0 || beta < (double) 0.0)
+            {
+                // if diagonal entry does not exist
+                if (diag == -1)
+                {
+                    x[l] = beta;
+                    jx[l] = i;
+                    l++;                        
+                }
+                else
+                {
+                    x[diag] = x[diag] + beta;
+                }
+            }
+
+            int ll = 0;
+            for (int jp = 0; jp < l; jp++)
+            {
+                int jind = jx[jp];
+                REAL_T xTmp = x[jp];
+                if (is_above_threshold(xTmp, threshold))
+                {
+                    A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
+                    A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
+                    ll++;
+                }
+            }
+            A_nnz[i] = ll;
+        }
+    }                           // end target region
 }
 
 /** Matrix addition.
@@ -326,11 +399,8 @@ void TYPED_FUNC(
     double beta,
     double threshold)
 {
-    bml_matrix_ellpack_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M,
-                                                 A->distribution_mode);
+    // scale then update diagonal
+    TYPED_FUNC(bml_scale_inplace_ellpack) (&alpha, A);
 
-    TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
-
-    bml_deallocate_ellpack(Id);
+    TYPED_FUNC(bml_add_identity_ellpack) (A, beta, threshold);
 }

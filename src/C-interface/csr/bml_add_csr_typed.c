@@ -9,6 +9,8 @@
 #include "bml_types_csr.h"
 #include "bml_setters_csr.h"
 #include "bml_threshold_csr.h"
+#include "bml_scale_csr.h"
+#include "bml_introspection_csr.h"
 #include "../bml_logger.h"
 
 #include <complex.h>
@@ -41,15 +43,18 @@ void TYPED_FUNC(
     double threshold)
 {
     int N = A->N_;
-
+    const int tsize = bml_get_bandwidth_csr(A);
+#pragma omp parallel shared(N, tsize)
+{
+    /* create hash table */
+    csr_row_index_hash_t *table = csr_noinit_table(tsize);    
+#pragma omp for    
     for (int i = 0; i < N; i++)
     {
         int *acols = A->data_[i]->cols_;
         REAL_T *avals = (REAL_T *) A->data_[i]->vals_;
         const int annz = A->data_[i]->NNZ_;
 
-        /* create hash table */
-        csr_row_index_hash_t *table = csr_noinit_table(annz);
         for (int pos = 0; pos < annz; pos++)
         {
             avals[pos] *= alpha;
@@ -72,9 +77,12 @@ void TYPED_FUNC(
                                                      bcols[pos], &val);
             }
         }
-        //clear table
-        csr_deallocate_table(table);
+        //reset table
+        csr_reset_table(table);
     }
+    // delete table
+    csr_deallocate_table(table);
+}
     /* apply thresholding */
     TYPED_FUNC(bml_threshold_csr) (A, threshold);
 }
@@ -120,15 +128,46 @@ void TYPED_FUNC(
     double beta,
     double threshold)
 {
-    REAL_T alpha = (REAL_T) 1.0;
+    int N = A->N_;
 
-    bml_matrix_csr_t *Id =
-        TYPED_FUNC(bml_identity_matrix_csr) (A->N_, A->NZMAX_,
-                                             A->distribution_mode);
-
-    TYPED_FUNC(bml_add_csr) (A, Id, alpha, beta, threshold);
-
-    bml_deallocate_csr(Id);
+#pragma omp parallel for                  \
+    shared(N)
+    for (int i = 0; i < N; i++)
+    {
+        int *acols = A->data_[i]->cols_;
+        REAL_T *avals = (REAL_T *) A->data_[i]->vals_;
+        const int annz = A->data_[i]->NNZ_;
+        
+        int diag = -1;
+        
+        // find position of diagonal entry
+        for (int pos = 0; pos < annz; pos++)
+        {
+            if(acols[pos] == i)
+            {
+                diag = pos;
+                break;
+            }
+        }
+        
+        if (beta > (double) 0.0 || beta < (double) 0.0)
+        {
+            // if diagonal entry does not exist, insert, else add
+            REAL_T val = (REAL_T)beta;
+            if (diag == -1)
+            {
+                TYPED_FUNC(csr_set_row_element_new) (A->data_[i],
+                                                     i, &val);
+            }
+            else
+            {
+                avals[diag] += val;
+            }
+         
+        }
+    }
+    /* apply thresholding */
+    TYPED_FUNC(bml_threshold_csr) (A, threshold);
 }
 
 /** Matrix addition.
@@ -149,11 +188,8 @@ void TYPED_FUNC(
     double beta,
     double threshold)
 {
-    bml_matrix_csr_t *Id =
-        TYPED_FUNC(bml_identity_matrix_csr) (A->N_, A->NZMAX_,
-                                             A->distribution_mode);
+    // scale then update diagonal
+    TYPED_FUNC(bml_scale_inplace_csr) (&alpha, A);
 
-    TYPED_FUNC(bml_add_csr) (A, Id, alpha, beta, threshold);
-
-    bml_deallocate_csr(Id);
+    TYPED_FUNC(bml_add_identity_csr) (A, beta, threshold);
 }

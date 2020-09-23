@@ -121,6 +121,7 @@ bml_get_bandwidth_csr(
 {
     int max_bandwidth = 0;
     const int N = A->N_;
+#pragma omp parallel for reduction (max:max_bandwidth) shared(N)
     for (int i = 0; i < N; i++)
     {
         max_bandwidth =

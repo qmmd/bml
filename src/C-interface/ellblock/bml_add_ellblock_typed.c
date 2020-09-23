@@ -8,6 +8,7 @@
 #include "bml_allocate_ellblock.h"
 #include "bml_types_ellblock.h"
 #include "bml_utilities_ellblock.h"
+#include "bml_scale_ellblock.h"
 
 #include <assert.h>
 #include <complex.h>
@@ -338,9 +339,10 @@ void TYPED_FUNC(
     double threshold)
 {
     REAL_T alpha = (REAL_T) 1.0;
-
+    int M = 1;
+    
     bml_matrix_ellblock_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellblock) (A->N, A->M,
+        TYPED_FUNC(bml_identity_matrix_ellblock) (A->N, M,
                                                   A->distribution_mode);
 
     TYPED_FUNC(bml_add_ellblock) (A, Id, alpha, beta, threshold);
@@ -366,11 +368,8 @@ void TYPED_FUNC(
     double beta,
     double threshold)
 {
-    bml_matrix_ellblock_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellblock) (A->N, A->M,
-                                                  A->distribution_mode);
+    // scale then update diagonal
+    TYPED_FUNC(bml_scale_inplace_ellblock) (&alpha, A);
 
-    TYPED_FUNC(bml_add_ellblock) (A, Id, alpha, beta, threshold);
-
-    bml_deallocate_ellblock(Id);
+    TYPED_FUNC(bml_add_identity_ellblock) (A, beta, threshold);
 }
