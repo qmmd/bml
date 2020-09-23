@@ -44,7 +44,9 @@ void TYPED_FUNC(
 {
     int N = A->N_;
     const int tsize = bml_get_bandwidth_csr(A);
-#pragma omp parallel shared(N, tsize)
+#pragma omp parallel default(none) \
+    shared(N, A, B) \
+    shared(alpha, beta, threshold)
     {
         /* create hash table */
         csr_row_index_hash_t *table = csr_noinit_table(tsize);
