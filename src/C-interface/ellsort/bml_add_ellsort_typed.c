@@ -324,19 +324,19 @@ void TYPED_FUNC(
     {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-        int  jx[A_M];
+        int jx[A_M];
         REAL_T x[A_M];
 #endif
 
         int l = 0;
-        int diag = -1;        
-        
+        int diag = -1;
+
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
             int k = A_index[ROWMAJOR(i, jp, N, A_M)];
             if (k == i)
                 diag = jp;
-            x[jp] =  A_value[ROWMAJOR(i, jp, N, A_M)];
+            x[jp] = A_value[ROWMAJOR(i, jp, N, A_M)];
             jx[jp] = k;
             l++;
         }
@@ -348,7 +348,7 @@ void TYPED_FUNC(
             {
                 x[l] = beta;
                 jx[l] = i;
-                l++;                        
+                l++;
             }
             else
             {

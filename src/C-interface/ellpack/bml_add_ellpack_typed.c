@@ -348,7 +348,7 @@ void TYPED_FUNC(
                 jx[jp] = k;
                 l++;
             }
-                
+
             if (beta > (double) 0.0 || beta < (double) 0.0)
             {
                 // if diagonal entry does not exist
@@ -356,7 +356,7 @@ void TYPED_FUNC(
                 {
                     x[l] = beta;
                     jx[l] = i;
-                    l++;                        
+                    l++;
                 }
                 else
                 {

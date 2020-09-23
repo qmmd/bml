@@ -340,7 +340,7 @@ void TYPED_FUNC(
 {
     REAL_T alpha = (REAL_T) 1.0;
     int M = 1;
-    
+
     bml_matrix_ellblock_t *Id =
         TYPED_FUNC(bml_identity_matrix_ellblock) (A->N, M,
                                                   A->distribution_mode);

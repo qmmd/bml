@@ -45,44 +45,44 @@ void TYPED_FUNC(
     int N = A->N_;
     const int tsize = bml_get_bandwidth_csr(A);
 #pragma omp parallel shared(N, tsize)
-{
-    /* create hash table */
-    csr_row_index_hash_t *table = csr_noinit_table(tsize);    
-#pragma omp for    
-    for (int i = 0; i < N; i++)
     {
-        int *acols = A->data_[i]->cols_;
-        REAL_T *avals = (REAL_T *) A->data_[i]->vals_;
-        const int annz = A->data_[i]->NNZ_;
+        /* create hash table */
+        csr_row_index_hash_t *table = csr_noinit_table(tsize);
+#pragma omp for
+        for (int i = 0; i < N; i++)
+        {
+            int *acols = A->data_[i]->cols_;
+            REAL_T *avals = (REAL_T *) A->data_[i]->vals_;
+            const int annz = A->data_[i]->NNZ_;
 
-        for (int pos = 0; pos < annz; pos++)
-        {
-            avals[pos] *= alpha;
-            csr_table_insert(table, acols[pos]);
-        }
-        int *bcols = B->data_[i]->cols_;
-        REAL_T *bvals = (REAL_T *) B->data_[i]->vals_;
-        const int bnnz = B->data_[i]->NNZ_;
-        for (int pos = 0; pos < bnnz; pos++)
-        {
-            int *idx = (int *) csr_table_lookup(table, bcols[pos]);
-            REAL_T val = beta * bvals[pos];
-            if (idx)
+            for (int pos = 0; pos < annz; pos++)
             {
-                avals[*idx] += val;
+                avals[pos] *= alpha;
+                csr_table_insert(table, acols[pos]);
             }
-            else
+            int *bcols = B->data_[i]->cols_;
+            REAL_T *bvals = (REAL_T *) B->data_[i]->vals_;
+            const int bnnz = B->data_[i]->NNZ_;
+            for (int pos = 0; pos < bnnz; pos++)
             {
-                TYPED_FUNC(csr_set_row_element_new) (A->data_[i],
-                                                     bcols[pos], &val);
+                int *idx = (int *) csr_table_lookup(table, bcols[pos]);
+                REAL_T val = beta * bvals[pos];
+                if (idx)
+                {
+                    avals[*idx] += val;
+                }
+                else
+                {
+                    TYPED_FUNC(csr_set_row_element_new) (A->data_[i],
+                                                         bcols[pos], &val);
+                }
             }
+            //reset table
+            csr_reset_table(table);
         }
-        //reset table
-        csr_reset_table(table);
+        // delete table
+        csr_deallocate_table(table);
     }
-    // delete table
-    csr_deallocate_table(table);
-}
     /* apply thresholding */
     TYPED_FUNC(bml_threshold_csr) (A, threshold);
 }
@@ -137,33 +137,32 @@ void TYPED_FUNC(
         int *acols = A->data_[i]->cols_;
         REAL_T *avals = (REAL_T *) A->data_[i]->vals_;
         const int annz = A->data_[i]->NNZ_;
-        
+
         int diag = -1;
-        
+
         // find position of diagonal entry
         for (int pos = 0; pos < annz; pos++)
         {
-            if(acols[pos] == i)
+            if (acols[pos] == i)
             {
                 diag = pos;
                 break;
             }
         }
-        
+
         if (beta > (double) 0.0 || beta < (double) 0.0)
         {
             // if diagonal entry does not exist, insert, else add
-            REAL_T val = (REAL_T)beta;
+            REAL_T val = (REAL_T) beta;
             if (diag == -1)
             {
-                TYPED_FUNC(csr_set_row_element_new) (A->data_[i],
-                                                     i, &val);
+                TYPED_FUNC(csr_set_row_element_new) (A->data_[i], i, &val);
             }
             else
             {
                 avals[diag] += val;
             }
-         
+
         }
     }
     /* apply thresholding */
