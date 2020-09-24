@@ -43,9 +43,9 @@ void TYPED_FUNC(
     double threshold)
 {
     int N = A->N_;
-    const int tsize = bml_get_bandwidth_csr(A);
+    int tsize = bml_get_bandwidth_csr(A);
 #pragma omp parallel default(none) \
-    shared(N, A, B) \
+    shared(N, tsize, A, B) \
     shared(alpha, beta, threshold)
     {
         /* create hash table */
