@@ -10,7 +10,7 @@
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
 #define REL_TOL 5e-4
 #else
-#define REL_TOL 1e-11
+#define REL_TOL 1e-10
 #endif
 
 int TYPED_FUNC(
