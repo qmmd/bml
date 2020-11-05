@@ -38,12 +38,13 @@ void bml_shutdownParallelF(
 int bml_printRank(
     void);
 
-// Wrapper for MPI_Init.
+#ifdef DO_MPI
+// Initialize some MPI stuff
 void bml_initParallel(
-    int *argc,
-    char ***argv);
+    MPI_Comm comm);
+#endif
 
-// Wrapper for MPI_Finalize.
+// Deallocate some MPI stuff
 void bml_shutdownParallel(
     void);
 

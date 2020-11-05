@@ -19,8 +19,10 @@
  */
 void
 bml_init(
-    int *argc,
-    char ***argv)
+#ifdef DO_MPI
+    MPI_Comm comm
+#endif
+    )
 {
 #ifdef BML_USE_MAGMA
     magma_init();
@@ -29,7 +31,9 @@ bml_init(
     // Initialize the library; pay for setup cost here
     libxsmm_init();
 #endif
-    bml_initParallel(argc, argv);
+#ifdef DO_MPI
+    bml_initParallel(comm);
+#endif
 }
 
 /** Initialize from Fortran.

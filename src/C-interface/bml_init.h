@@ -5,9 +5,15 @@
 
 #include "bml_types.h"
 
+#ifdef DO_MPI
+#include <mpi.h>
+#endif
+
 void bml_init(
-    int *argc,
-    char ***argv);
+#ifdef DO_MPI
+    MPI_Comm comm
+#endif
+    );
 
 void bml_initF(
     int fcomm);

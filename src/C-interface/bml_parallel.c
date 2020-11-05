@@ -64,32 +64,12 @@ bml_printRank(
     return 0;
 }
 
+#ifdef DO_MPI
 void
 bml_initParallel(
-    int *argc,
-    char ***argv)
+    MPI_Comm comm)
 {
-#ifdef DO_MPI
-    MPI_Init(argc, argv);
-    ccomm = MPI_COMM_WORLD;
-    MPI_Comm_rank(ccomm, &myRank);
-    MPI_Comm_size(ccomm, &nRanks);
-
-    requestList = (MPI_Request *) malloc(nRanks * sizeof(MPI_Request));
-    rUsed = (int *) malloc(nRanks * sizeof(int));
-    for (int i = 0; i < nRanks; i++)
-    {
-        rUsed[i] = 0;
-    }
-#endif
-}
-
-void
-bml_initParallelF(
-    int fcomm)
-{
-#ifdef DO_MPI
-    ccomm = MPI_Comm_f2c(fcomm);
+    ccomm = comm;
     MPI_Comm_rank(ccomm, &myRank);
     MPI_Comm_size(ccomm, &nRanks);
 
@@ -102,6 +82,16 @@ bml_initParallelF(
     {
         rUsed[i] = 0;
     }
+}
+#endif
+
+void
+bml_initParallelF(
+    int fcomm)
+{
+#ifdef DO_MPI
+    MPI_Comm comm = MPI_Comm_f2c(fcomm);
+    bml_initParallel(comm);
 #endif
 }
 
@@ -109,10 +99,7 @@ void
 bml_shutdownParallelF(
     void)
 {
-#ifdef DO_MPI
-    free(requestList);
-    free(rUsed);
-#endif
+    bml_shutdownParallel();
 }
 
 void
@@ -122,8 +109,6 @@ bml_shutdownParallel(
 #ifdef DO_MPI
     free(requestList);
     free(rUsed);
-
-    MPI_Finalize();
 #endif
 }
 
