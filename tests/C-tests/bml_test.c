@@ -164,7 +164,12 @@ main(
     int argc,
     char **argv)
 {
-    bml_init(&argc, &argv);
+#ifdef DO_MPI
+    MPI_Init(&argc, &argv);
+    bml_init(MPI_COMM_WORLD);
+#else
+    bml_init();
+#endif
 
     int N = 13;
     int M = -1;
@@ -307,6 +312,8 @@ main(
     test_result = testers[test_index] (N, matrix_type, precision, M);
 
     bml_shutdown();
-
+#ifdef DO_MPI
+    MPI_Finalize();
+#endif
     return test_result;
 }

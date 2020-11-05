@@ -168,6 +168,7 @@ endif()
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 if(BML_MPI)
   message(STATUS "Will build with MPI")
+  find_package(MPI REQUIRED)
   add_definitions(-DDO_MPI)
 endif()
 

@@ -29,16 +29,26 @@ program testf
   use threshold_matrix
   use trace_matrix
   use transpose_matrix
+#ifdef DO_MPI
+  use mpi
+#endif
 
   use prec
 
   implicit none
   character(20) :: args(6)
   integer, parameter :: N = 13, M = 13
-  integer :: i, narg
+  integer :: i, narg, ierr
   logical :: missingarg = .false.
   logical :: test_result = .false.
   character(20) :: test_name, matrix_type, element_type
+
+#ifdef DO_MPI
+  call MPI_Init(ierr)
+  call bml_initF(MPI_COMM_WORLD)
+#else
+  call bml_initF()
+#endif
 
   call get_arguments(test_name, matrix_type, element_type)
 
@@ -95,6 +105,11 @@ program testf
     write(*,*)"Test failed"
     error stop
   endif
+
+  call bml_shutdownF()
+#ifdef DO_MPI
+  call MPI_Finalize(ierr)
+#endif
 
 end program testf
 
