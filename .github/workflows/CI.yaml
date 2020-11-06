@@ -15,10 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: danger/danger@master
+      - name: Lint commit message
+        uses: danger/danger@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ./.github/actions/lint-action
+      - name: Lint sources
+        uses: ./.github/actions/lint-action
       - uses: ./.github/actions/lint-action
 
   lint:
