@@ -11,10 +11,11 @@ on:
 
 jobs:
   test-lint:
-    name: Lint sources
+    name: Lint sources (action)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: danger/danger
       - uses: ./.github/actions/lint-action
       - uses: ./.github/actions/lint-action
 
