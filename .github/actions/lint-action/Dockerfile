@@ -21,7 +21,5 @@ RUN apt-get install --assume-yes --no-install-recommends \
 
 RUN pip install proselint
 
-RUN bundle install
-
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
