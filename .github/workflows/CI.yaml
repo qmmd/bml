@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - uses: danger/danger@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./.github/actions/lint-action
       - uses: ./.github/actions/lint-action
 
