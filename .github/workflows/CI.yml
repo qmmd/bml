@@ -10,6 +10,12 @@ on:
       - master
 
 jobs:
+  test-lint:
+    name: Lint sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/lint-action
+
   lint:
     name: Lint sources
     runs-on: ubuntu-latest
@@ -22,6 +28,7 @@ jobs:
       - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
+
   docs:
     name: Build docs
     runs-on: ubuntu-latest
@@ -33,6 +40,7 @@ jobs:
         with:
           fetch-depth: 2
       - run: ./build.sh docs
+
   docs-test:
     name: Build docs (test)
     runs-on: ubuntu-latest
