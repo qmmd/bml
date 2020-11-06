@@ -6,6 +6,8 @@ echo "Starting"
 
 env
 
+ls -lh
+
 bundle install
 bundle exec danger
 
