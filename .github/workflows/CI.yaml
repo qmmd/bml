@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: danger/danger
+      - uses: danger/danger@master
       - uses: ./.github/actions/lint-action
       - uses: ./.github/actions/lint-action
 
