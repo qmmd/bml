@@ -4,7 +4,6 @@ name: CI
 on:
   release:
     type: [created]
-  push:
   pull_request:
     branches:
       - master
@@ -22,7 +21,7 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: nicolasbock/bml
-          tag-sha: true # add git short SHA as Docker tag
+          tag-sha: true
       - name: Set up qemu
         uses: docker/setup-qemu-action@v1
       - name: Set up buildx
