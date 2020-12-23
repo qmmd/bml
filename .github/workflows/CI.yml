@@ -65,3 +65,29 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: ./build.sh docs
+
+  build:
+    name: Build and test the library
+    runs-on: ubuntu-latest
+    needs: lint
+    container:
+      image: nicolasbock/bml:master
+    strategy:
+      matrix:
+        include:
+          - CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+      steps:
+        - name: Build and test library
+          env:
+            CC: ${{ matrix.CC }}
+            CXX: ${{ matrix.CXX }}
+            FC: ${{ matrix.FC }}
+            BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS }}
+            BML_OPENMP: ${{ matrix.BML_OPENMP }}
+            BML_INTERNAL_BLAS: ${{ matrix.BML_INTERNAL_BLAS }}
+          run: ./build.sh testing
