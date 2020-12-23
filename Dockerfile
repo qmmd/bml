@@ -20,12 +20,14 @@ RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --frontend noninteractive tz
 
 RUN apt-get install --assume-yes --no-install-recommends \
         apt-utils \
+        bundler \
         build-essential \
         cmake cmake-data \
         clang-9 llvm-9-dev libomp-9-dev \
         gcc-4.7 g++-4.7 gfortran-4.7 \
         gcc-9 g++-9 gfortran-9 \
         git-core \
+        indent \
         openssh-client \
         libblas-dev liblapack-dev \
         python \
