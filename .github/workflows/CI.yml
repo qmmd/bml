@@ -78,30 +78,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - CC: gcc-4.7
-            CXX: g++-4.7
-            FC: gfortran-4.7
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-          - CC: gcc-4.7
-            CXX: g++-4.7
-            FC: gfortran-4.7
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: yes
-          - CC: gcc-4.7
-            CXX: g++-4.7
-            FC: gfortran-4.7
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: yes
-            BML_INTERNAL_BLAS: no
-          - CC: gcc-4.7
-            CXX: g++-4.7
-            FC: gfortran-4.7
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: yes
-            BML_INTERNAL_BLAS: yes
+          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: no}
+          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: yes}
+          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: no}
+          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: yes}
           - CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
