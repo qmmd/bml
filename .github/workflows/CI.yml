@@ -49,7 +49,7 @@ jobs:
     name: Lint sources
     runs-on: ubuntu-latest
     container:
-      image: nicolasbock/bml-ci-lint:2
+      image: nicolasbock/bml:latest
     steps:
       - uses: actions/checkout@v1
       - run: bundle install
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     container:
-      image: nicolasbock/bml-ci-docs:2
+      image: nicolasbock/bml:latest
     steps:
       - uses: actions/checkout@v1
       - run: ./build.sh docs
