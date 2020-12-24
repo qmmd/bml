@@ -97,11 +97,11 @@ jobs:
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_real",          BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_complex",       BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_complex",       BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_real",    BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_MPI: yes, BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real", BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R Fortran-.*-single_real",    BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R Fortran-.*-double_real",    BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R Fortran-.*-single_complex", BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R Fortran-.*-double_complex", BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_MPI: yes,    BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real",          BML_VALGRIND: yes}
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
