@@ -122,7 +122,6 @@ bml_clear_distributed2d(
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param matrix_dimension The matrix size.
- *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_distributed2d_t *
@@ -130,8 +129,7 @@ bml_zero_matrix_distributed2d(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,
     int N,
-    int M,
-    bml_distribution_mode_t distrib_mode)
+    int M)
 {
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
@@ -155,7 +153,6 @@ bml_zero_matrix_distributed2d(
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
- *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_distributed2d_t *
@@ -163,8 +160,7 @@ bml_random_matrix_distributed2d(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,
     int N,
-    int M,
-    bml_distribution_mode_t distrib_mode)
+    int M)
 {
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
@@ -187,7 +183,6 @@ bml_random_matrix_distributed2d(
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
- *  \param distrib_mode The distribution mode
  *  \return The matrix.
  */
 bml_matrix_distributed2d_t *
@@ -195,8 +190,7 @@ bml_identity_matrix_distributed2d(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,
     int N,
-    int M,
-    bml_distribution_mode_t distrib_mode)
+    int M)
 {
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));

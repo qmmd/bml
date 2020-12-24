@@ -32,67 +32,18 @@ bml_matrix_distributed2d_t *bml_zero_matrix_distributed2d(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,
     int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_banded_matrix_distributed(
-    bml_matrix_precision_t matrix_precision,
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_banded_matrix_distributed_single_real(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_banded_matrix_distributed_double_real(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_banded_matrix_distributed_single_complex(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_banded_matrix_distributed_double_complex(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
+    int M);
 
 bml_matrix_distributed2d_t *bml_random_matrix_distributed2d(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,
     int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
+    int M);
 
 bml_matrix_distributed2d_t *bml_identity_matrix_distributed2d(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,
     int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_identity_matrix_distributed_single_real(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_identity_matrix_distributed_double_real(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_identity_matrix_distributed_single_complex(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
-
-bml_matrix_distributed2d_t *bml_identity_matrix_distributed_double_complex(
-    int N,
-    int M,
-    bml_distribution_mode_t distrib_mode);
+    int M);
 
 #endif

@@ -284,8 +284,7 @@ bml_noinit_rectangular_matrix(
     if (distrib_mode == distributed)
         return bml_zero_matrix_distributed2d(matrix_type, matrix_precision,
                                              matrix_dimension.N_rows,
-                                             matrix_dimension.N_nz_max,
-                                             distrib_mode);
+                                             matrix_dimension.N_nz_max);
     else
 #endif
         switch (matrix_type)
@@ -412,7 +411,7 @@ bml_zero_matrix(
 #ifdef DO_MPI
     if (distrib_mode == distributed)
         return bml_zero_matrix_distributed2d(matrix_type, matrix_precision, N,
-                                             M, distrib_mode);
+                                             M);
     else
 #endif
     {
@@ -472,7 +471,7 @@ bml_random_matrix(
 #ifdef DO_MPI
     if (distrib_mode == distributed)
         return bml_random_matrix_distributed2d(matrix_type, matrix_precision,
-                                               N, M, distrib_mode);
+                                               N, M);
     else
 #endif
         switch (matrix_type)
@@ -582,8 +581,7 @@ bml_identity_matrix(
 #ifdef DO_MPI
     if (distrib_mode == distributed)
         return bml_identity_matrix_distributed2d(matrix_type,
-                                                 matrix_precision, N, M,
-                                                 distrib_mode);
+                                                 matrix_precision, N, M);
     else
 #endif
         switch (matrix_type)
