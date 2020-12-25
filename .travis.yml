@@ -1,4 +1,9 @@
 language: python
+
+os:
+  - linux
+  - osx
+
 rvm: 2.0
 os: linux
 
