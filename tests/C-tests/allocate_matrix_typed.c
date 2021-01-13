@@ -17,16 +17,14 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
-    bml_distribution_mode_t distrib_mode;
+    bml_distribution_mode_t distrib_mode = sequential;
 #ifdef DO_MPI
     if (bml_getNRanks() > 1)
     {
         LOG_INFO("Use distributed matrix\n");
         distrib_mode = distributed;
     }
-    else
 #endif
-        distrib_mode = sequential;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     A_dense = bml_export_to_dense(A, dense_row_major);
