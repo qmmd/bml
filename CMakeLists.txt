@@ -170,6 +170,8 @@ if(BML_MPI)
   message(STATUS "Will build with MPI")
   find_package(MPI REQUIRED)
   add_definitions(-DDO_MPI)
+  include_directories(${MPI_Fortran_INCLUDE_DIRS})
+  list(APPEND LINK_LIBRARIES ${MPI_Fortran_LIBRARIES})
 endif()
 
 option(BML_OMP_OFFLOAD "Compile with OpenMP GPU Offload support" FALSE)
