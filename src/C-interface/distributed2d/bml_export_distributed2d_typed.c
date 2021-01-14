@@ -50,11 +50,13 @@ void *TYPED_FUNC(
     {
         // copy local data into A_dense
         C_BLAS(LACPY) ("A", &n, &n, sendbuf, &n, A_dense, &N);
-        REAL_T **recvbuf = malloc((ntasks - 1) * sizeof(REAL_T *));
-        MPI_Request *request = malloc((ntasks - 1) * sizeof(MPI_Request));
+        REAL_T **recvbuf =
+            bml_allocate_memory((ntasks - 1) * sizeof(REAL_T *));
+        MPI_Request *request =
+            bml_allocate_memory((ntasks - 1) * sizeof(MPI_Request));
         for (int src = 1; src < ntasks; src++)
         {
-            recvbuf[src - 1] = malloc(n * n * sizeof(REAL_T));
+            recvbuf[src - 1] = bml_allocate_memory(n * n * sizeof(REAL_T));
             MPI_Irecv(recvbuf[src - 1], n * n, MPI_T, src, tag, A_bml->comm,
                       &request[src - 1]);
         }
@@ -70,10 +72,10 @@ void *TYPED_FUNC(
         }
         for (int src = 1; src < ntasks; src++)
         {
-            free(recvbuf[src - 1]);
+            bml_free_memory(recvbuf[src - 1]);
         }
-        free(request);
-        free(recvbuf);
+        bml_free_memory(request);
+        bml_free_memory(recvbuf);
     }
 
     return A_dense;

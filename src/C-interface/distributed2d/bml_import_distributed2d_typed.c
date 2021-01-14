@@ -47,14 +47,16 @@ bml_matrix_distributed2d_t *TYPED_FUNC(
     int m = M / (int) sqrt(ntasks);
     assert(m <= n);
 
-    REAL_T *recvbuf = malloc(n * n * sizeof(REAL_T));
+    REAL_T *recvbuf = bml_allocate_memory(n * n * sizeof(REAL_T));
     int tag = 0;
     MPI_Status status;
     if (myrank == 0)            // send data to other MPI tasks
     {
         int coords[2];
-        REAL_T **sendbuf = malloc((ntasks - 1) * sizeof(REAL_T *));
-        MPI_Request *request = malloc((ntasks - 1) * sizeof(MPI_Request));
+        REAL_T **sendbuf =
+            bml_allocate_memory((ntasks - 1) * sizeof(REAL_T *));
+        MPI_Request *request =
+            bml_allocate_memory((ntasks - 1) * sizeof(MPI_Request));
         for (int dest = 1; dest < ntasks; dest++)
         {
             // find out which block of data to sent
@@ -62,7 +64,7 @@ bml_matrix_distributed2d_t *TYPED_FUNC(
             int ip = coords[0];
             int jp = coords[1];
             // pack data into buffer
-            sendbuf[dest - 1] = malloc(n * n * sizeof(REAL_T));
+            sendbuf[dest - 1] = bml_allocate_memory(n * n * sizeof(REAL_T));
             REAL_T *array = (REAL_T *) (A);
             C_BLAS(LACPY) ("A", &n, &n, array + N * n * ip + n * jp, &N,
                            sendbuf[dest - 1], &n);
@@ -74,11 +76,11 @@ bml_matrix_distributed2d_t *TYPED_FUNC(
         for (int dest = 1; dest < ntasks; dest++)
         {
             MPI_Wait(&request[dest - 1], &status);
-            free(sendbuf[dest - 1]);
+            bml_free_memory(sendbuf[dest - 1]);
         }
 
-        free(request);
-        free(sendbuf);
+        bml_free_memory(request);
+        bml_free_memory(sendbuf);
     }
     else                        // receive data from task 0
     {
@@ -92,7 +94,7 @@ bml_matrix_distributed2d_t *TYPED_FUNC(
         bml_import_from_dense(matrix_type, MATRIX_PRECISION, order, n, m,
                               recvbuf, threshold, sequential);
 
-    free(recvbuf);
+    bml_free_memory(recvbuf);
 
     return A_bml;
 }
