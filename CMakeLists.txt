@@ -169,6 +169,7 @@ set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 if(BML_MPI)
   message(STATUS "Will build with MPI")
   find_package(MPI REQUIRED)
+  message(STATUS "MPI executable: ${MPIEXEC_EXECUTABLE}")
   add_definitions(-DDO_MPI)
 endif()
 

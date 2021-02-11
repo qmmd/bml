@@ -99,7 +99,9 @@ endif()
 function(test_formats ${formats})
   foreach(T ${formats} )
     foreach(P single_real double_real single_complex double_complex)
-      add_test(C-${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
+      add_test(C-${N}-${T}-${P}
+        ${BML_NONMPI_PRECOMMAND} ${BML_NONMPI_PRECOMMAND_ARGS}
+        ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND AND BML_VALGRIND)
         add_test(C-${N}-${T}-${P}-valgrind ${VALGRIND} ${VALGRIND_COMMON_ARGS}
           ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
@@ -111,7 +113,9 @@ endfunction(test_formats)
 function(test_formats_mpi ${formats})
   foreach(T ${formats} )
     foreach(P single_real double_real single_complex double_complex)
-      add_test(MPI-C-${N}-${T}-${P} mpirun -np 4 ./bml-test -n ${N} -t ${T} -p ${P})
+      add_test(MPI-C-${N}-${T}-${P}
+        ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROCS_FLAG} 4 ${MPIEXEC_PREFLAGS}
+        ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
     endforeach()
   endforeach()
 endfunction(test_formats_mpi)

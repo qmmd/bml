@@ -48,10 +48,15 @@ EOF
     echo "FC                     Path to Fortran compiler    (default is ${FC})"
     echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
+    echo "BML_MPIEXEC_EXECUTABLE Command to prepend MPI tests (default is ${BML_MPIEXEC_EXECUTABLE})"
+    echo "BML_MPIEXEC_NUMPROCS_FLAG Flags to specify number of MPI tasks (default is ${BML_MPIEXEC_NUMPROCS_FLAG})"
+    echo "BML_MPIEXEC_PREFLAGS  Extra flags for MPI tests    (default is ${BML_MPIEXEC_PREFLAGS})"
     echo "BML_COMPLEX            {yes,no}                    (default is ${BML_COMPLEX})"
     echo "BML_TESTING            {yes,no}                    (default is ${BML_TESTING})"
     echo "BML_VALGRIND           {yes,no}                    (default is ${BML_VALGRIND})"
     echo "BML_COVERAGE           {yes,no}                    (default is ${BML_COVERAGE})"
+    echo "BML_NONMPI_PRECOMMAND  Command to prepend to tests (default is ${BML_NONMPI_PRECOMMAND})"
+    echo "BML_NONMPI_PRECOMMAND_ARGS  Arguments for prepend command (default is ${BML_NONMPI_PRECOMMAND_ARGS})"
     echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
     echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,IBM,Auto}  (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS      {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
@@ -84,6 +89,9 @@ set_defaults() {
     : ${FC:=gfortran}
     : ${BML_OPENMP:=yes}
     : ${BML_MPI:=no}
+    : ${BML_MPIEXEC_EXECUTABLE:=mpirun}
+    : ${BML_MPIEXEC_NUMPROCS_FLAG:="-np"}
+    : ${BML_MPIEXEC_PREFLAGS:=}
     : ${BML_COMPLEX:=yes}
     : ${BLAS_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
@@ -97,6 +105,8 @@ set_defaults() {
     : ${BML_TESTING:=yes}
     : ${BML_VALGRIND:=no}
     : ${BML_COVERAGE:=no}
+    : ${BML_NONMPI_PRECOMMAND:=}
+    : ${BML_NONMPI_PRECOMMAND_ARGS:=}
     : ${FORTRAN_FLAGS:=}
     : ${EXTRA_LINK_FLAGS:=}
     : ${BML_OMP_OFFLOAD:=no}
@@ -164,11 +174,16 @@ configure() {
         -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
+        -DMPIEXEC_EXECUTABLE="${BML_MPIEXEC_EXECUTABLE}" \
+        -DMPIEXEC_NUMPROCS_FLAG="${BML_MPIEXEC_NUMPROCS_FLAG}" \
+        -DMPIEXEC_PREFLAGS="${BML_MPIEXEC_PREFLAGS}" \
         -DBML_COMPLEX="${BML_COMPLEX}" \
         -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS}" \
         -DBML_TESTING="${BML_TESTING:=yes}" \
         -DBML_VALGRIND="${BML_VALGRIND:=no}" \
         -DBML_COVERAGE="${BML_COVERAGE:=no}" \
+        -DBML_NONMPI_PRECOMMAND="${BML_NONMPI_PRECOMMAND}" \
+        -DBML_NONMPI_PRECOMMAND_ARGS="${BML_NONMPI_PRECOMMAND_ARGS}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
         ${EXTRA_CFLAGS:+-DEXTRA_CFLAGS="${EXTRA_CFLAGS}"} \
