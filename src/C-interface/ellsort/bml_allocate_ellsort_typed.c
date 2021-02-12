@@ -5,8 +5,10 @@
 #include "bml_allocate_ellsort.h"
 #include "bml_types_ellsort.h"
 
-#include <complex.h>
+#define __USE_MISC
 #include <math.h>
+
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -134,7 +136,6 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -142,7 +143,12 @@ bml_matrix_ellsort_t *TYPED_FUNC(
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
              j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
         {
-            A_value[ROWMAJOR(i, jind, N, M)] = rand() * INV_RAND_MAX;
+            double angle = rand() / (double) RAND_MAX * 2 * M_PI;
+#if defined(BML_COMPLEX) && (defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX))
+            A_value[ROWMAJOR(i, jind, N, M)] = cos(angle) + sin(angle) * I;
+#else
+            A_value[ROWMAJOR(i, jind, N, M)] = cos(angle);
+#endif
             A_index[ROWMAJOR(i, jind, N, M)] = j;
             jind++;
         }

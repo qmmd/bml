@@ -105,3 +105,32 @@ void TYPED_FUNC(
     }
 #endif
 }
+
+/** Complex conjugate of a matrix.
+ *
+ * \ingroup transpose_group_C
+ *
+ * \param A Matrix to be complex conjugated
+ * \return Complex conjugate of A
+ */
+void TYPED_FUNC(
+    bml_complex_conjugate_dense) (
+    bml_matrix_dense_t * A)
+{
+    int N = A->N;
+
+    REAL_T *A_matrix = A->matrix;
+    REAL_T tmp;
+
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
+    return;
+#else
+#pragma omp parallel for                        \
+  private(tmp)                                  \
+  shared(N, A_matrix)
+    for (int i = 0; i < N * N; i++)
+    {
+        A_matrix[i] = COMPLEX_CONJUGATE(A_matrix[i]);
+    }
+#endif
+}

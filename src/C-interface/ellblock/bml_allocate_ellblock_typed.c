@@ -6,8 +6,10 @@
 #include "bml_setters_ellblock.h"
 #include "bml_types_ellblock.h"
 
-#include <complex.h>
+#define __USE_MISC
 #include <math.h>
+
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -352,8 +354,14 @@ bml_matrix_ellblock_t *TYPED_FUNC(
             for (int ii = 0; ii < bsize[ib]; ii++)
                 for (int jj = 0; jj < bsize[jb]; jj++)
                 {
+                    double angle = rand() / (double) RAND_MAX * 2 * M_PI;
+#if defined(BML_COMPLEX) && (defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX))
                     A_value[ROWMAJOR(ii, jj, bsize[ib], bsize[jb])] =
-                        rand() / (REAL_T) RAND_MAX;
+                        cos(angle) + sin(angle) * I;
+#else
+                    A_value[ROWMAJOR(ii, jj, bsize[ib], bsize[jb])] =
+                        cos(angle);
+#endif
                 }
         }
         A_nnzb[ib] = MB;

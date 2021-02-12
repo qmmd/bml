@@ -11,6 +11,9 @@
 #include "magma_v2.h"
 #endif
 
+#define __USE_MISC
+#include <math.h>
+
 #include <complex.h>
 #include <string.h>
 #include <stdio.h>
@@ -172,11 +175,16 @@ bml_matrix_dense_t *TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
+            double angle = rand() / (double) RAND_MAX * 2 * M_PI;
 #ifdef BML_USE_MAGMA
             A_dense[ROWMAJOR(i, j, N, N)] =
-                MAGMACOMPLEX(MAKE) (rand() / (double) RAND_MAX, 0.);
+                MAGMACOMPLEX(MAKE) (cos(angle), sin(angle));
 #else
-            A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
+#if defined(BML_COMPLEX) && (defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX))
+            A_dense[ROWMAJOR(i, j, N, N)] = cos(angle) + sin(angle) * I;
+#else
+            A_dense[ROWMAJOR(i, j, N, N)] = cos(angle);
+#endif
 #endif
         }
     }

@@ -77,3 +77,25 @@ bml_transpose(
             break;
     }
 }
+
+/** Complex conjugate of a matrix.
+ *
+ * \ingroup transpose_group_C
+ *
+ * \param A Matrix to be complex conjugated
+ * \return Complex conjugate of A
+ */
+void
+bml_complex_conjugate(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_complex_conjugate_dense(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}

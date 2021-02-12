@@ -5,8 +5,10 @@
 #include "bml_allocate_ellpack.h"
 #include "bml_types_ellpack.h"
 
-#include <complex.h>
+#define __USE_MISC
 #include <math.h>
+
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -266,13 +268,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *A_value = A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+
     for (int i = 0; i < N; i++)
     {
         int jind = 0;
         for (int j = 0; j < M; j++)
         {
-            A_value[ROWMAJOR(i, jind, N, M)] = rand() * INV_RAND_MAX;
+            double angle = rand() / (double) RAND_MAX * 2 * M_PI;
+#if defined(BML_COMPLEX) && (defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX))
+            A_value[ROWMAJOR(i, jind, N, M)] = cos(angle) + sin(angle) * I;
+#else
+            A_value[ROWMAJOR(i, jind, N, M)] = cos(angle);
+#endif
             A_index[ROWMAJOR(i, jind, N, M)] = j;
             jind++;
         }
