@@ -106,6 +106,15 @@ int TYPED_FUNC(
         }
     }
 
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
     bml_matrix_t *A = NULL;
     bml_matrix_t *B = NULL;
     bml_matrix_t *C = NULL;
@@ -120,13 +129,13 @@ int TYPED_FUNC(
     const double beta = 0.8;
     const double threshold = 0.0;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+    B = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+    C = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
-    bml_print_bml_matrix(A, 0, N, 0, N);
-    bml_print_bml_matrix(B, 0, N, 0, N);
-    bml_print_bml_matrix(C, 0, N, 0, N);
+//    bml_print_bml_matrix(A, 0, N, 0, N);
+//    bml_print_bml_matrix(B, 0, N, 0, N);
+//    bml_print_bml_matrix(C, 0, N, 0, N);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);

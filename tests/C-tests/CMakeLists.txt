@@ -123,6 +123,7 @@ endfunction(test_formats_mpi)
 set(testlist-mpi
     allocate
     mpi_sendrecv
+    multiply
 )
 
 set(testlist
