@@ -529,3 +529,18 @@ bml_write_bml_matrix(
             break;
     }
 }
+
+// compute largest int "i" such that i*i <= x
+int
+bml_sqrtint(
+    const int x)
+{
+    int i = 1;
+    int result = 1;
+    while (result < x)
+    {
+        i++;
+        result = i * i;
+    }
+    return i;
+}

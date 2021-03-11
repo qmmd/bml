@@ -2,6 +2,7 @@
 #include "../macros.h"
 #include "../typed.h"
 #include "ellblock/bml_allocate_ellblock.h"
+#include "bml_utilities.h"
 
 #include <complex.h>
 #include <math.h>
@@ -45,12 +46,15 @@ static int TYPED_FUNC(
     REAL_T * A,
     REAL_T * B)
 {
+    LOG_INFO("Compare matrices\n");
     for (int i = 0; i < N * N; i++)
     {
         if (ABS(A[i] - B[i]) > ABS_TOL)
         {
+            LOG_INFO("First matrix\n");
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, A, 0,
                                    N, 0, N);
+            LOG_INFO("Second matrix\n");
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, B, 0,
                                    N, 0, N);
             LOG_INFO("element %d outside %1.2e\n", i, ABS_TOL);
@@ -69,6 +73,38 @@ static int TYPED_FUNC(
     return 0;
 }
 
+void TYPED_FUNC(
+    setup_bsizes) (
+    const int N,
+    const int M)
+{
+    int bsizes[N];
+    int count = 0;
+    int nb = 0;
+    for (int i = 0; i < N; i++)
+    {
+        int bsize = (3 + i) % 6 + 1;
+        count += bsize;
+        if (count > N)
+        {
+            bsize -= (count - N);
+            count = N;
+        }
+        bsizes[i] = bsize;
+        if (count == N)
+        {
+            nb = i + 1;
+            break;
+        }
+    }
+    bml_set_block_sizes(bsizes, nb, nb * M / N);
+    for (int i = 0; i < nb; i++)
+    {
+        printf("bsizes[%d] = %d\n", i, bsizes[i]);
+    }
+
+}
+
 int TYPED_FUNC(
     test_multiply) (
     const int N,
@@ -78,84 +114,81 @@ int TYPED_FUNC(
 {
     // set block sizes for ellblock tests
     // (unused by other tests)
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        int p2 = bml_getNRanks();
+        int p = bml_sqrtint(p2);
+        TYPED_FUNC(setup_bsizes) (N / p, M / p);
+    }
+    else
+#endif
     if (matrix_type == ellblock)
     {
-        int bsizes[N];
-        int count = 0;
-        int nb = 0;
-        for (int i = 0; i < N; i++)
-        {
-            int bsize = (3 + i) % 6 + 1;
-            count += bsize;
-            if (count > N)
-            {
-                bsize -= (count - N);
-                count = N;
-            }
-            bsizes[i] = bsize;
-            if (count == N)
-            {
-                nb = i + 1;
-                break;
-            }
-        }
-        bml_set_block_sizes(bsizes, nb, nb * M / N);
-        for (int i = 0; i < nb; i++)
-        {
-            printf("bsizes[%d] = %d\n", i, bsizes[i]);
-        }
+        LOG_INFO("ellblock type\n");
+        TYPED_FUNC(setup_bsizes) (N, M);
     }
 
-    bml_matrix_t *A = NULL;
-    bml_matrix_t *B = NULL;
-    bml_matrix_t *C = NULL;
-
-    REAL_T *A_dense = NULL;
-    REAL_T *B_dense = NULL;
-    REAL_T *C_dense = NULL;
-    REAL_T *D_dense = NULL;
-    REAL_T *E_dense = NULL;
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
 
     const double alpha = 1.2;
     const double beta = 0.8;
     const double threshold = 0.0;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_matrix_t *A =
+        bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+    bml_matrix_t *B =
+        bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+    bml_matrix_t *C =
+        bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
-    bml_print_bml_matrix(A, 0, N, 0, N);
-    bml_print_bml_matrix(B, 0, N, 0, N);
-    bml_print_bml_matrix(C, 0, N, 0, N);
+    REAL_T *A_dense = bml_export_to_dense(A, dense_row_major);
+    REAL_T *B_dense = bml_export_to_dense(B, dense_row_major);
+    REAL_T *C_dense = bml_export_to_dense(C, dense_row_major);
+    REAL_T *D_dense = bml_export_to_dense(C, dense_row_major);
 
-    A_dense = bml_export_to_dense(A, dense_row_major);
-    B_dense = bml_export_to_dense(B, dense_row_major);
-    C_dense = bml_export_to_dense(C, dense_row_major);
-    D_dense = bml_export_to_dense(C, dense_row_major);
-
+    LOG_INFO("bml_multiply\n");
     bml_multiply(A, B, C, alpha, beta, threshold);
-    E_dense = bml_export_to_dense(C, dense_row_major);
 
-    TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
-                              threshold);
+    LOG_INFO("bml_export_to_dense\n");
+    REAL_T *E_dense = bml_export_to_dense(C, dense_row_major);
 
-    if (TYPED_FUNC(compare_matrix) (N, matrix_precision, D_dense, E_dense) !=
-        0)
+    if (bml_getMyRank() == 0)
     {
-        LOG_ERROR("matrix product incorrect\n");
-        return -1;
+        TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
+                                  threshold);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, E_dense,
+                               0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, D_dense,
+                               0, N, 0, N);
+
+        if (TYPED_FUNC(compare_matrix) (N, matrix_precision, D_dense, E_dense)
+            != 0)
+        {
+            LOG_ERROR("matrix product incorrect\n");
+            return -1;
+        }
+        LOG_INFO("multiply matrix test passed\n");
     }
-    LOG_INFO("multiply matrix test passed\n");
 
     bml_deallocate(&A);
     bml_deallocate(&B);
     bml_deallocate(&C);
 
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
-    bml_free_memory(C_dense);
-    bml_free_memory(D_dense);
-    bml_free_memory(E_dense);
-
+    if (bml_getMyRank() == 0)
+    {
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
+        bml_free_memory(C_dense);
+        bml_free_memory(D_dense);
+        bml_free_memory(E_dense);
+    }
     return 0;
 }

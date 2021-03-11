@@ -126,6 +126,7 @@ set(testlist-mpi
     copy
     scale
     mpi_sendrecv
+    multiply
 )
 
 set(testlist

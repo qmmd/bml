@@ -242,6 +242,12 @@ bml_mpi_recv(
         case ellsort:
             bml_mpi_recv_ellsort(A, src, comm);
             break;
+        case ellblock:
+            bml_mpi_recv_ellblock(A, src, comm);
+            break;
+        case csr:
+            bml_mpi_recv_csr(A, src, comm);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

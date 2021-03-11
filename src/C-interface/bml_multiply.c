@@ -6,6 +6,9 @@
 #include "ellsort/bml_multiply_ellsort.h"
 #include "ellblock/bml_multiply_ellblock.h"
 #include "csr/bml_multiply_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_multiply_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
@@ -48,6 +51,11 @@ bml_multiply(
         case csr:
             bml_multiply_csr(A, B, C, alpha, beta, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_multiply_distributed2d(A, B, C, alpha, beta, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -87,6 +95,11 @@ bml_multiply_x2(
         case csr:
             return bml_multiply_x2_csr(X, X2, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_multiply_x2_distributed2d(X, X2, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -129,6 +142,11 @@ bml_multiply_AB(
         case csr:
             bml_multiply_AB_csr(A, B, C, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_multiply_AB_distributed2d(A, B, C, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
