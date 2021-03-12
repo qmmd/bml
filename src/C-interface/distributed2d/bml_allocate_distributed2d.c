@@ -3,6 +3,7 @@
 #include "../bml_parallel.h"
 #include "../bml_types.h"
 #include "../bml_logger.h"
+#include "../bml_utilities.h"
 #include "bml_allocate_distributed2d.h"
 #include "bml_types_distributed2d.h"
 
@@ -11,21 +12,6 @@
 
 /* MPI communicator for all the distributed2d matrices */
 static MPI_Comm s_comm = MPI_COMM_NULL;
-
-// compute largest int "i" such that i*i <= x
-int
-sqrtint(
-    int x)
-{
-    int i = 1;
-    int result = 1;
-    while (result < x)
-    {
-        i++;
-        result = i * i;
-    }
-    return i;
-}
 
 void
 bml_setcomm_distributed2d(
@@ -36,7 +22,7 @@ bml_setcomm_distributed2d(
     MPI_Comm_size(comm, &ntasks);
     int mytask;
     MPI_Comm_rank(comm, &mytask);
-    int p = sqrtint(ntasks);
+    int p = bml_sqrtint(ntasks);
     if (p * p != ntasks)
     {
         LOG_ERROR("Invalid number of tasks. Must be an integer square.\n");
@@ -71,7 +57,7 @@ bml_setup_distributed2d(
     int coords[2];
     MPI_Cart_coords(A->comm, A->mpitask, 2, coords);
 
-    int p = sqrtint(ntasks);
+    int p = bml_sqrtint(ntasks);
     A->nprows = p;
     A->npcols = p;
     A->myprow = coords[0];
@@ -136,7 +122,7 @@ bml_zero_matrix_distributed2d(
     A->matrix_type = distributed2d;
     A->matrix_precision = matrix_precision;
     bml_setup_distributed2d(N, A);
-    int m = M / sqrtint(A->ntasks);
+    int m = M / bml_sqrtint(A->ntasks);
     A->matrix =
         bml_zero_matrix(matrix_type, matrix_precision, A->n, m, sequential);
     return A;
@@ -166,7 +152,7 @@ bml_random_matrix_distributed2d(
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
     A->matrix_precision = matrix_precision;
     bml_setup_distributed2d(N, A);
-    int m = M / sqrtint(A->ntasks);
+    int m = M / bml_sqrtint(A->ntasks);
     A->matrix =
         bml_random_matrix(matrix_type, matrix_precision, A->n, m, sequential);
     return A;
@@ -196,7 +182,7 @@ bml_identity_matrix_distributed2d(
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
     A->matrix_precision = matrix_precision;
     bml_setup_distributed2d(N, A);
-    int m = M / sqrtint(A->ntasks);
+    int m = M / bml_sqrtint(A->ntasks);
     A->matrix = (A->myprow == A->mypcol) ?
         bml_identity_matrix(matrix_type, matrix_precision, A->n, m,
                             sequential) : bml_zero_matrix(matrix_type,

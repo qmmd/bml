@@ -42,4 +42,6 @@ void bml_write_bml_matrix(
     bml_matrix_t * A,
     char *filename);
 
+int bml_sqrtint(
+    const int x);
 #endif
