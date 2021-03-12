@@ -186,11 +186,6 @@ bml_multiply_adjust_AB(
         case csr:
             bml_multiply_adjust_AB_csr(A, B, C, threshold);
             break;
-#ifdef DO_MPI
-//        case distributed2d:
-//            bml_multiply_adjust_AB_distributed2d(A, B, C, threshold);
-//            break;
-#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

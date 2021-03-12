@@ -2,7 +2,10 @@
 #define __BML_TYPES_DISTRIBUTED_H
 
 #include "../bml_types.h"
+
+#ifdef DO_MPI
 #include <mpi.h>
+#endif
 
 /** Distributed matrix type. */
 struct bml_matrix_distributed2d_t

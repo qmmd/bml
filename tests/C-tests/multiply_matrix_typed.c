@@ -2,7 +2,6 @@
 #include "../macros.h"
 #include "../typed.h"
 #include "ellblock/bml_allocate_ellblock.h"
-#include "bml_setters.h"
 #include "bml_utilities.h"
 #include "distributed2d/bml_types_distributed2d.h"
 
@@ -151,18 +150,6 @@ int TYPED_FUNC(
         bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     bml_matrix_t *C =
         bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
-
-#if 0
-    REAL_T value = bml_getMyRank();
-    bml_set_element(((bml_matrix_distributed2d_t *) A)->matrix, 0, 0, &value);
-    value = 10. * bml_getMyRank();
-    bml_set_element(((bml_matrix_distributed2d_t *) B)->matrix, 0, 0, &value);
-    value = 0.;
-    bml_set_element(((bml_matrix_distributed2d_t *) C)->matrix, 0, 0, &value);
-#endif
-//    bml_print_bml_matrix(A, 0, N, 0, N);
-//    bml_print_bml_matrix(B, 0, N, 0, N);
-//    bml_print_bml_matrix(C, 0, N, 0, N);
 
     REAL_T *A_dense = bml_export_to_dense(A, dense_row_major);
     REAL_T *B_dense = bml_export_to_dense(B, dense_row_major);
