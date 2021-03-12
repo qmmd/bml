@@ -3,7 +3,6 @@
 #include "../typed.h"
 #include "ellblock/bml_allocate_ellblock.h"
 #include "bml_utilities.h"
-#include "distributed2d/bml_types_distributed2d.h"
 
 #include <complex.h>
 #include <math.h>
@@ -118,7 +117,6 @@ int TYPED_FUNC(
 #ifdef DO_MPI
     if (bml_getNRanks() > 1)
     {
-        LOG_INFO("distributed2d type\n");
         int p2 = bml_getNRanks();
         int p = bml_sqrtint(p2);
         TYPED_FUNC(setup_bsizes) (N / p, M / p);

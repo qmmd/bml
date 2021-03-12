@@ -6,7 +6,9 @@
 #include "ellsort/bml_multiply_ellsort.h"
 #include "ellblock/bml_multiply_ellblock.h"
 #include "csr/bml_multiply_csr.h"
+#ifdef DO_MPI
 #include "distributed2d/bml_multiply_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
