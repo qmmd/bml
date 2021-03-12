@@ -42,7 +42,7 @@ bml_setcomm_distributed2d(
         LOG_ERROR("Invalid number of tasks. Must be an integer square.\n");
     }
     int dims[2] = { p, p };
-    int periods[2] = { 0, 0 };
+    int periods[2] = { 1, 1 };
     int reorder = 0;
     MPI_Cart_create(comm, 2, dims, periods, reorder, &s_comm);
 
