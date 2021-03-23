@@ -12,6 +12,14 @@ module io_matrix_typed
 
   public :: test_io_matrix_typed
 
+#ifdef CRAY_SDK
+  interface
+    integer(c_int) function getpid() bind(c,name="getpid")
+      use iso_c_binding
+    end function getpid
+  end interface
+#endif
+
 contains
 
   function test_io_matrix_typed(matrix_type, element_kind, element_precision, n, m) &

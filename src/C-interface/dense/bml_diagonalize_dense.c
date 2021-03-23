@@ -6,6 +6,7 @@
 #include "bml_diagonalize_dense.h"
 #include "bml_types_dense.h"
 #include "../bml_utilities.h"
+#include <float.h>
 
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
@@ -333,9 +334,15 @@ bml_diagonalize_dense_single_complex(
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
-    C_CHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
-             &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork, rwork,
-             &lrwork, iwork, &liwork, &info);
+    {
+        float vl = -FLT_MAX;
+        float vu = FLT_MAX;
+        int il = 1;
+        int iu = A->N;
+        C_CHEEVR("V", "A", "U", &A->N, A_copy, &A->N, &vl, &vu, &il, &iu,
+	          &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork,
+		  rwork, &lrwork, iwork, &liwork, &info);
+    }
 #endif
     A_matrix = (float complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
@@ -424,9 +431,16 @@ bml_diagonalize_dense_double_complex(
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
-    C_ZHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
-             &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork, rwork,
-             &lrwork, iwork, &liwork, &info);
+    {
+        double vl = -DBL_MAX;
+        double vu = DBL_MAX;
+        int il = 1;
+        int iu = A->N;
+
+        C_ZHEEVR("V", "A", "U", &A->N, A_copy, &A->N, &vl, &vu, &il, &iu,
+	          &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork,
+		  rwork, &lrwork, iwork, &liwork, &info);
+    }
 #endif
     A_matrix = (double complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)

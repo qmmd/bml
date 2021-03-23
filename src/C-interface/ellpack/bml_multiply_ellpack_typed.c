@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <float.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -147,7 +148,9 @@ void *TYPED_FUNC(
     shared(rowMin, rowMax)                             \
     reduction(+: traceX, traceX2)
 #else
+#ifndef CRAY_SDK
 #pragma vector aligned
+#endif
 #pragma omp parallel for                               \
     shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
