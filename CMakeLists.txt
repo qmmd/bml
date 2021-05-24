@@ -165,6 +165,12 @@ if(BML_COVERAGE)
   set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} --coverage)
 endif()
 
+set(BML_MPI_NONDIST FALSE CACHE BOOL "Compile with MPI NONDIST")
+if(BML_MPI_NONDIST)
+        message(STATUS "Will build with MPI NONDIST")
+        add_definitions(-DBML_MPI_NONDIST)
+endif()
+
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 #if(BML_MPI)
   message(STATUS "Will build with MPI")

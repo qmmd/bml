@@ -48,6 +48,7 @@ EOF
     echo "FC                     Path to Fortran compiler    (default is ${FC})"
     echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
+    echo "BML_MPI_NONDIST        {yes,no}                    (default is ${BML_MPI_NONDIST})"
     echo "BML_MPIEXEC_EXECUTABLE Command to prepend MPI tests (default is ${BML_MPIEXEC_EXECUTABLE})"
     echo "BML_MPIEXEC_NUMPROCS_FLAG Flags to specify number of MPI tasks (default is ${BML_MPIEXEC_NUMPROCS_FLAG})"
     echo "BML_MPIEXEC_PREFLAGS  Extra flags for MPI tests    (default is ${BML_MPIEXEC_PREFLAGS})"
@@ -89,6 +90,7 @@ set_defaults() {
     : ${FC:=gfortran}
     : ${BML_OPENMP:=yes}
     : ${BML_MPI:=no}
+    : ${BML_MPI_NONDIST:=no}
     : ${BML_MPIEXEC_EXECUTABLE:=}
     : ${BML_MPIEXEC_NUMPROCS_FLAG:=}
     : ${BML_MPIEXEC_PREFLAGS:=}
@@ -174,6 +176,7 @@ configure() {
         -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
+        -DBML_MPI_NONDIST="${BML_MPI_NONDIST}" \
         -DBML_MPIEXEC_EXECUTABLE="${BML_MPIEXEC_EXECUTABLE}" \
         -DBML_MPIEXEC_NUMPROCS_FLAG="${BML_MPIEXEC_NUMPROCS_FLAG}" \
         -DBML_MPIEXEC_PREFLAGS="${BML_MPIEXEC_PREFLAGS}" \
