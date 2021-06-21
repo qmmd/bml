@@ -30,7 +30,7 @@ contains
     integer, intent(in) :: n, m
     logical :: test_result
     real(DUMMY_PREC) :: tol
-    integer :: pid
+    integer :: pid, getpid
     character(20) :: pid_char
     character(100) :: fname
 
