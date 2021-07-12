@@ -99,3 +99,30 @@ jobs:
         env:
           TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
         run: ${TEST_SCRIPT} testing
+
+  build-osx:
+    name: Build and test the library (${{ matrix.JOBNAME }})
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - JOBNAME: gcc-5 test 1
+            TEST_SCRIPT: ./scripts/ci-gcc-5-test-1.sh
+          - JOBNAME: gcc-5 test 2
+            TEST_SCRIPT: ./scripts/ci-gcc-5-test-2.sh
+          - JOBNAME: gcc-5 test 3
+            TEST_SCRIPT: ./scripts/ci-gcc-5-test-3.sh
+          - JOBNAME: gcc-5 test 4
+            TEST_SCRIPT: ./scripts/ci-gcc-5-test-4.sh
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v2
+      - name: Prepare homebrew
+        run: |
+           ./scripts/prepare-homebrew.sh
+           echo "$(brew --prefix)/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
+      - name: Build and test library
+        env:
+          TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
+        run: ${TEST_SCRIPT} testing

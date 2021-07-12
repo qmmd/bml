@@ -37,7 +37,7 @@ bml_add_typed_library(bmltests double_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests single_complex "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests double_complex "${SOURCES_TYPED}")
 
-add_library(bmltests
+add_library(bmltests STATIC
   $<TARGET_OBJECTS:bmltests-single_real>
   $<TARGET_OBJECTS:bmltests-double_real>
   $<TARGET_OBJECTS:bmltests-single_complex>
