@@ -272,6 +272,11 @@ indent() {
 
 check_indent() {
     cd "${TOP_DIR}"
+    if which bashate; then
+        git ls-files '*.sh' \
+            | xargs --no-run-if-empty --verbose --max-args 1 bashate \
+            2>&1 | tee --append "${LOG_FILE}"
+    fi
     "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     git diff 2>&1 | tee --append "${LOG_FILE}"

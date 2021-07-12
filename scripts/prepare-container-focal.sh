@@ -68,8 +68,10 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
   mpi-default-dev \
   openmpi-bin \
   openssh-client \
-  python python3-pip python3-wheel \
+  python python3-pip python3-wheel python3-pkg-resources \
   sudo \
   texlive \
   valgrind \
   vim
+
+${SUDO} pip install --system bashate
