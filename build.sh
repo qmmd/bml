@@ -242,9 +242,9 @@ install() {
 testing() {
     cd "${BUILD_DIR}"
     ctest --output-on-failure \
-      --parallel ${PARALLEL_TEST_JOBS} \
-      ${TESTING_EXTRA_ARGS} \
-      2>&1 | tee --append "${LOG_FILE}"
+        --parallel ${PARALLEL_TEST_JOBS} \
+        ${TESTING_EXTRA_ARGS} \
+        2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 
     # Get skipped tests and re-run them with verbose output.
@@ -254,11 +254,11 @@ testing() {
         echo "Found skipped tests: ${SKIPPED_TESTS[*]}"
         local skipped
         for skipped in "${SKIPPED_TESTS[@]}"; do
-          echo "Re-running skipped test ${skipped}"
-          ctest --verbose \
-            ${TESTING_EXTRA_ARGS} \
-            --tests-regex "${skipped}" \
-            2>&1 | tee --append "${LOG_FILE}"
+            echo "Re-running skipped test ${skipped}"
+            ctest --verbose \
+                ${TESTING_EXTRA_ARGS} \
+                --tests-regex "${skipped}" \
+                2>&1 | tee --append "${LOG_FILE}"
         done
     fi
     cd "${TOP_DIR}"
@@ -305,13 +305,13 @@ set_defaults
 if [[ $# -gt 0 ]]; then
     if [[ $1 = "-h" || $1 = "--help" ]]; then
         help
-	shift
+        shift
     fi
 
     if [[ $# -gt 0 && $1 = "--debug" ]]; then
         PS4='+(${BASH_SOURCE##*/}:${LINENO}) ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
         set -x
-	shift
+        shift
         continue
     fi
 
