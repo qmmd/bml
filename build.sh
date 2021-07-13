@@ -312,7 +312,6 @@ if [[ $# -gt 0 ]]; then
         PS4='+(${BASH_SOURCE##*/}:${LINENO}) ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
         set -x
         shift
-        continue
     fi
 
     while [[ $# -gt 0 ]]; do
