@@ -4,7 +4,8 @@ set -e -u -x
 
 basedir=$(readlink --canonicalize $(dirname $0)/..)
 
-[[ -f ${basedir}/scripts/ci-defaults.sh ]] && . ${basedir}/scripts/ci-defaults.sh
+[[ -f ${basedir}/scripts/ci-defaults.sh ]] \
+    && . ${basedir}/scripts/ci-defaults.sh
 
 export CC=gcc-11
 export CXX=g++-11
