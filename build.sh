@@ -273,6 +273,11 @@ indent() {
 
 check_indent() {
     cd "${TOP_DIR}"
+    if which bashate; then
+        git ls-files '*.sh' \
+            | xargs --no-run-if-empty --verbose --max-args 1 bashate \
+            2>&1 | tee --append "${LOG_FILE}"
+    fi
     "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     git diff 2>&1 | tee --append "${LOG_FILE}"
@@ -301,14 +306,13 @@ set_defaults
 if [[ $# -gt 0 ]]; then
     if [[ $1 = "-h" || $1 = "--help" ]]; then
         help
-	shift
+        shift
     fi
 
     if [[ $# -gt 0 && $1 = "--debug" ]]; then
         PS4='+(${BASH_SOURCE##*/}:${LINENO}) ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
         set -x
-	shift
-        continue
+        shift
     fi
 
     while [[ $# -gt 0 ]]; do
@@ -353,7 +357,6 @@ if [[ $# -gt 0 ]]; then
                 indent
                 ;;
             "check_indent")
-                create
                 check_indent
                 ;;
             "tags")
