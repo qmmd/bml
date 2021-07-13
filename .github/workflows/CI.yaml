@@ -28,8 +28,10 @@ jobs:
         uses: actions/checkout@v1
       - name: Prepare container
         run: ./scripts/prepare-container.sh
-      - run: bundle install
-      - run: bundle exec danger || true
+      - name: Install danger
+        uses: danger/danger-js@10.6.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: BML_OPENMP=no EMACS=emacs27 ./build.sh check_indent
 
   docs:
