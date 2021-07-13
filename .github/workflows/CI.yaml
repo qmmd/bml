@@ -30,7 +30,7 @@ jobs:
         run: ./scripts/prepare-container.sh
       - run: bundle install
       - run: bundle exec danger || true
-      - run: BML_OPENMP=no EMACS=emacs27 ./build.sh check_indent
+      - run: BML_OPENMP=no EMACS=emacs27 ./build.sh --debug check_indent
 
   docs:
     name: Build docs
