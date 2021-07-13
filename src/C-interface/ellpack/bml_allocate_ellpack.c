@@ -17,24 +17,24 @@ void
 bml_deallocate_ellpack(
     bml_matrix_ellpack_t * A)
 {
-#ifdef USE_OMP_OFFLOAD
-    int N = A->N;
-    int M = A->M;
-
-    int *A_nnz = A->nnz;
-    int *A_index = A->index;
-    // JAMAL: need to make a typed deallocator
-    double *A_value = A->value;
-
-#pragma omp target exit data map(delete: A_nnz[:N], A_index[:N*M], A_value[:N*M])
-#endif
-
-    bml_deallocate_domain(A->domain);
-    bml_deallocate_domain(A->domain2);
-    bml_free_memory(A->value);
-    bml_free_memory(A->index);
-    bml_free_memory(A->nnz);
-    bml_free_memory(A);
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_deallocate_ellpack_single_real(A);
+            break;
+        case double_real:
+            bml_deallocate_ellpack_double_real(A);
+            break;
+        case single_complex:
+            bml_deallocate_ellpack_single_complex(A);
+            break;
+        case double_complex:
+            bml_deallocate_ellpack_double_complex(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
 }
 
 /** Clear a matrix.

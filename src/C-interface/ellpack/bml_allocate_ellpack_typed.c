@@ -15,6 +15,35 @@
 #include <omp.h>
 #endif
 
+/** Deallocate a matrix.
+ *
+ * \ingroup allocate_group
+ *
+ * \param A The matrix.
+ */
+void TYPED_FUNC(
+    bml_deallocate_ellpack) (
+    bml_matrix_ellpack_t * A)
+{
+#ifdef USE_OMP_OFFLOAD
+    int N = A->N;
+    int M = A->M;
+
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    REAL_T *A_value = A->value;
+
+#pragma omp target exit data map(delete: A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
+
+    bml_deallocate_domain(A->domain);
+    bml_deallocate_domain(A->domain2);
+    bml_free_memory(A->value);
+    bml_free_memory(A->index);
+    bml_free_memory(A->nnz);
+    bml_free_memory(A);
+}
+
 /** Clear a matrix.
  *
  * Numbers of non-zeroes, indeces, and values are set to zero.
